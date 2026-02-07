@@ -186,11 +186,11 @@ python manage.py runserver
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Bảng điều khiển thống kê tổng quan hệ thống: Số lượng User, Trip, Trek và các hoạt động gần đây. |
-| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Danh sách cung đường chờ duyệt với các trạng thái: Chờ duyệt, Đã duyệt, Từ chối. |
-| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Quản lý kiểm duyệt các chuyến đi do người dùng tạo, đảm bảo nội dung và an toàn. |
-| 16 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Công cụ kiểm duyệt nội dung cộng đồng (Bài viết/Bình luận) vi phạm quy tắc. |
-| 17 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Hệ thống tiếp nhận và xử lý các báo cáo vi phạm từ người dùng đối với bài viết hoặc chuyến đi. |
+| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | **Trung tâm Phân tích Dữ liệu (Analytics Command Center)**: Hiển thị các chỉ số KPI quan trọng (Tổng User, Chuyến đang chạy, Fill Rate, Doanh thu ước tính). Hệ thống biểu đồ trực quan bao gồm: Tăng trưởng User/Trip 6 tháng gần nhất, Phân bổ trạng thái chuyến đi, Ma trận BCG đánh giá chất lượng Cung đường, và Phễu chuyển đổi (Funnel) từ Người đăng ký -> Host. |
+| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | **Quản lý & Kiểm duyệt Cung đường**: Giao diện danh sách tích hợp "Dashboard Mini" (Số lượng chờ duyệt, điểm đánh giá trung bình). Hỗ trợ các **"Bộ lọc nhanh" (Quick Filters)** để phát hiện cung đường kém chất lượng: Thiếu bản đồ, Thiếu ảnh, Rating thấp (< 3.0), hoặc Dữ liệu lỗi thời (> 6 tháng). Admin có quyền duyệt nhanh hoặc yêu cầu chỉnh sửa bản đồ GeoJSON. |
+| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | **Kiểm soát Rủi ro Chuyến đi**: Hệ thống tự động sắp xếp ưu tiên các chuyến cần duyệt lên đầu. Tích hợp bộ lọc **"Phân loại Rủi ro"** đặc biệt: Chuyến đi khẩn cấp (Sắp đi trong 3 ngày), Chuyến đi "Ma" (Sắp đi nhưng < 2 khách), Chuyến đi giá trị cao (> 5 triệu), và Chuyến đi quá tải. Giúp Admin tập trung vào các trường hợp cần xử lý gấp. |
+| 16 | Duyệt Bài viết | ![Duyệt Bài viết](LINK_ANH_DUYET_BAI_VIET) | **Kiểm duyệt Cộng đồng (Django Admin)**: Giao diện quản trị cấp cao cho phép **Thao tác hàng loạt (Bulk Actions)**: Duyệt hoặc Từ chối nhiều bài viết cùng lúc. Hiển thị trạng thái màu trực quan (Badge), tích hợp xem trước Media (Ảnh/Video) ngay trong danh sách mà không cần mở chi tiết, giúp quy trình duyệt nội dung nhanh chóng và chính xác. |
+| 17 | Quản lý Báo cáo | ![Quản lý Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | **Hệ thống Xử lý Vi phạm**: Quy trình xử lý báo cáo khép kín với 3 mức độ hành động: **Bỏ qua** (Không vi phạm), **Ẩn & Cảnh báo** (Gửi thông báo yêu cầu sửa), **Xóa & Cảnh báo** (Gửi thông báo vi phạm nghiêm trọng). Hệ thống tự động gửi thông báo (Notifications) phản hồi cho người dùng ngay khi Admin thực hiện thao tác. |
 
 ---
 
