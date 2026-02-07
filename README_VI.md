@@ -243,57 +243,31 @@ sequenceDiagram
 
 ## Ảnh chụp màn hình
 
-### Trang chủ
-![Trang chủ](LINK_ANH_TRANG_CHU)
-*Hình 2: Giao diện trang chủ với hero section và các cung đường nổi bật.*
+### Giao diện Người dùng
 
-### Danh sách Cung đường
-![Danh sách cung đường](LINK_ANH_DS_CUNG_DUONG)
-*Hình 3: Trang khám phá cung đường với bộ lọc theo tỉnh thành, độ khó.*
+| STT | Màn hình | Ảnh | Mô tả |
+|:---:|----------|-----|-------|
+| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Hero section, cung đường nổi bật, chuyến đi sắp tới |
+| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Bộ lọc theo tỉnh thành, độ khó, mùa đẹp |
+| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin, gallery ảnh, đánh giá, gợi ý trang bị |
+| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Giao diện đề xuất cung đường mới |
+| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Danh sách chuyến đi đang tuyển thành viên |
+| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Lịch trình, thành viên, thông tin chi tiết |
+| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Giao diện tạo chuyến đi mới |
+| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Kế hoạch chi tiết theo ngày/giờ |
+| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Phòng chat của chuyến đi |
+| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Bài viết, chia sẻ trải nghiệm |
+| 11 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Thông tin, trang bị, huy hiệu đã đạt |
 
-### Chi tiết Cung đường
-![Chi tiết cung đường](LINK_ANH_CT_CUNG_DUONG)
-*Hình 4: Thông tin chi tiết cung đường với gallery ảnh và đánh giá.*
+### Giao diện Quản trị
 
-### Form tạo Cung đường
-![Form tạo cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG)
-*Hình 5: Giao diện đề xuất cung đường mới.*
-
-### Trip Hub
-![Trip Hub](LINK_ANH_TRIP_HUB)
-*Hình 6: Danh sách các chuyến đi đang tuyển thành viên.*
-
-### Chi tiết Chuyến đi
-![Chi tiết chuyến đi](LINK_ANH_CT_CHUYEN_DI)
-*Hình 7: Thông tin chuyến đi với lịch trình và danh sách thành viên.*
-
-### Form tạo Chuyến đi
-![Form tạo chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI)
-*Hình 8: Giao diện tạo chuyến đi mới.*
-
-### Lập lịch trình
-![Lập lịch trình](LINK_ANH_LAP_LICH_TRINH)
-*Hình 9: Giao diện lập kế hoạch lịch trình chi tiết theo ngày/giờ.*
-
-### Chat nhóm
-![Chat nhóm](LINK_ANH_CHAT_NHOM)
-*Hình 10: Phòng chat nhóm của chuyến đi.*
-
-### Góc Cộng đồng
-![Cộng đồng](LINK_ANH_CONG_DONG)
-*Hình 11: Danh sách bài viết cộng đồng.*
-
-### Hồ sơ cá nhân
-![Hồ sơ](LINK_ANH_HO_SO)
-*Hình 12: Trang hồ sơ với thông tin và huy hiệu đã đạt.*
-
-### Admin Dashboard
-![Admin Dashboard](LINK_ANH_ADMIN_DASHBOARD)
-*Hình 13: Dashboard tổng quan cho quản trị viên.*
-
-### Duyệt nội dung
-![Duyệt nội dung](LINK_ANH_DUYET_NOI_DUNG)
-*Hình 14: Giao diện duyệt cung đường/chuyến đi/bài viết.*
+| STT | Màn hình | Ảnh | Mô tả |
+|:---:|----------|-----|-------|
+| 12 | Admin Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Tổng quan thống kê hệ thống |
+| 13 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Phê duyệt/từ chối cung đường mới |
+| 14 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Phê duyệt/từ chối chuyến đi |
+| 15 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Kiểm duyệt nội dung cộng đồng |
+| 16 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Xử lý report vi phạm |
 
 ---
 
