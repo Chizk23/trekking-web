@@ -1,6 +1,6 @@
 # TrekViet - Nền tảng Cộng đồng Trekking Việt Nam
 
-> Hệ thống web kết nối cộng đồng leo núi và trekking tại Việt Nam, hỗ trợ quản lý cung đường, tổ chức chuyến đi nhóm và chia sẻ trải nghiệm.
+> Hệ thống web kết nối cộng đồng leo núi và trekking tại Việt Nam - khám phá cung đường, tổ chức chuyến đi nhóm và chia sẻ trải nghiệm.
 
 <p align="center">
   <img src="LINK_ANH_BANNER_1" width="45%" />
@@ -20,14 +20,14 @@
 
 ## Giới thiệu
 
-**TrekViet** là nền tảng web giúp cộng đồng yêu thích trekking tại Việt Nam khám phá cung đường, tổ chức chuyến đi nhóm và kết nối với những người có cùng đam mê.
+**TrekViet** là nền tảng web dành cho cộng đồng yêu thích trekking tại Việt Nam. Người dùng có thể tìm kiếm cung đường phù hợp, tổ chức hoặc tham gia chuyến đi nhóm, và chia sẻ trải nghiệm với cộng đồng.
 
-**Thành phần chính:**
-- **Quản lý Cung đường:** Thông tin chi tiết các cung đường với đánh giá, hình ảnh, bản đồ GeoJSON
-- **Tổ chức Chuyến đi:** Tạo chuyến đi nhóm với lịch trình, quản lý thành viên, chat nhóm
-- **Cộng đồng:** Chia sẻ trải nghiệm, bài viết, kết nối bạn đồng hành
-- **Kiến thức:** Bài viết hướng dẫn theo chuyên mục
-- **Gamification:** Hệ thống huy hiệu với 14 loại thành tích
+**Các module chính:**
+- **Cung đường:** Quản lý thông tin các tuyến trekking trên khắp Việt Nam
+- **Chuyến đi:** Tổ chức trip nhóm với lịch trình và chat real-time
+- **Cộng đồng:** Chia sẻ bài viết, hình ảnh và tương tác với thành viên khác
+- **Kiến thức:** Bài viết hướng dẫn về kỹ năng, trang bị và an toàn
+- **Gamification:** Hệ thống huy hiệu tự động trao thưởng khi đạt thành tích
 
 ### Video Demo
 ![Video Demo](LINK_VIDEO_DEMO)
@@ -40,60 +40,61 @@
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Danh sách cung đường | Lọc theo tỉnh thành, độ khó, mùa đẹp nhất |
-| Chi tiết cung đường | Độ dài, độ cao leo, thời gian ước tính, gợi ý trang bị |
-| Đánh giá & Review | Chấm điểm 1-5 sao, bình luận kèm hình ảnh |
-| Gallery ảnh/video | Quản lý media cho từng cung đường |
-| Đề xuất cung đường | Người dùng đề xuất, Admin duyệt trước khi công khai |
+| Khám phá cung đường | Tìm kiếm và lọc theo tỉnh thành, độ khó hoặc mùa đẹp nhất |
+| Xem chi tiết | Thông tin độ dài, độ cao, thời gian ước tính và danh sách vật dụng gợi ý |
+| Đánh giá & Review | Người dùng chấm điểm 1-5 sao và viết nhận xét kèm hình ảnh |
+| Gallery ảnh/video | Xem và quản lý hình ảnh, video của từng cung đường |
+| Đề xuất cung đường | Người dùng có thể gửi cung đường mới chờ Admin phê duyệt |
 
 ### 🎒 Tổ chức Chuyến đi
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Tạo chuyến đi | Chọn cung đường, đặt số lượng, chi phí, điểm tập trung |
-| Lập lịch trình | Kế hoạch chi tiết theo ngày và khung giờ |
-| Chế độ riêng tư | Công khai hoặc mời bằng mã riêng |
-| Quản lý thành viên | Duyệt yêu cầu, phân vai trò Trưởng đoàn/Thành viên |
-| Chat nhóm | Nhắn tin, gửi ảnh/video, reply, like/dislike |
-| Trạng thái động | Chờ duyệt → Đang tuyển → Đang diễn ra → Hoàn thành |
+| Tạo chuyến đi | Chọn cung đường, nhập số lượng thành viên, chi phí và điểm tập trung |
+| Lập lịch trình | Xây dựng kế hoạch chi tiết theo từng ngày và khung giờ cụ thể |
+| Chế độ công khai/riêng tư | Chuyến đi riêng tư yêu cầu mã mời để tham gia |
+| Quản lý thành viên | Người tổ chức duyệt yêu cầu và phân vai trò Trưởng đoàn/Thành viên |
+| Chat nhóm | Trao đổi thông tin, gửi ảnh/video, trả lời tin nhắn và react emoji |
+| Trạng thái tự động | Hệ thống cập nhật: Chờ duyệt → Đang tuyển → Đang diễn ra → Hoàn thành |
 
 ### 👥 Cộng đồng
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Bài viết | Chia sẻ trải nghiệm kèm hình ảnh, video |
-| Hashtag & Tag | Gắn chủ đề, liên kết chuyến đi |
-| Tương tác | Upvote/Downvote, bình luận phân cấp |
-| Kiểm duyệt | Admin duyệt trước khi công khai |
+| Viết bài | Chia sẻ trải nghiệm trekking kèm hình ảnh và video |
+| Gắn tag | Liên kết bài viết với chuyến đi hoặc chủ đề cụ thể |
+| Upvote/Downvote | Bình chọn bài viết hay và hữu ích |
+| Bình luận | Tương tác với bài viết qua hệ thống bình luận phân cấp |
 
-### 📚 Kiến thức & Hướng dẫn
+### 📚 Kiến thức
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Bài viết hướng dẫn | Theo chuyên mục: Kỹ thuật, Trang bị, An toàn... |
-| Rich text editor | TinyMCE với nội dung phong phú |
-| Quy trình duyệt | Admin kiểm duyệt trước khi đăng |
+| Bài viết hướng dẫn | Chia sẻ kiến thức theo chuyên mục: Kỹ thuật, Trang bị, An toàn... |
+| Trình soạn thảo | Viết nội dung phong phú với TinyMCE editor |
+| Phân loại | Quản lý bài viết theo danh mục dễ tìm kiếm |
 
 ### 🏆 Gamification
 
-| Loại điều kiện | Ví dụ |
-|----------------|-------|
-| Hoạt động | Tham gia 5/10/20 chuyến đi |
-| Đóng góp | Viết 10 bài viết, 50 bình luận |
-| Thể lực | Tổng 100km quãng đường, 5000m độ cao leo |
-| Khám phá | Đến 10 tỉnh thành khác nhau |
-| Thử thách | Hoàn thành cung đường độ khó "Chuyên gia" |
+| Loại huy hiệu | Điều kiện ví dụ |
+|---------------|-----------------|
+| Hoạt động | Tham gia hoặc tổ chức 5/10/20 chuyến đi |
+| Đóng góp | Đăng 10 bài viết hoặc 50 bình luận trên cộng đồng |
+| Thể lực | Tích lũy 100km quãng đường hoặc 5000m độ cao |
+| Khám phá | Đặt chân đến 10 tỉnh thành khác nhau |
+| Thử thách | Hoàn thành cung đường có độ khó "Chuyên gia" |
 
-### 🔧 Quản trị Admin
+> Hệ thống tự động kiểm tra và trao huy hiệu khi người dùng đạt điều kiện.
+
+### 🔧 Trang Quản trị
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Dashboard | Thống kê tổng quan hệ thống |
-| Duyệt cung đường | Phê duyệt/từ chối cung đường mới |
-| Duyệt chuyến đi | Kiểm tra và phê duyệt chuyến đi |
-| Duyệt bài viết | Kiểm duyệt nội dung cộng đồng |
-| Xử lý báo cáo | Tiếp nhận và giải quyết report vi phạm |
-| Quản lý người dùng | Xem danh sách, khóa tài khoản |
+| Dashboard | Xem thống kê tổng quan: số người dùng, chuyến đi, bài viết... |
+| Duyệt cung đường | Xem xét và phê duyệt/từ chối cung đường do người dùng đề xuất |
+| Duyệt chuyến đi | Kiểm tra nội dung trước khi cho phép công khai tuyển thành viên |
+| Duyệt bài viết | Kiểm duyệt nội dung cộng đồng trước khi hiển thị |
+| Xử lý báo cáo | Tiếp nhận và giải quyết các report vi phạm từ người dùng |
 
 ---
 
@@ -112,17 +113,17 @@
 
 | Công nghệ | Mô tả |
 |-----------|-------|
-| Bootstrap 5 | Framework CSS |
-| TinyMCE | Rich text editor |
-| Font Awesome | Icon library |
+| Bootstrap 5 | Xây dựng giao diện responsive |
+| TinyMCE | Trình soạn thảo văn bản cho bài viết |
+| Font Awesome | Icon cho các thành phần UI |
 
 ---
 
 ## Cài đặt
 
 ### Yêu cầu
-- Python 3.8+
-- MySQL 5.7+
+- Python 3.8 trở lên
+- MySQL 5.7 trở lên
 
 ### Các bước
 
@@ -131,12 +132,12 @@
 git clone <repo_url>
 cd trekking_web
 
-# 2. Tạo virtual environment
+# 2. Tạo môi trường ảo
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
-# 3. Cài đặt dependencies
+# 3. Cài đặt thư viện
 pip install -r requirements.txt
 
 # 4. Tạo database
@@ -149,16 +150,16 @@ CREATE DATABASE trekking_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 python manage.py makemigrations
 python manage.py migrate
 
-# 7. Tạo superuser
+# 7. Tạo tài khoản admin
 python manage.py createsuperuser
 
-# 8. Chạy server
+# 8. Khởi động server
 python manage.py runserver
 ```
 
 **Truy cập:**
 - Trang chủ: http://127.0.0.1:8000
-- Admin: http://127.0.0.1:8000/dashboard/
+- Trang quản trị: http://127.0.0.1:8000/dashboard/
 
 ---
 
@@ -168,28 +169,28 @@ python manage.py runserver
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Hero section, cung đường nổi bật |
-| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Lọc theo tỉnh thành, độ khó |
-| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin, gallery, đánh giá |
-| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Đề xuất cung đường mới |
-| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Danh sách chuyến đi |
-| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Lịch trình, thành viên |
-| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Tạo chuyến đi mới |
-| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Kế hoạch theo ngày/giờ |
-| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Chat của chuyến đi |
-| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Bài viết cộng đồng |
-| 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Bài viết hướng dẫn |
-| 12 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Thông tin, huy hiệu |
+| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Cung đường nổi bật và chuyến đi sắp diễn ra |
+| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Tìm kiếm với bộ lọc tỉnh thành, độ khó |
+| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin chi tiết, gallery và đánh giá |
+| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Gửi đề xuất cung đường mới |
+| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Danh sách chuyến đi đang mở đăng ký |
+| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin, lịch trình và danh sách thành viên |
+| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Tạo chuyến đi mới từ cung đường có sẵn |
+| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Xây dựng kế hoạch theo ngày và giờ |
+| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Trao đổi giữa các thành viên trong trip |
+| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Danh sách bài viết chia sẻ từ cộng đồng |
+| 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Bài viết hướng dẫn theo chuyên mục |
+| 12 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Thông tin tài khoản và huy hiệu đã đạt |
 
 ### Giao diện Quản trị
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Thống kê hệ thống |
-| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Phê duyệt cung đường |
-| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Phê duyệt chuyến đi |
-| 16 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Kiểm duyệt bài viết |
-| 17 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Xử lý report |
+| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Thống kê tổng quan hệ thống |
+| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Phê duyệt hoặc từ chối cung đường mới |
+| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Kiểm tra và duyệt chuyến đi |
+| 16 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Kiểm duyệt nội dung cộng đồng |
+| 17 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Xem và xử lý các report vi phạm |
 
 ---
 
@@ -197,20 +198,20 @@ python manage.py runserver
 
 ```
 trekking_web/
-├── accounts/          # Tài khoản & hồ sơ người dùng
-├── treks/             # Quản lý cung đường
-├── trips/             # Tổ chức chuyến đi & chat
-├── community/         # Bài viết cộng đồng
-├── articles/          # Bài viết kiến thức (admin)
-├── knowledge/         # Kiến thức trekking
-├── gamification/      # Hệ thống huy hiệu
-├── report_admin/      # Báo cáo vi phạm
-├── user_admin/        # Quản trị người dùng
-├── core/              # Module dùng chung (TinhThanh, DoKho, VatDung)
-├── templates/         # HTML templates
-├── static/            # CSS, JS, images
-├── media/             # File upload
-└── requirements.txt
+├── accounts/          # Đăng ký, đăng nhập và hồ sơ người dùng
+├── treks/             # CRUD cung đường, đánh giá, media
+├── trips/             # Tạo chuyến đi, quản lý thành viên, chat
+├── community/         # Bài viết cộng đồng, bình luận, upvote
+├── articles/          # Bài viết kiến thức (quản lý bởi admin)
+├── knowledge/         # Hiển thị kiến thức cho người dùng
+├── gamification/      # Huy hiệu và logic trao thưởng
+├── report_admin/      # Xử lý báo cáo vi phạm
+├── user_admin/        # Quản lý danh sách người dùng
+├── core/              # Model dùng chung: TinhThanh, DoKho, VatDung, The
+├── templates/         # Giao diện HTML
+├── static/            # CSS, JavaScript, hình ảnh
+├── media/             # File upload từ người dùng
+└── requirements.txt   # Danh sách thư viện Python
 ```
 
 ---
