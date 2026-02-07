@@ -169,28 +169,28 @@ python manage.py runserver
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Cung đường nổi bật và chuyến đi sắp diễn ra |
-| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Tìm kiếm với bộ lọc tỉnh thành, độ khó |
-| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin chi tiết, gallery và đánh giá |
-| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Gửi đề xuất cung đường mới |
-| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Danh sách chuyến đi đang mở đăng ký |
-| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin, lịch trình và danh sách thành viên |
-| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Tạo chuyến đi mới từ cung đường có sẵn |
-| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Xây dựng kế hoạch theo ngày và giờ |
-| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Trao đổi giữa các thành viên trong trip |
-| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Danh sách bài viết chia sẻ từ cộng đồng |
-| 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Bài viết hướng dẫn theo chuyên mục |
-| 12 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Thông tin tài khoản và huy hiệu đã đạt |
+| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Giao diện chính hiển thị các cung đường nổi bật, sự kiện trekking sắp diễn ra và lối tắt đến các tính năng quan trọng. |
+| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Thư viện cung đường với bộ lọc đa dạng theo tỉnh thành, độ khó và mùa trekking lý tưởng. |
+| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin đầy đủ về địa hình, độ cao, bản đồ GeoJSON, cùng đánh giá thực tế và hình ảnh từ cộng đồng. |
+| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Công cụ cho phép người dùng đóng góp cung đường mới với đầy đủ thông tin chi tiết và media. |
+| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Trung tâm tìm kiếm bạn đồng hành, hiển thị các chuyến đi đang mở đơn với trạng thái tuyển thành viên rõ ràng. |
+| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin chuyến đi bao gồm lịch trình, danh sách thành viên hiện tại và nút gửi yêu cầu tham gia. |
+| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Giao diện tạo trip mới cho phép thiết lập số lượng thành viên, chi phí dự kiến và chế độ riêng tư (mã mời). |
+| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Công cụ lập kế hoạch hành trình chi tiết theo từng ngày và khung giờ cụ thể cho chuyến đi. |
+| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Không gian thảo luận riêng tư của từng chuyến đi, hỗ trợ gửi tin nhắn, hình ảnh và video real-time. |
+| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Nơi chia sẻ bài viết, trải nghiệm trekking, tương tác qua bình luận và hệ thống upvote/downvote. |
+| 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Kho tàng bài viết hướng dẫn kỹ năng, trang bị và an toàn được phân loại theo chuyên mục rõ ràng. |
+| 12 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Trang quản lý thông tin tài khoản, tủ đồ trekking cá nhân và trưng bày bộ sưu tập huy hiệu thành tích. |
 
 ### Giao diện Quản trị
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Thống kê tổng quan hệ thống |
-| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Phê duyệt hoặc từ chối cung đường mới |
-| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Kiểm tra và duyệt chuyến đi |
-| 16 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Kiểm duyệt nội dung cộng đồng |
-| 17 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Xem và xử lý các report vi phạm |
+| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Bảng điều khiển trung tâm thống kê tổng quan về người dùng, bài viết và hoạt động hệ thống. |
+| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Giao diện kiểm duyệt nội dung cung đường do người dùng đóng góp trước khi công khai. |
+| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Công cụ xem xét và phê duyệt các chuyến đi mới được tạo trên hệ thống. |
+| 16 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Hệ thống kiểm duyệt bài viết cộng đồng đảm bảo nội dung phù hợp và chất lượng. |
+| 17 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Danh sách và công cụ xử lý các báo cáo vi phạm từ người dùng gửi về. |
 
 ---
 
