@@ -1,6 +1,6 @@
 # TrekViet - Nền tảng Cộng đồng Trekking Việt Nam
 
-> Hệ thống web toàn diện kết nối cộng đồng leo núi và trekking tại Việt Nam, hỗ trợ quản lý cung đường, tổ chức chuyến đi nhóm và chia sẻ trải nghiệm.
+> Hệ thống web kết nối cộng đồng leo núi và trekking tại Việt Nam, hỗ trợ quản lý cung đường, tổ chức chuyến đi nhóm và chia sẻ trải nghiệm.
 
 <p align="center">
   <img src="LINK_ANH_BANNER_1" width="45%" />
@@ -11,24 +11,23 @@
 
 1. [Giới thiệu](#giới-thiệu)
 2. [Tính năng chính](#tính-năng-chính)
-3. [Kiến trúc hệ thống](#kiến-trúc-hệ-thống)
-4. [Công nghệ sử dụng](#công-nghệ-sử-dụng)
-5. [Cài đặt và Triển khai](#cài-đặt-và-triển-khai)
-6. [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
-7. [Ảnh chụp màn hình](#ảnh-chụp-màn-hình)
-8. [Cấu trúc dự án](#cấu-trúc-dự-án)
+3. [Công nghệ sử dụng](#công-nghệ-sử-dụng)
+4. [Cài đặt](#cài-đặt)
+5. [Ảnh chụp màn hình](#ảnh-chụp-màn-hình)
+6. [Cấu trúc dự án](#cấu-trúc-dự-án)
 
 ---
 
 ## Giới thiệu
 
-**TrekViet** là giải pháp tích hợp giúp cộng đồng yêu thích trekking tại Việt Nam có thể khám phá cung đường, tổ chức chuyến đi nhóm và kết nối với những người có cùng đam mê.
+**TrekViet** là nền tảng web giúp cộng đồng yêu thích trekking tại Việt Nam khám phá cung đường, tổ chức chuyến đi nhóm và kết nối với những người có cùng đam mê.
 
-**Thành phần cốt lõi:**
-- **Quản lý Cung đường:** Cơ sở dữ liệu chi tiết về các cung đường trekking trên khắp Việt Nam với đánh giá, hình ảnh và thông tin GeoJSON.
-- **Tổ chức Chuyến đi:** Công cụ tạo chuyến đi nhóm với lịch trình chi tiết, quản lý thành viên và chat nhóm real-time.
-- **Cộng đồng:** Nền tảng chia sẻ trải nghiệm, bài viết và kết nối bạn đồng hành.
-- **Gamification:** Hệ thống huy hiệu với 14 loại thành tích khuyến khích hoạt động.
+**Thành phần chính:**
+- **Quản lý Cung đường:** Thông tin chi tiết các cung đường với đánh giá, hình ảnh, bản đồ GeoJSON
+- **Tổ chức Chuyến đi:** Tạo chuyến đi nhóm với lịch trình, quản lý thành viên, chat nhóm
+- **Cộng đồng:** Chia sẻ trải nghiệm, bài viết, kết nối bạn đồng hành
+- **Kiến thức:** Bài viết hướng dẫn theo chuyên mục
+- **Gamification:** Hệ thống huy hiệu với 14 loại thành tích
 
 ### Video Demo
 ![Video Demo](LINK_VIDEO_DEMO)
@@ -37,98 +36,64 @@
 
 ## Tính năng chính
 
-### Dành cho Người dùng (User)
+### 🗺️ Quản lý Cung đường
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Khám phá cung đường | Tìm kiếm, lọc theo tỉnh thành, độ khó, mùa đẹp nhất |
-| Đánh giá & Review | Chấm điểm 1-5 sao, viết bình luận kèm hình ảnh |
-| Đề xuất cung đường | Người dùng có thể đề xuất cung đường mới chờ duyệt |
-| Tạo chuyến đi | Lập kế hoạch chi tiết, đặt số lượng, chi phí dự kiến |
-| Tham gia chuyến đi | Gửi yêu cầu tham gia, chat nhóm với thành viên |
-| Viết bài cộng đồng | Chia sẻ trải nghiệm, hình ảnh, video |
-| Nhận huy hiệu | Tự động nhận thưởng khi đạt các mốc thành tích |
+| Danh sách cung đường | Lọc theo tỉnh thành, độ khó, mùa đẹp nhất |
+| Chi tiết cung đường | Độ dài, độ cao leo, thời gian ước tính, gợi ý trang bị |
+| Đánh giá & Review | Chấm điểm 1-5 sao, bình luận kèm hình ảnh |
+| Gallery ảnh/video | Quản lý media cho từng cung đường |
+| Đề xuất cung đường | Người dùng đề xuất, Admin duyệt trước khi công khai |
 
-### Dành cho Quản trị viên (Admin)
+### 🎒 Tổ chức Chuyến đi
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Dashboard tổng quan | Thống kê số liệu hệ thống |
-| Duyệt cung đường | Phê duyệt/từ chối cung đường do người dùng đề xuất |
-| Duyệt chuyến đi | Kiểm tra và phê duyệt chuyến đi mới |
-| Duyệt bài viết | Kiểm duyệt nội dung cộng đồng trước khi công khai |
-| Xử lý báo cáo | Tiếp nhận và giải quyết report vi phạm |
-| Quản lý người dùng | Phân quyền, khóa tài khoản |
+| Tạo chuyến đi | Chọn cung đường, đặt số lượng, chi phí, điểm tập trung |
+| Lập lịch trình | Kế hoạch chi tiết theo ngày và khung giờ |
+| Chế độ riêng tư | Công khai hoặc mời bằng mã riêng |
+| Quản lý thành viên | Duyệt yêu cầu, phân vai trò Trưởng đoàn/Thành viên |
+| Chat nhóm | Nhắn tin, gửi ảnh/video, reply, like/dislike |
+| Trạng thái động | Chờ duyệt → Đang tuyển → Đang diễn ra → Hoàn thành |
 
-### Đặc tả kỹ thuật Gamification
+### 👥 Cộng đồng
+
+| Tính năng | Mô tả |
+|-----------|-------|
+| Bài viết | Chia sẻ trải nghiệm kèm hình ảnh, video |
+| Hashtag & Tag | Gắn chủ đề, liên kết chuyến đi |
+| Tương tác | Upvote/Downvote, bình luận phân cấp |
+| Kiểm duyệt | Admin duyệt trước khi công khai |
+
+### 📚 Kiến thức & Hướng dẫn
+
+| Tính năng | Mô tả |
+|-----------|-------|
+| Bài viết hướng dẫn | Theo chuyên mục: Kỹ thuật, Trang bị, An toàn... |
+| Rich text editor | TinyMCE với nội dung phong phú |
+| Quy trình duyệt | Admin kiểm duyệt trước khi đăng |
+
+### 🏆 Gamification
 
 | Loại điều kiện | Ví dụ |
 |----------------|-------|
-| Số lượng hoạt động | Tham gia 5/10/20 chuyến đi |
-| Đóng góp nội dung | Viết 10 bài viết, 50 bình luận |
+| Hoạt động | Tham gia 5/10/20 chuyến đi |
+| Đóng góp | Viết 10 bài viết, 50 bình luận |
 | Thể lực | Tổng 100km quãng đường, 5000m độ cao leo |
 | Khám phá | Đến 10 tỉnh thành khác nhau |
 | Thử thách | Hoàn thành cung đường độ khó "Chuyên gia" |
 
----
+### 🔧 Quản trị Admin
 
-## Kiến trúc hệ thống
-
-Hệ thống được thiết kế theo mô hình MVC với Django Framework:
-
-```mermaid
-graph TB
-    subgraph Client["Client (Browser)"]
-        USER[Người dùng]
-        ADMIN[Quản trị viên]
-    end
-    
-    subgraph Server["Django Server"]
-        VIEWS[Views/Controllers]
-        MODELS[Models/ORM]
-        TEMPLATES[Templates/Jinja2]
-        STATIC[Static Files]
-    end
-    
-    subgraph Database["Database"]
-        MYSQL[(MySQL)]
-    end
-    
-    subgraph Storage["Media Storage"]
-        MEDIA[/Media Files/]
-    end
-    
-    USER --> VIEWS
-    ADMIN --> VIEWS
-    VIEWS --> MODELS
-    VIEWS --> TEMPLATES
-    MODELS --> MYSQL
-    TEMPLATES --> STATIC
-    VIEWS --> MEDIA
-```
-
-### Quy trình tổ chức Chuyến đi
-
-```mermaid
-flowchart LR
-    CREATE([Tạo chuyến đi]) -->|Chờ duyệt| ADMIN{Admin duyệt?}
-    ADMIN --Từ chối--> REJECT[Bị từ chối]
-    ADMIN --Duyệt--> OPEN[Đang tuyển]
-    
-    OPEN --> JOIN([Người dùng tham gia])
-    JOIN -->|Chờ duyệt| HOST{Host duyệt?}
-    HOST --Từ chối--> DENIED[Bị từ chối]
-    HOST --Duyệt--> MEMBER[Thành viên]
-    
-    OPEN -->|Đủ người| FULL[Đã đủ người]
-    OPEN -->|Đến ngày| ONGOING[Đang diễn ra]
-    ONGOING -->|Kết thúc| DONE[Hoàn thành]
-    
-    style CREATE fill:#10b981,stroke:#333,stroke-width:2px
-    style DONE fill:#3b82f6,stroke:#333,stroke-width:2px
-    style REJECT fill:#ef4444,stroke:#333,stroke-width:2px
-```
-*Hình 1: Quy trình trạng thái chuyến đi.*
+| Tính năng | Mô tả |
+|-----------|-------|
+| Dashboard | Thống kê tổng quan hệ thống |
+| Duyệt cung đường | Phê duyệt/từ chối cung đường mới |
+| Duyệt chuyến đi | Kiểm tra và phê duyệt chuyến đi |
+| Duyệt bài viết | Kiểm duyệt nội dung cộng đồng |
+| Xử lý báo cáo | Tiếp nhận và giải quyết report vi phạm |
+| Quản lý người dùng | Xem danh sách, khóa tài khoản |
 
 ---
 
@@ -136,108 +101,64 @@ flowchart LR
 
 ### Backend
 
-| Công nghệ | Phiên bản | Mục đích |
-|-----------|-----------|----------|
-| Python | 3.8+ | Ngôn ngữ lập trình |
-| Django | 4.2.23 | Web Framework |
-| MySQL | 5.7+ | Cơ sở dữ liệu |
-| mysqlclient | 2.2.7 | MySQL Connector |
-| Pillow | 11.3.0 | Xử lý hình ảnh |
+| Công nghệ | Phiên bản |
+|-----------|-----------|
+| Python | 3.8+ |
+| Django | 4.2.23 |
+| MySQL | 5.7+ |
+| Pillow | 11.3.0 |
 
 ### Frontend
 
-| Công nghệ | Mục đích |
-|-----------|----------|
-| Bootstrap 5 | Framework CSS responsive |
+| Công nghệ | Mô tả |
+|-----------|-------|
+| Bootstrap 5 | Framework CSS |
 | TinyMCE | Rich text editor |
-| Font Awesome | Thư viện icon |
-| Animate.css | Hiệu ứng animation |
+| Font Awesome | Icon library |
 
 ---
 
-## Cài đặt và Triển khai
+## Cài đặt
 
-### 1. Yêu cầu hệ thống
+### Yêu cầu
+- Python 3.8+
+- MySQL 5.7+
 
-- **Server:** Python 3.8+, MySQL 5.7+
-- **RAM:** 2GB trở lên
-- **Disk:** 1GB cho source code, thêm dung lượng cho media
-
-### 2. Cài đặt Server
+### Các bước
 
 ```bash
-# Clone source code
+# 1. Clone repository
 git clone <repo_url>
 cd trekking_web
 
-# Tạo môi trường ảo
-python3 -m venv venv
+# 2. Tạo virtual environment
+python -m venv venv
 source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 
-# Cài đặt dependencies
+# 3. Cài đặt dependencies
 pip install -r requirements.txt
 
-# Tạo database MySQL
+# 4. Tạo database
 mysql -u root -p
 CREATE DATABASE trekking_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-# Cấu hình settings.py (cập nhật thông tin database)
+# 5. Cấu hình database trong settings.py
 
-# Chạy migrations
+# 6. Chạy migrations
 python manage.py makemigrations
 python manage.py migrate
 
-# Tạo superuser
+# 7. Tạo superuser
 python manage.py createsuperuser
 
-# Chạy server
+# 8. Chạy server
 python manage.py runserver
 ```
 
-### 3. Truy cập
-
-- **Trang chủ:** http://127.0.0.1:8000
-- **Admin Dashboard:** http://127.0.0.1:8000/dashboard/
-
----
-
-## Hướng dẫn sử dụng
-
-### Đăng nhập
-- **Quản trị viên:** Tài khoản superuser đã tạo
-- **Người dùng:** Đăng ký tài khoản mới hoặc được Admin cấp
-
-### Quy trình tạo Chuyến đi
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor U as Người tổ chức
-    participant W as Web Dashboard
-    participant A as Admin
-    participant M as Thành viên
-
-    Note over U, W: 1. Tạo chuyến đi
-    U->>W: Chọn cung đường, nhập thông tin
-    U->>W: Lập lịch trình chi tiết
-    W-->>U: Chuyến đi chờ duyệt
-
-    Note over A, W: 2. Admin duyệt
-    A->>W: Xem và duyệt chuyến đi
-    W-->>U: Thông báo được duyệt
-
-    Note over M, W: 3. Tuyển thành viên
-    M->>W: Gửi yêu cầu tham gia
-    W-->>U: Thông báo có yêu cầu mới
-    U->>W: Duyệt thành viên
-    W-->>M: Thông báo được chấp nhận
-
-    Note over U, M: 4. Chat nhóm
-    U->>W: Nhắn tin trong nhóm
-    W-->>M: Hiển thị tin nhắn
-    M->>W: Phản hồi, gửi ảnh/video
-```
+**Truy cập:**
+- Trang chủ: http://127.0.0.1:8000
+- Admin: http://127.0.0.1:8000/dashboard/
 
 ---
 
@@ -247,107 +168,59 @@ sequenceDiagram
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Hero section, cung đường nổi bật, chuyến đi sắp tới |
-| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Bộ lọc theo tỉnh thành, độ khó, mùa đẹp |
-| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin, gallery ảnh, đánh giá, gợi ý trang bị |
-| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Giao diện đề xuất cung đường mới |
-| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Danh sách chuyến đi đang tuyển thành viên |
-| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Lịch trình, thành viên, thông tin chi tiết |
-| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Giao diện tạo chuyến đi mới |
-| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Kế hoạch chi tiết theo ngày/giờ |
-| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Phòng chat của chuyến đi |
-| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Bài viết, chia sẻ trải nghiệm |
-| 11 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Thông tin, trang bị, huy hiệu đã đạt |
+| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Hero section, cung đường nổi bật |
+| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Lọc theo tỉnh thành, độ khó |
+| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Thông tin, gallery, đánh giá |
+| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | Đề xuất cung đường mới |
+| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Danh sách chuyến đi |
+| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Lịch trình, thành viên |
+| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Tạo chuyến đi mới |
+| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Kế hoạch theo ngày/giờ |
+| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Chat của chuyến đi |
+| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Bài viết cộng đồng |
+| 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Bài viết hướng dẫn |
+| 12 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Thông tin, huy hiệu |
 
 ### Giao diện Quản trị
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 12 | Admin Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Tổng quan thống kê hệ thống |
-| 13 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Phê duyệt/từ chối cung đường mới |
-| 14 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Phê duyệt/từ chối chuyến đi |
-| 15 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Kiểm duyệt nội dung cộng đồng |
-| 16 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Xử lý report vi phạm |
+| 13 | Dashboard | ![Dashboard](LINK_ANH_ADMIN_DASHBOARD) | Thống kê hệ thống |
+| 14 | Duyệt Cung đường | ![Duyệt CD](LINK_ANH_DUYET_CUNG_DUONG) | Phê duyệt cung đường |
+| 15 | Duyệt Chuyến đi | ![Duyệt Trip](LINK_ANH_DUYET_CHUYEN_DI) | Phê duyệt chuyến đi |
+| 16 | Duyệt Bài viết | ![Duyệt Post](LINK_ANH_DUYET_BAI_VIET) | Kiểm duyệt bài viết |
+| 17 | Quản lý Báo cáo | ![Báo cáo](LINK_ANH_QUAN_LY_BAO_CAO) | Xử lý report |
 
 ---
 
 ## Cấu trúc dự án
 
-```text
-trekking_web/
-├── accounts/                # Tài khoản & Hồ sơ người dùng
-│   ├── models.py            # Model TaiKhoanHoSo
-│   ├── views.py             # Đăng ký, đăng nhập, profile
-│   └── templates/           # Giao diện accounts
-│
-├── treks/                   # Quản lý Cung đường
-│   ├── models.py            # CungDuongTrek, DanhGia, Media
-│   ├── views.py             # CRUD cung đường
-│   └── templates/           # Giao diện cung đường
-│
-├── trips/                   # Tổ chức Chuyến đi
-│   ├── models.py            # ChuyenDi, ThanhVien, TinNhan
-│   ├── views.py             # Trip hub, chat, timeline
-│   └── templates/           # Giao diện chuyến đi
-│
-├── community/               # Bài viết Cộng đồng
-│   ├── models.py            # CongDongBaiViet, BinhLuan
-│   ├── views.py             # CRUD bài viết
-│   └── templates/           # Giao diện cộng đồng
-│
-├── gamification/            # Hệ thống Huy hiệu
-│   ├── models.py            # GameHuyHieu, HuyHieuNguoiDung
-│   └── services.py          # Logic kiểm tra & trao thưởng
-│
-├── articles/                # Bài viết Kiến thức
-├── knowledge/               # Kiến thức Trekking
-├── report_admin/            # Báo cáo Vi phạm
-├── user_admin/              # Quản trị Người dùng
-├── core/                    # Module dùng chung
-│   └── models.py            # TinhThanh, DoKho, VatDung, The
-│
-├── templates/               # Base templates
-│   ├── base.html            # Template người dùng
-│   └── admin_base.html      # Template admin
-│
-├── static/                  # CSS, JS, Images
-│   ├── css/
-│   ├── js/
-│   └── images/
-│
-├── media/                   # File upload
-└── requirements.txt         # Dependencies
 ```
-
----
-
-## Thông tin bổ sung
-
-### Design System
-Dự án sử dụng **TrekViet Design System** với màu chủ đạo **Emerald Green** (`#10b981`), tuân theo BEM methodology và responsive design với breakpoints 576px, 768px, 992px, 1200px.
-
-### Bảo mật
-> ⚠️ **Lưu ý:** File `settings.py` hiện tại chứa cấu hình development. Khi deploy production cần:
-> - Tắt `DEBUG = False`
-> - Dùng biến môi trường cho `SECRET_KEY`
-> - Thêm domain vào `ALLOWED_HOSTS`
-
----
-
-## Đóng góp
-
-Dự án được phát triển cho mục đích học thuật. Mọi đóng góp từ cộng đồng đều được hoan nghênh.
+trekking_web/
+├── accounts/          # Tài khoản & hồ sơ người dùng
+├── treks/             # Quản lý cung đường
+├── trips/             # Tổ chức chuyến đi & chat
+├── community/         # Bài viết cộng đồng
+├── articles/          # Bài viết kiến thức (admin)
+├── knowledge/         # Kiến thức trekking
+├── gamification/      # Hệ thống huy hiệu
+├── report_admin/      # Báo cáo vi phạm
+├── user_admin/        # Quản trị người dùng
+├── core/              # Module dùng chung (TinhThanh, DoKho, VatDung)
+├── templates/         # HTML templates
+├── static/            # CSS, JS, images
+├── media/             # File upload
+└── requirements.txt
+```
 
 ---
 
 ## Nhóm phát triển
 
-**Thành viên nhóm:**
-
 | Thành viên | Module phụ trách |
 |------------|------------------|
-| **Developer 1** | Treks, Trips, User Admin |
-| **Developer 2** | Community, Knowledge, Gamification, Articles, Reports |
+| Developer 1 | Treks, Trips, User Admin |
+| Developer 2 | Community, Knowledge, Gamification, Articles, Reports |
 
 ---
 
