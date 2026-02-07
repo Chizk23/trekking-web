@@ -175,8 +175,7 @@ python manage.py runserver
 | 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | (Admin) Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
 | 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
 | 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
-| 7 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Quy trình thiết lập chuyến đi từ cung đường có sẵn: Cấu hình số lượng thành viên, chi phí, địa điểm tập trung và yêu cầu duyệt thành viên. |
-| 8 | Lập lịch trình | ![Lịch trình](LINK_ANH_LAP_LICH_TRINH) | Giao diện quản lý Timeline chi tiết: Thêm/Sửa/Xóa các mốc hoạt động theo ngày và giờ cụ thể. |
+| 8 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Quy trình thiết lập chuyến đi 2 bước tối ưu: Chọn cung đường mẫu -> Điền thông tin. Tích hợp công cụ **Lập lịch trình (Itinerary Builder)** cho phép kéo thả các mốc hoạt động theo ngày/giờ chi tiết. |
 | 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Hệ thống chat realtime tích hợp trong chuyến đi: Gửi tin nhắn, chia sẻ file/ảnh, và danh sách thành viên online. |
 | 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
 | 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
