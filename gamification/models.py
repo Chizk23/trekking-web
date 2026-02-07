@@ -42,6 +42,12 @@ class GameHuyHieu(models.Model):
         verbose_name="Giá trị mục tiêu",
         help_text="Con số cần đạt được (>=)"
     )
+
+    diem_thuong = models.IntegerField(
+        default=0,
+        verbose_name="Điểm thưởng",
+        help_text="Số điểm nhận được khi đạt huy hiệu này"
+    )
     
     bien_so_phu = models.CharField(
         max_length=100, 

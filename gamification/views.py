@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.db.models import OuterRef, Subquery, Case, When, Value, IntegerField
+from django.db.models import OuterRef, Subquery, Case, When, Value, IntegerField, Sum
 
 # Import Models
 from .models import GameHuyHieu, GameHuyHieuNguoiDung
@@ -67,9 +67,15 @@ class MyBadgeListView(LoginRequiredMixin, ListView):
         if total_badges > 0:
             progress_percent = int((earned_count / total_badges) * 100)
 
+        # Tính tổng điểm thưởng
+        total_points = GameHuyHieuNguoiDung.objects.filter(user=user).aggregate(
+            total=Sum('huy_hieu__diem_thuong')
+        )['total'] or 0
+
         context['total_badges'] = total_badges
         context['earned_count'] = earned_count
         context['progress_percent'] = progress_percent
+        context['total_points'] = total_points
         return context
 
 # 3. CREATE: Tạo huy hiệu mới (CẦN DANH SÁCH TAG & ĐỘ KHÓ)

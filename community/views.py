@@ -39,9 +39,31 @@ def danh_sach_bai_viet(request):
     page_number = request.GET.get('page')
     bai_viet = paginator.get_page(page_number)
 
+    # === TRENDING TAGS (Top 5 tags by number of approved posts) ===
+    from core.models import The
+    trending_tags = (
+        The.objects
+        .filter(bai_viet_cong_dong__trang_thai=CongDongBaiViet.TrangThaiBaiViet.DA_DUYET)
+        .annotate(so_bai_viet=Count('bai_viet_cong_dong', distinct=True))
+        .filter(so_bai_viet__gt=0)
+        .order_by('-so_bai_viet')[:5]
+    )
+
+    # === TOP MEMBERS (Top 3 users by reward points) ===
+    from django.contrib.auth.models import User
+    from accounts.models import TaiKhoanHoSo
+    top_members = (
+        User.objects
+        .select_related('taikhoanhoso')
+        .filter(taikhoanhoso__diem_thuong__gt=0)
+        .order_by('-taikhoanhoso__diem_thuong')[:3]
+    )
+
     return render(request, 'community/danh_sach_bai_viet.html', {
         'bai_viet': bai_viet,
         'search_query': search_query,
+        'trending_tags': trending_tags,
+        'top_members': top_members,
     })
 
 

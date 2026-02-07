@@ -12,14 +12,16 @@
         border: 1px solid var(--gray-200);
         border-radius: var(--radius-lg);
         transition: transform 0.2s, box-shadow 0.2s;
-        overflow: hidden; /* Để bo góc ảnh */
+        overflow: hidden;
+        /* Để bo góc ảnh */
     }
+
     .badge-card:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-lg);
         border-color: var(--primary-light);
     }
-    
+
     /* Vùng chứa ảnh */
     .badge-img-wrapper {
         height: 120px;
@@ -30,13 +32,15 @@
         border-bottom: 1px solid var(--gray-100);
         position: relative;
     }
+
     .badge-img {
         max-height: 80px;
         max-width: 80px;
         object-fit: contain;
-        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
         transition: transform 0.3s ease;
     }
+
     .badge-card:hover .badge-img {
         transform: scale(1.1);
     }
@@ -54,7 +58,11 @@
         box-shadow: var(--shadow-sm);
         z-index: 2;
     }
-    .status-badge.inactive { color: var(--gray-500); border: 1px solid var(--gray-300); }
+
+    .status-badge.inactive {
+        color: var(--gray-500);
+        border: 1px solid var(--gray-300);
+    }
 
     /* Nội dung text */
     .badge-title {
@@ -63,14 +71,16 @@
         color: var(--gray-800);
         margin-bottom: 0.5rem;
     }
+
     .badge-desc {
         font-size: 0.875rem;
         color: var(--gray-500);
         display: -webkit-box;
-       
+
         -webkit-box-orient: vertical;
         overflow: hidden;
-        height: 2.6em; /* Giới hạn chiều cao */
+        height: 2.6em;
+        /* Giới hạn chiều cao */
     }
 
     /* Hộp thông tin logic */
@@ -80,10 +90,20 @@
         border-radius: var(--radius-md);
         padding: 0.75rem;
         font-size: 0.8125rem;
-        margin-top: auto; /* Đẩy xuống dưới cùng body */
+        margin-top: auto;
+        /* Đẩy xuống dưới cùng body */
     }
-    .logic-label { color: var(--primary-darkest); font-weight: 600; margin-bottom: 2px; }
-    .logic-value { color: var(--primary-dark); font-family: monospace; }
+
+    .logic-label {
+        color: var(--primary-darkest);
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .logic-value {
+        color: var(--primary-dark);
+        font-family: monospace;
+    }
 </style>
 <!-- FontAwesome cho Icon (Nếu chưa có trong base) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -91,26 +111,29 @@
 
 {% block content %}
 <div class="container-fluid">
-    
+
     <!-- 1. HEADER CỦA TRANG (Page Header) -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="h3 fw-bold text-gray-800 mb-1">🏅 Kho Huy Hiệu</h2>
+            <h2 class="h3 fw-bold text-gray-800 mb-1"><i class="fa-solid fa-award me-2" style="color: #10b981;"></i>Kho
+                Huy Hiệu</h2>
             <p class="text-muted mb-0">Quản lý và thiết lập các thành tựu cho hệ thống Gamification.</p>
         </div>
-        
+
         <!-- Action Buttons -->
         <div class="d-flex gap-2">
             <!-- Nút xem với tư cách User -->
-            <a href="{% url 'gamification:my_badges' %}" class="btn btn-outline-secondary d-flex align-items-center gap-2">
-                <i class="fa-solid fa-user-astronaut"></i> 
+            <a href="{% url 'gamification:my_badges' %}"
+                class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                <i class="fa-solid fa-user-astronaut"></i>
                 <span>Xem Demo User</span>
             </a>
 
             <!-- Nút tạo mới (Chỉ hiện cho Staff) -->
             {% if user.is_staff %}
-            <a href="{% url 'gamification:badge_create' %}" class="btn btn-success d-flex align-items-center gap-2 text-white">
-                <i class="fa-solid fa-plus"></i> 
+            <a href="{% url 'gamification:badge_create' %}"
+                class="btn btn-success d-flex align-items-center gap-2 text-white">
+                <i class="fa-solid fa-plus"></i>
                 <span>Tạo Huy Hiệu Mới</span>
             </a>
             {% endif %}
@@ -122,22 +145,19 @@
         {% for badge in badges %}
         <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="badge-card h-100 d-flex flex-column">
-                
+
                 <!-- Phần Ảnh (ĐÃ SỬA LỖI 404) -->
                 <div class="badge-img-wrapper">
                     {% if badge.anh_huy_hieu %}
-                        <!-- QUAN TRỌNG: Dùng .url để lấy đường dẫn media -->
-                        <img src="{{ badge.anh_huy_hieu.url }}" 
-                             alt="{{ badge.ten }}" 
-                             class="badge-img"
-                             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/6556/6556073.png';">
+                    <!-- QUAN TRỌNG: Dùng .url để lấy đường dẫn media -->
+                    <img src="{{ badge.anh_huy_hieu.url }}" alt="{{ badge.ten }}" class="badge-img"
+                        onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/6556/6556073.png';">
                     {% else %}
-                        <!-- Ảnh mặc định nếu chưa upload -->
-                        <img src="https://cdn-icons-png.flaticon.com/512/6556/6556073.png" 
-                             alt="Default Badge" 
-                             class="badge-img">
+                    <!-- Ảnh mặc định nếu chưa upload -->
+                    <img src="https://cdn-icons-png.flaticon.com/512/6556/6556073.png" alt="Default Badge"
+                        class="badge-img">
                     {% endif %}
-                    
+
                     {% if not badge.is_active %}
                     <span class="status-badge inactive">
                         <i class="fa-solid fa-eye-slash"></i> Đang ẩn
@@ -162,20 +182,28 @@
                             {{ badge.get_loai_dieu_kien_display }}
                         </div>
                         {% if badge.bien_so_phu %}
-                        <div class="mt-1 pt-1 border-top border-success-subtle d-flex align-items-center gap-1 text-success small">
-                            <i class="fa-solid fa-tag"></i> 
+                        <div
+                            class="mt-1 pt-1 border-top border-success-subtle d-flex align-items-center gap-1 text-success small">
+                            <i class="fa-solid fa-tag"></i>
                             <span>{{ badge.bien_so_phu }}</span>
                         </div>
                         {% endif %}
+                        <div
+                            class="mt-2 pt-1 border-top border-success-subtle d-flex justify-content-between align-items-center">
+                            <span class="logic-label text-warning"><i class="fas fa-star me-1"></i>Điểm:</span>
+                            <span class="fw-bold text-warning">{{ badge.diem_thuong }}</span>
+                        </div>
                     </div>
 
                     <!-- Footer Nút Bấm (Chỉ Staff) -->
                     {% if user.is_staff %}
                     <div class="mt-4 d-flex gap-2 pt-3 border-top border-gray-100">
-                        <a href="{% url 'gamification:badge_update' badge.id %}" class="btn btn-sm btn-outline-primary flex-grow-1">
+                        <a href="{% url 'gamification:badge_update' badge.id %}"
+                            class="btn btn-sm btn-outline-primary flex-grow-1">
                             <i class="fa-solid fa-pen-to-square"></i> Sửa
                         </a>
-                        <a href="{% url 'gamification:badge_delete' badge.id %}" class="btn btn-sm btn-outline-danger flex-grow-1">
+                        <a href="{% url 'gamification:badge_delete' badge.id %}"
+                            class="btn btn-sm btn-outline-danger flex-grow-1">
                             <i class="fa-solid fa-trash"></i> Xóa
                         </a>
                     </div>

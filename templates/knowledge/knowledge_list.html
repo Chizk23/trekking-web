@@ -15,7 +15,7 @@
     /* --- 1. HERO BANNER (Đã chỉnh màu sáng hơn) --- */
     .knowledge-hero {
         /* ĐỔI MÀU Ở ĐÂY: Dùng màu xanh lá tươi sáng hơn thay vì màu tối */
-        background: linear-gradient(135deg, #78ab26 0%, #5a8c18 100%); 
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
         color: white; /* Chữ màu trắng theo yêu cầu */
         padding: 4rem 2rem 5rem 2rem; /* Tăng padding bottom để chứa thanh tìm kiếm */
         margin-bottom: 0;
@@ -99,13 +99,13 @@
         left: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        color: #78ab26; /* Icon màu xanh của web */
+        color: #10b981; /* Icon màu xanh của web */
         width: 20px;
         height: 20px;
     }
 
     .btn-contribute {
-        background-color: #3f6212; /* Nút màu xanh đậm hơn nền hero để nổi bật */
+        background-color: #047857; /* Nút màu xanh đậm hơn nền hero để nổi bật */
         color: white;
         padding: 0 1.75rem;
         border: none;
@@ -122,7 +122,7 @@
     }
 
     .btn-contribute:hover {
-        background-color: #2d4a0b;
+        background-color: #065f46;
         transform: translateY(-2px);
     }
 
@@ -161,16 +161,16 @@
     }
 
     .filter-btn:hover {
-        border-color: #78ab26;
-        color: #78ab26;
-        background-color: #f0fdf4;
+        border-color: #10b981;
+        color: #10b981;
+        background-color: #ecfdf5;
     }
 
     .filter-btn.active {
-        background-color: #78ab26; /* Màu active trùng màu hero */
+        background-color: #10b981; /* Màu active trùng màu hero */
         color: white;
-        border-color: #78ab26;
-        box-shadow: 0 2px 4px rgba(120, 171, 38, 0.4);
+        border-color: #10b981;
+        box-shadow: 0 2px 4px rgba(16, 185, 129, 0.4);
     }
 
     /* --- 4. CÁC PHẦN KHÁC GIỮ NGUYÊN --- */
@@ -179,7 +179,7 @@
         color: var(--gray-600);
         margin-bottom: 1.5rem;
         padding-left: 10px;
-        border-left: 3px solid #78ab26;
+        border-left: 3px solid #10b981;
     }
 
     .articles-grid {
@@ -214,7 +214,7 @@
         position: absolute;
         top: 0; left: 0; right: 0;
         height: 4px;
-        background: #78ab26;
+        background: #10b981;
         transform: scaleX(0);
         transition: transform 0.3s;
         transform-origin: left;
@@ -230,8 +230,8 @@
     }
 
     .article-category-badge {
-        background-color: #f0fdf4;
-        color: #365314;
+        background-color: #ecfdf5;
+        color: #065f46;
         padding: 0.35rem 0.75rem;
         border-radius: var(--radius-md);
         font-size: 0.75rem;
@@ -268,7 +268,7 @@
         overflow: hidden;
     }
 
-    .article-card:hover .article-title { color: #5a8c18; }
+    .article-card:hover .article-title { color: #059669; }
 
     .article-excerpt {
         font-size: 0.9375rem;
@@ -335,7 +335,7 @@
         color: var(--gray-600); text-decoration: none;
     }
     .pagination-btn:hover:not(.disabled) {
-        background-color: #f0fdf4; border-color: #78ab26; color: #365314;
+        background-color: #ecfdf5; border-color: #10b981; color: #065f46;
     }
     .pagination-btn.disabled { opacity: 0.5; cursor: not-allowed; background: var(--gray-50); }
 </style>
@@ -402,7 +402,7 @@
             
             <div class="article-card-body">
                 <h3 class="article-title">{{ article.tieu_de }}</h3>
-                <p class="article-excerpt">{{ article.noi_dung|striptags|truncatewords:25 }}</p>
+                <p class="article-excerpt">{{ article.noi_dung|safe|striptags|truncatewords:25 }}</p>
             </div>
             
             <div class="article-card-footer">

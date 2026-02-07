@@ -10,8 +10,10 @@
     --primary-lightest: #F4FFFC;
     --primary-light: #91EAAF;
     --primary-medium: #10b981;
-    --primary-dark: #4D7111;
-    --primary-darkest: #1F4B2C;
+    --primary-color: #10b981;
+    /* Alias for compatibility with admin */
+    --primary-dark: #059669;
+    --primary-darkest: #047857;
     /* === NEW: Thêm biến màu cho giới tính === */
     --gender-male: #2563eb;
     /* Xanh dương */

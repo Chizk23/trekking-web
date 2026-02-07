@@ -6,8 +6,8 @@ class GameHuyHieuForm(forms.ModelForm):
         model = GameHuyHieu
         fields = [
             'ten', 'mo_ta', 'anh_huy_hieu', 
-            'loai_dieu_kien', 'gia_tri_muc_tieu', 
-              'bien_so_phu', 'is_active'
+            'loai_dieu_kien', 'gia_tri_muc_tieu', 'diem_thuong',
+            'bien_so_phu', 'is_active'
         ]
         widgets = {
             'ten': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập tên huy hiệu'}),
@@ -15,6 +15,7 @@ class GameHuyHieuForm(forms.ModelForm):
             'anh_huy_hieu': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
             'loai_dieu_kien': forms.Select(attrs={'class': 'form-select'}),
             'gia_tri_muc_tieu': forms.NumberInput(attrs={'class': 'form-control'}),
+            'diem_thuong': forms.NumberInput(attrs={'class': 'form-control'}),
             'bien_so_phu': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'VD: san-may, kho (nếu cần)'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
