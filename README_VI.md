@@ -168,7 +168,7 @@ python manage.py runserver
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 1 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
+| 1 | Danh sách Cung đường | ![DS Cung đường](docs/images/danhsachcungduong.png) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
 | 2 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Hiển thị thông tin địa hình, bản đồ tương tác (GeoJSON), galerry ảnh và hệ thống đánh giá/bình luận đa phương tiện. |
 | 3 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | (Admin) Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
 | 4 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
