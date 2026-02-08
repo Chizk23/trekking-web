@@ -4,8 +4,6 @@
 
 <p align="center">
   <img src="docs/images/banner.png" width="100%" />
-...
-| 1 | Danh sách Cung đường | ![DS Cung đường](docs/images/danhsachcungduong.png) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
 </p>
 
 ## Mục lục
