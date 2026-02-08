@@ -169,7 +169,7 @@ python manage.py runserver
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
 | 1 | Danh sách Cung đường | ![DS Cung đường](docs/images/danhsachcungduong.png) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
-| 2 | Chi tiết Cung đường | <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"><img src="docs/images/chitiecd1.png" width="100%"><img src="docs/images/chitietcd2.png" width="100%"><img src="docs/images/chitietcd3.png" width="100%"><img src="docs/images/chitietcd4.png" width="100%"></div> | Hiển thị thông tin địa hình, bản đồ tương tác (GeoJSON), galerry ảnh và hệ thống đánh giá/bình luận đa phương tiện. |
+| 2 | Chi tiết Cung đường | <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"><img src="docs/images/chitiecd1.png" width="100%"><img src="docs/images/chitietcd2.png" width="100%"><img src="docs/images/chitietcd3.png" width="100%"><img src="docs/images/chitietcd4.png" width="100%"></div> | Hiển thị thông tin địa hình, bản đồ tương tác (GeoJSON), galerry ảnh và hệ thống đánh giá/bình luận đa phương tiện. |
 | 3 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | (Admin) Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
 | 4 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
 | 5 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
