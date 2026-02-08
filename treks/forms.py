@@ -36,7 +36,7 @@ class CungDuongTrekAdminForm(forms.ModelForm):
         widgets = {
             'ten': forms.TextInput(attrs={'class': 'form-control'}),
             'mo_ta': TinyMCE(attrs={'cols': 80, 'rows': 20}),
-                      'dia_diem_chi_tiet': forms.TextInput(attrs={
+            'dia_diem_chi_tiet': forms.TextInput(attrs={
                 'class': 'form-control', 
                 'id': 'id_dia_diem_chi_tiet', # ID cho ô nhập địa điểm
                 'placeholder': 'VD: Vườn quốc gia Ba Vì, Hà Nội',
@@ -77,6 +77,74 @@ class CungDuongTrekAdminForm(forms.ModelForm):
             instance.save()
             instance.vat_dung_goi_y.all().delete()
             for vat_dung in self.cleaned_data['vat_dung_goi_y']:
+                CungDuongVatDungGoiY.objects.create(cung_duong=instance, vat_dung=vat_dung)
+        return instance
+
+
+# ==============================================================================
+# FORM USER: CHO NGƯỜI DÙNG ĐÓNG GÓP CUNG ĐƯỜNG
+# ==============================================================================
+class CungDuongUserContributionForm(forms.ModelForm):
+    """
+    Form cho người dùng đóng góp cung đường mới.
+    Không có trường trạng thái (mặc định CHO_DUYET).
+    """
+    vat_dung_goi_y = forms.ModelMultipleChoiceField(
+        queryset=VatDung.objects.all().order_by('loai_vat_dung__ten', 'ten'),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Vật dụng gợi ý"
+    )
+
+    class Meta:
+        model = CungDuongTrek
+        # KHÔNG có trường 'trang_thai' - mặc định sẽ là CHO_DUYET
+        fields = [
+            'ten', 'mo_ta', 'dia_diem_chi_tiet', 'tinh_thanh', 'do_dai_km', 
+            'thoi_gian_uoc_tinh_gio', 'tong_do_cao_leo_m', 'do_kho', 
+            'mua_dep_nhat', 'du_lieu_ban_do_geojson', 'vat_dung_goi_y'
+        ]
+        widgets = {
+            'ten': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'VD: Tà Năng - Phan Dũng'}),
+            'mo_ta': TinyMCE(attrs={'cols': 80, 'rows': 20}),
+            'dia_diem_chi_tiet': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'id': 'id_dia_diem_chi_tiet',
+                'placeholder': 'VD: Vườn quốc gia Ba Vì, Hà Nội',
+                'autocomplete': 'off'
+            }),
+            'tinh_thanh': forms.Select(attrs={'class': 'form-select'}),
+            'do_dai_km': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'VD: 55'}),
+            'thoi_gian_uoc_tinh_gio': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'VD: 12'}),
+            'tong_do_cao_leo_m': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'VD: 1500'}),
+            'do_kho': forms.Select(attrs={'class': 'form-select'}),
+            'mua_dep_nhat': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'VD: Tháng 11 - Tháng 4'}),
+            'du_lieu_ban_do_geojson': forms.Textarea(attrs={
+                'style': 'display: none;', 
+                'id': 'id_du_lieu_ban_do_geojson' 
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['vat_dung_goi_y'].initial = self.instance.vat_dung_goi_y.all().values_list('vat_dung__pk', flat=True)
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Gán người tạo nếu là tạo mới
+        if not instance.pk and self.user:
+            instance.nguoi_tao = self.user
+        # Mặc định trạng thái là CHỜ DUYỆT
+        if not instance.pk:
+            instance.trang_thai = TrangThaiDuyet.CHO_DUYET
+        
+        if commit:
+            instance.save()
+            # Xóa và tạo lại quan hệ vật dụng gợi ý
+            instance.vat_dung_goi_y.all().delete()
+            for vat_dung in self.cleaned_data.get('vat_dung_goi_y', []):
                 CungDuongVatDungGoiY.objects.create(cung_duong=instance, vat_dung=vat_dung)
             
         return instance

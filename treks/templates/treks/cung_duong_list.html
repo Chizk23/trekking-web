@@ -651,6 +651,18 @@
                 </a>
             </form>
         </div>
+        
+        {% if user.is_authenticated %}
+        <div class="contribute-cta" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); padding: 1.5rem; border-radius: 0 0 var(--radius-lg) var(--radius-lg); text-align: center; border-top: 1px solid rgba(251, 191, 36, 0.2);">
+            <p style="font-size: 0.8rem; color: #78350f; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem;">Bạn biết cung đường hay?</p>
+            <a href="{% url 'treks:contribute_trek' %}" class="btn" style="background: white; color: #d97706; font-weight: 700; border: none; padding: 0.7rem 1.5rem; border-radius: 100px; font-size: 0.85rem; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: inline-block; text-decoration: none;">
+                <i class="fas fa-plus-circle me-2"></i>Đóng góp ngay
+            </a>
+            <a href="{% url 'treks:my_treks' %}" class="d-block mt-2" style="color: #78350f; font-size: 0.8rem; font-weight: 600; text-decoration: none;">
+                <i class="fas fa-mountain me-1"></i>Cung đường của tôi
+            </a>
+        </div>
+        {% endif %}
     </aside>
 
     <!-- Main Content -->

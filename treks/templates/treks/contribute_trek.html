@@ -1,0 +1,625 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet for map preview -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    :root {
+        --primary-color: #10b981;
+        --primary-hover: #059669;
+        --primary-light: #d1fae5;
+        --text-dark: #111827;
+        --text-muted: #6b7280;
+        --border-color: #e5e7eb;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+        --radius-lg: 20px;
+        --radius-md: 12px;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    }
+
+    .contribute-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+
+    /* Alert Box */
+    .info-alert {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left: 4px solid #3b82f6;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .info-alert i {
+        font-size: 1.5rem;
+        color: #3b82f6;
+    }
+
+    .info-alert p {
+        margin: 0;
+        color: #1e40af;
+        font-weight: 500;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .form-body {
+        padding: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--primary-light);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-section-title i {
+        color: var(--primary-color);
+    }
+
+    /* Form Controls */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        background: #fafafa;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        background: white;
+        outline: none;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Checkbox Group */
+    .checkbox-group {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1.5px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        background: #fafafa;
+    }
+
+    .checkbox-group label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 400;
+        padding: 0.35rem 0;
+        cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary-color);
+    }
+
+    /* Media Upload Section */
+    .upload-zone {
+        border: 2px dashed var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 2rem;
+        text-align: center;
+        background: #fafafa;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+
+    .upload-zone:hover {
+        border-color: var(--primary-color);
+        background: var(--primary-light);
+    }
+
+    .upload-zone.dragover {
+        border-color: var(--primary-color);
+        background: var(--primary-light);
+    }
+
+    .upload-zone i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.75rem;
+    }
+
+    .upload-zone p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .upload-zone .btn-browse {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 100px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-top: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .upload-zone .btn-browse:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+    /* Preview Grid */
+    .upload-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .preview-item {
+        position: relative;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        border: 2px solid transparent;
+        transition: all 0.2s;
+    }
+
+    .preview-item.is-cover {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+
+    .preview-item img,
+    .preview-item video {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .preview-actions {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        display: flex;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .preview-item:hover .preview-actions {
+        opacity: 1;
+    }
+
+    .preview-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s;
+        font-size: 0.8rem;
+    }
+
+    .preview-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .preview-btn.btn-cover {
+        color: #f59e0b;
+    }
+
+    .preview-btn.btn-cover.active {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .preview-btn.btn-remove {
+        color: #ef4444;
+    }
+
+    .preview-btn.btn-remove:hover {
+        background: #ef4444;
+        color: white;
+    }
+
+    /* Submit Button */
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: 2rem;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%);
+        color: white;
+        border: none;
+        padding: 0.9rem 2rem;
+        font-weight: 700;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        color: var(--text-muted);
+        border: none;
+        padding: 0.9rem 1.5rem;
+        font-weight: 600;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+        background: #e5e7eb;
+        color: var(--text-dark);
+    }
+
+    /* TinyMCE Styling Override */
+    .tox-tinymce {
+        border-radius: var(--radius-md) !important;
+        border: 1.5px solid var(--border-color) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contribute-container">
+    <div class="page-header">
+        <h1><i class="fas fa-mountain text-success me-2"></i>{{ page_title }}</h1>
+        <p>{% if is_edit %}Chỉnh sửa thông tin cung đường của bạn{% else %}Chia sẻ cung đường bạn đã trải nghiệm với
+            cộng đồng{% endif %}</p>
+    </div>
+
+    {% if not is_edit %}
+    <div class="info-alert">
+        <i class="fas fa-info-circle"></i>
+        <p>Cung đường của bạn sẽ được Admin xem xét và duyệt trước khi công khai. Quá trình này thường mất 1-2 ngày làm
+            việc.</p>
+    </div>
+    {% endif %}
+
+    <div class="form-card">
+        <div class="form-header">
+            <i class="fas fa-edit"></i>
+            <span>{% if is_edit %}Chỉnh sửa cung đường{% else %}Thông tin cung đường{% endif %}</span>
+        </div>
+
+        <div class="form-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Thông tin cơ bản -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-info-circle"></i> Thông tin cơ bản
+                    </h3>
+
+                    <div class="form-group">
+                        <label for="id_ten">Tên cung đường *</label>
+                        {{ form.ten }}
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_tinh_thanh">Tỉnh/Thành phố *</label>
+                            {{ form.tinh_thanh }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_dia_diem_chi_tiet">Địa điểm chi tiết</label>
+                            {{ form.dia_diem_chi_tiet }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_mo_ta">Mô tả chi tiết</label>
+                        {{ form.mo_ta }}
+                    </div>
+                </div>
+
+                <!-- Thông số kỹ thuật -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-ruler-combined"></i> Thông số kỹ thuật
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_do_dai_km">Độ dài (km)</label>
+                            {{ form.do_dai_km }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_thoi_gian_uoc_tinh_gio">Thời gian ước tính (giờ)</label>
+                            {{ form.thoi_gian_uoc_tinh_gio }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_tong_do_cao_leo_m">Tổng độ cao leo (m)</label>
+                            {{ form.tong_do_cao_leo_m }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_do_kho">Độ khó *</label>
+                            {{ form.do_kho }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_mua_dep_nhat">Mùa đẹp nhất</label>
+                        {{ form.mua_dep_nhat }}
+                    </div>
+                </div>
+
+                <!-- Bản đồ (ẩn) -->
+                <div style="display: none;">
+                    {{ form.du_lieu_ban_do_geojson }}
+                </div>
+
+                <!-- MEDIA UPLOAD SECTION -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-images"></i> Hình ảnh & Video
+                    </h3>
+                    <p class="text-muted small mb-3">Tải lên hình ảnh hoặc video về cung đường. Ảnh đầu tiên sẽ là ảnh
+                        bìa.</p>
+
+                    <div class="upload-zone" id="uploadZone"
+                        onclick="document.getElementById('files_to_upload').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Kéo thả file vào đây hoặc</p>
+                        <button type="button" class="btn-browse">Chọn file</button>
+                        <p class="mt-2"><small>Hỗ trợ: JPG, PNG, MP4 (tối đa 10MB/file)</small></p>
+                    </div>
+
+                    <input type="file" name="files_to_upload" id="files_to_upload" multiple accept="image/*,video/*"
+                        style="display: none;">
+                    <input type="hidden" name="new_cover_index" id="new_cover_index" value="0">
+
+                    <div id="uploadPreviewGrid" class="upload-preview-grid"></div>
+                </div>
+
+                <!-- Vật dụng gợi ý -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-backpack"></i> Vật dụng gợi ý
+                    </h3>
+                    <p class="text-muted small mb-2">Chọn các vật dụng cần thiết cho cung đường này</p>
+                    <div class="checkbox-group">
+                        {{ form.vat_dung_goi_y }}
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <a href="{% url 'treks:my_treks' %}" class="btn-cancel">
+                        <i class="fas fa-times me-1"></i> Hủy
+                    </a>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-paper-plane"></i>
+                        {% if is_edit %}Cập nhật{% else %}Gửi đóng góp{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ form.media }}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('files_to_upload');
+        const uploadZone = document.getElementById('uploadZone');
+        const previewGrid = document.getElementById('uploadPreviewGrid');
+        const coverIndexInput = document.getElementById('new_cover_index');
+
+        let selectedFiles = [];
+        let coverIndex = 0;
+
+        // Drag and drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, () => uploadZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, () => uploadZone.classList.remove('dragover'), false);
+        });
+
+        uploadZone.addEventListener('drop', function (e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', function (e) {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            [...files].forEach(file => {
+                if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
+                    selectedFiles.push(file);
+                }
+            });
+            updatePreview();
+            updateFileInput();
+        }
+
+        function updatePreview() {
+            previewGrid.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item' + (index === coverIndex ? ' is-cover' : '');
+
+                const isVideo = file.type.startsWith('video/');
+                const mediaEl = isVideo ? document.createElement('video') : document.createElement('img');
+                mediaEl.src = URL.createObjectURL(file);
+                if (isVideo) mediaEl.muted = true;
+
+                const actions = document.createElement('div');
+                actions.className = 'preview-actions';
+                actions.innerHTML = `
+                <button type="button" class="preview-btn btn-cover ${index === coverIndex ? 'active' : ''}" onclick="setCover(${index})" title="Đặt làm ảnh bìa">
+                    <i class="fas fa-star"></i>
+                </button>
+                <button type="button" class="preview-btn btn-remove" onclick="removeFile(${index})" title="Xóa">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+                div.appendChild(mediaEl);
+                div.appendChild(actions);
+                previewGrid.appendChild(div);
+            });
+        }
+
+        function updateFileInput() {
+            const dt = new DataTransfer();
+            selectedFiles.forEach(file => dt.items.add(file));
+            fileInput.files = dt.files;
+        }
+
+        window.setCover = function (index) {
+            coverIndex = index;
+            coverIndexInput.value = index;
+            updatePreview();
+        };
+
+        window.removeFile = function (index) {
+            selectedFiles.splice(index, 1);
+            if (coverIndex >= selectedFiles.length) {
+                coverIndex = Math.max(0, selectedFiles.length - 1);
+            }
+            if (index < coverIndex) {
+                coverIndex--;
+            }
+            coverIndexInput.value = coverIndex;
+            updatePreview();
+            updateFileInput();
+        };
+    });
+</script>
+{% endblock %}

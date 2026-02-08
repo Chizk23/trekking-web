@@ -24,14 +24,26 @@ class CungDuongBaseView:
     def handle_media_uploads(self, request, trek_instance):
         # 1. Xử lý các file từ thư viện (từ input name='files_to_upload')
         gallery_files = request.FILES.getlist('files_to_upload')
+        new_cover_index = request.POST.get('new_cover_index') # Index của file mới được chọn làm cover
+
         if gallery_files:
-            for f in gallery_files:
+            # Nếu có chọn cover mới từ danh sách upload, bỏ cover cũ
+            if new_cover_index is not None and new_cover_index != "":
+                 trek_instance.media.update(la_anh_bia=False)
+
+            for index, f in enumerate(gallery_files):
                 loai = 'ANH' if f.content_type.startswith('image') else 'VIDEO'
+                is_cover = False
+                
+                # Check nếu file này được chọn làm cover (index khớp)
+                if new_cover_index is not None and str(index) == str(new_cover_index):
+                    is_cover = True
+
                 CungDuongMedia.objects.create(
                     cung_duong=trek_instance, 
                     file=f, 
                     loai_media=loai,
-                    la_anh_bia=False
+                    la_anh_bia=is_cover
                 )
             messages.info(request, f"Đã tải lên thành công {len(gallery_files)} file media mới.")
 
@@ -54,7 +66,7 @@ class CungDuongListView(AdminRequiredMixin, ListView):
         self.filter_form = CungDuongTrekFilterForm(self.request.GET)
         
         # Mặc định sắp xếp nếu không chọn gì
-        ordering = '-ngay_cap_nhat'
+        ordering = '-ngay_tao'
 
         if self.filter_form.is_valid():
             data = self.filter_form.cleaned_data
@@ -210,6 +222,15 @@ class CungDuongUpdateView(AdminRequiredMixin, CungDuongBaseView, UpdateView):
                 
                 # Gọi hàm xử lý upload file media mới
                 self.handle_media_uploads(self.request, self.object)
+                
+                # Xử lý cover image từ hidden input (Client-side selection)
+                cover_image_id = self.request.POST.get('cover_image_id')
+                if cover_image_id:
+                    # Reset all media to not be cover
+                    self.object.media.update(la_anh_bia=False)
+                    # Set the selected one as cover
+                    self.object.media.filter(pk=cover_image_id).update(la_anh_bia=True)
+                    messages.info(self.request, "Đã cập nhật ảnh bìa.")
 
             messages.success(self.request, f"Đã cập nhật thành công thông tin cho '{self.object.ten}'.")
             return HttpResponseRedirect(self.get_success_url())

@@ -216,7 +216,7 @@ def create_trip_view(request):
                     chuyen_di.cd_do_dai_km = cung_duong.do_dai_km
                     chuyen_di.cd_thoi_gian_uoc_tinh_gio = cung_duong.thoi_gian_uoc_tinh_gio
                     chuyen_di.cd_tong_do_cao_leo_m = cung_duong.tong_do_cao_leo_m
-                    chuyen_di.cd_du_lieu_ban_do_geojson = cung_duong.du_lieu_ban_do_geojson
+                    chuyen_di.cd_du_lieu_ban_do_geojson = cung_duong.du_lieu_ban_do_geojson or {}
                     
                     chuyen_di.save()
                     form.save_m2m() # Lưu tags

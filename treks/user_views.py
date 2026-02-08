@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import Coalesce
 from trips.models import ChuyenDi
-from .models import CungDuongTrek, CungDuongDanhGia, CungDuongAnhDanhGia
+from .models import CungDuongTrek, CungDuongDanhGia, CungDuongAnhDanhGia, CungDuongMedia
 from .forms import CungDuongFilterForm, CungDuongDanhGiaForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
@@ -265,3 +265,136 @@ def delete_review(request, pk):
     review.delete()
     messages.success(request, "Đã xóa đánh giá của bạn.")
     return redirect('treks:cung_duong_detail', slug=trek_slug)
+
+
+# ==========================================================
+# === USER TREK CONTRIBUTION VIEWS ===
+# ==========================================================
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from .forms import CungDuongUserContributionForm
+from .models import TrangThaiDuyet
+
+
+class UserTrekContributeView(LoginRequiredMixin, CreateView):
+    """View để người dùng đóng góp cung đường mới"""
+    model = CungDuongTrek
+    form_class = CungDuongUserContributionForm
+    template_name = 'treks/contribute_trek.html'
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        
+        # Handle file uploads
+        files = self.request.FILES.getlist('files_to_upload')
+        cover_index = int(self.request.POST.get('new_cover_index', 0))
+        
+        for index, file in enumerate(files):
+            # Determine media type
+            if file.content_type.startswith('video/'):
+                loai_media = CungDuongMedia.LoaiMedia.VIDEO
+            else:
+                loai_media = CungDuongMedia.LoaiMedia.ANH
+            
+            CungDuongMedia.objects.create(
+                cung_duong=self.object,
+                file=file,
+                loai_media=loai_media,
+                la_anh_bia=(index == cover_index)
+            )
+        
+        return response
+    
+    def get_success_url(self):
+        messages.success(self.request, "Đã gửi cung đường! Admin sẽ xem xét và duyệt trong thời gian sớm nhất.")
+        return reverse('treks:my_treks')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = "Đóng góp cung đường mới"
+        return context
+
+
+class MyTreksListView(LoginRequiredMixin, ListView):
+    """View hiển thị danh sách cung đường của user"""
+    model = CungDuongTrek
+    template_name = 'treks/my_treks.html'
+    context_object_name = 'my_treks'
+    paginate_by = 9
+    
+    def get_queryset(self):
+        return CungDuongTrek.objects.filter(
+            nguoi_tao=self.request.user
+        ).select_related('tinh_thanh', 'do_kho').order_by('-ngay_tao')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = "Cung đường của tôi"
+        # Đếm theo trạng thái
+        user_treks = CungDuongTrek.objects.filter(nguoi_tao=self.request.user)
+        context['stats'] = {
+            'total': user_treks.count(),
+            'cho_duyet': user_treks.filter(trang_thai=TrangThaiDuyet.CHO_DUYET).count(),
+            'da_duyet': user_treks.filter(trang_thai=TrangThaiDuyet.DA_DUYET).count(),
+            'tu_choi': user_treks.filter(trang_thai=TrangThaiDuyet.TU_CHOI).count(),
+        }
+        return context
+
+
+class UserTrekUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """View để chỉnh sửa cung đường (chỉ khi chưa duyệt)"""
+    model = CungDuongTrek
+    form_class = CungDuongUserContributionForm
+    template_name = 'treks/contribute_trek.html'
+    
+    def test_func(self):
+        trek = self.get_object()
+        # Chỉ cho phép chỉnh sửa nếu:
+        # 1. Là chủ sở hữu
+        # 2. Trạng thái là CHO_DUYET hoặc TU_CHOI
+        return (
+            trek.nguoi_tao == self.request.user and 
+            trek.trang_thai in [TrangThaiDuyet.CHO_DUYET, TrangThaiDuyet.TU_CHOI]
+        )
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def get_success_url(self):
+        messages.success(self.request, "Đã cập nhật cung đường thành công!")
+        return reverse('treks:my_treks')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f"Chỉnh sửa: {self.object.ten}"
+        context['is_edit'] = True
+        return context
+
+
+class UserTrekDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """View để xóa cung đường (chỉ khi chưa duyệt)"""
+    model = CungDuongTrek
+    template_name = 'treks/confirm_delete_trek.html'
+    success_url = reverse_lazy('treks:my_treks')
+    
+    def test_func(self):
+        trek = self.get_object()
+        # Chỉ cho phép xóa nếu:
+        # 1. Là chủ sở hữu
+        # 2. Trạng thái là CHO_DUYET hoặc TU_CHOI
+        return (
+            trek.nguoi_tao == self.request.user and 
+            trek.trang_thai in [TrangThaiDuyet.CHO_DUYET, TrangThaiDuyet.TU_CHOI]
+        )
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Đã xóa cung đường thành công!")
+        return super().delete(request, *args, **kwargs)

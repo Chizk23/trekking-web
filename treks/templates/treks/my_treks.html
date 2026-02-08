@@ -1,0 +1,494 @@
+{% extends 'base.html' %}
+{% load static humanize %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #10b981;
+        --primary-hover: #059669;
+        --primary-light: #d1fae5;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --text-dark: #111827;
+        --text-muted: #6b7280;
+        --bg-light: #f9fafb;
+        --border-color: #e5e7eb;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+        --radius-lg: 20px;
+        --radius-md: 12px;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    }
+
+    .my-treks-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem;
+    }
+
+    /* Hero CTA Section */
+    .hero-cta {
+        background: linear-gradient(135deg, var(--primary-color) 0%, #059669 100%);
+        border-radius: var(--radius-lg);
+        padding: 2.5rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 2.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .hero-cta h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+    }
+
+    .hero-cta p {
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-hero {
+        background: white;
+        color: var(--primary-color);
+        border: none;
+        padding: 0.9rem 2rem;
+        font-weight: 700;
+        border-radius: 100px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-hero:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        color: var(--primary-hover);
+    }
+
+    /* Stats Row */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: var(--radius-md);
+        padding: 1.25rem;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-card .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--primary-color);
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-card.pending .stat-value {
+        color: var(--warning-color);
+    }
+
+    .stat-card.approved .stat-value {
+        color: var(--primary-color);
+    }
+
+    .stat-card.rejected .stat-value {
+        color: var(--danger-color);
+    }
+
+    /* Trek Grid */
+    .trek-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* My Trek Card */
+    .my-trek-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .my-trek-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .card-img-wrapper {
+        height: 180px;
+        position: relative;
+        overflow: hidden;
+        background: #e5e7eb;
+    }
+
+    .card-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s;
+    }
+
+    .my-trek-card:hover .card-img-wrapper img {
+        transform: scale(1.05);
+    }
+
+    /* Status Badge */
+    .status-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .status-badge.pending {
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #78350f;
+    }
+
+    .status-badge.approved {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
+
+    .status-badge.rejected {
+        background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        color: white;
+    }
+
+    /* Card Body */
+    .card-body {
+        padding: 1.25rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-location {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-location i {
+        color: var(--primary-color);
+    }
+
+    .card-meta {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: auto;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Card Actions */
+    .card-actions {
+        display: flex;
+        gap: 0.5rem;
+        padding: 1rem 1.25rem;
+        background: #f9fafb;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .card-actions .btn {
+        flex: 1;
+        padding: 0.6rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.2s;
+    }
+
+    .btn-edit {
+        background: var(--primary-light);
+        color: var(--primary-color);
+        border: none;
+    }
+
+    .btn-edit:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .btn-delete {
+        background: #fee2e2;
+        color: var(--danger-color);
+        border: none;
+    }
+
+    .btn-delete:hover {
+        background: var(--danger-color);
+        color: white;
+    }
+
+    .btn-view {
+        background: white;
+        color: var(--text-muted);
+        border: 1px solid var(--border-color);
+    }
+
+    .btn-view:hover {
+        background: var(--text-dark);
+        color: white;
+        border-color: var(--text-dark);
+    }
+
+    /* Empty State */
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem 2rem;
+        background: white;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-color);
+    }
+
+    .empty-state .empty-icon {
+        font-size: 3rem;
+        color: #d1d5db;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.4rem;
+    }
+
+    .empty-state p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .empty-state .btn-contribute {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.65rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.85rem;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+    }
+
+    .empty-state .btn-contribute:hover {
+        background: var(--primary-hover);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .trek-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .trek-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .hero-cta {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="my-treks-container">
+
+    <!-- Hero CTA -->
+    <div class="hero-cta">
+        <h2><i class="fas fa-mountain me-2"></i>Bạn muốn chia sẻ cung đường?</h2>
+        <p>Góp sức cùng cộng đồng, giúp các trekker khám phá những cung đường mới!</p>
+        <a href="{% url 'treks:contribute_trek' %}" class="btn-hero">
+            <i class="fas fa-plus-circle"></i> Đóng góp cung đường mới
+        </a>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total }}</div>
+            <div class="stat-label">Tổng số</div>
+        </div>
+        <div class="stat-card pending">
+            <div class="stat-value">{{ stats.cho_duyet }}</div>
+            <div class="stat-label">Chờ duyệt</div>
+        </div>
+        <div class="stat-card approved">
+            <div class="stat-value">{{ stats.da_duyet }}</div>
+            <div class="stat-label">Đã duyệt</div>
+        </div>
+        <div class="stat-card rejected">
+            <div class="stat-value">{{ stats.tu_choi }}</div>
+            <div class="stat-label">Từ chối</div>
+        </div>
+    </div>
+
+    <!-- Trek Grid -->
+    <div class="trek-grid">
+        {% for trek in my_treks %}
+        <div class="my-trek-card">
+            <div class="card-img-wrapper">
+                {% if trek.anh_bia_url %}
+                <img src="{{ trek.anh_bia_url }}" alt="{{ trek.ten }}">
+                {% else %}
+                <img src="https://placehold.co/600x400?text=No+Image" alt="{{ trek.ten }}">
+                {% endif %}
+
+                <!-- Status Badge -->
+                {% if trek.trang_thai == 'CHO_DUYET' %}
+                <span class="status-badge pending">
+                    <i class="fas fa-clock"></i> Chờ duyệt
+                </span>
+                {% elif trek.trang_thai == 'DA_DUYET' %}
+                <span class="status-badge approved">
+                    <i class="fas fa-check-circle"></i> Đã duyệt
+                </span>
+                {% else %}
+                <span class="status-badge rejected">
+                    <i class="fas fa-times-circle"></i> Từ chối
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="card-body">
+                <h3>{{ trek.ten }}</h3>
+                <div class="card-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ trek.tinh_thanh.ten|default:"Chưa có địa điểm" }}
+                </div>
+                <div class="card-meta">
+                    <i class="far fa-calendar-alt me-1"></i> Tạo: {{ trek.ngay_tao|date:"d/m/Y" }}
+                </div>
+            </div>
+
+            <div class="card-actions">
+                {% if trek.trang_thai == 'DA_DUYET' %}
+                <!-- Đã duyệt: Chỉ cho xem -->
+                <a href="{{ trek.get_absolute_url }}" class="btn btn-view">
+                    <i class="fas fa-eye me-1"></i> Xem
+                </a>
+                {% else %}
+                <!-- Chưa duyệt: Cho sửa và xóa -->
+                <a href="{% url 'treks:my_trek_update' trek.pk %}" class="btn btn-edit">
+                    <i class="fas fa-edit me-1"></i> Sửa
+                </a>
+                <a href="{% url 'treks:my_trek_delete' trek.pk %}" class="btn btn-delete">
+                    <i class="fas fa-trash me-1"></i> Xóa
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-route"></i>
+            </div>
+            <h4>Bạn chưa đóng góp cung đường nào</h4>
+            <p>Hãy bắt đầu chia sẻ những cung đường bạn đã chinh phục nhé!</p>
+            <a href="{% url 'treks:contribute_trek' %}" class="btn-contribute">
+                <i class="fas fa-plus"></i> Đóng góp ngay
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+            </li>
+            {% endif %}
+
+            {% for num in paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item"><a
+                    class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                </li>
+                {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

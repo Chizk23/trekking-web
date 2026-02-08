@@ -3,8 +3,9 @@
 > Hệ thống web kết nối cộng đồng leo núi và trekking tại Việt Nam - khám phá cung đường, tổ chức chuyến đi nhóm và chia sẻ trải nghiệm.
 
 <p align="center">
-  <img src="LINK_ANH_BANNER_1" width="45%" />
-  <img src="LINK_ANH_BANNER_2" width="45%" />
+  <img src="docs/images/banner.png" width="100%" />
+...
+| 1 | Danh sách Cung đường | ![DS Cung đường](docs/images/danhsachcungduong.png) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
 </p>
 
 ## Mục lục
@@ -29,8 +30,6 @@
 - **Kiến thức:** Bài viết hướng dẫn về kỹ năng, trang bị và an toàn
 - **Gamification:** Hệ thống huy hiệu tự động trao thưởng khi đạt thành tích
 
-### Video Demo
-![Video Demo](LINK_VIDEO_DEMO)
 
 ---
 
@@ -40,11 +39,12 @@
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Khám phá cung đường | Tìm kiếm và lọc theo tỉnh thành, độ khó hoặc mùa đẹp nhất |
+| Khám phá cung đường | Tìm kiếm và lọc theo tỉnh thành, độ khó, độ cao hoặc thời gian dự kiến |
 | Xem chi tiết | Thông tin độ dài, độ cao, thời gian ước tính và danh sách vật dụng gợi ý |
 | Đánh giá & Review | Người dùng chấm điểm 1-5 sao và viết nhận xét kèm hình ảnh |
 | Gallery ảnh/video | Xem và quản lý hình ảnh, video của từng cung đường |
-| Đề xuất cung đường | Người dùng có thể gửi cung đường mới chờ Admin phê duyệt |
+| **Đóng góp cung đường** | Người dùng gửi cung đường mới kèm ảnh/video, chờ Admin duyệt |
+| **Quản lý đóng góp** | Xem danh sách cung đường đã gửi, theo dõi trạng thái (Chờ duyệt/Đã duyệt/Từ chối) |
 
 ### 🎒 Tổ chức Chuyến đi
 
@@ -63,8 +63,9 @@
 |-----------|-------|
 | Viết bài | Chia sẻ trải nghiệm trekking kèm hình ảnh và video |
 | Gắn tag | Liên kết bài viết với chuyến đi hoặc chủ đề cụ thể |
-| Upvote/Downvote | Bình chọn bài viết hay và hữu ích |
-| Bình luận | Tương tác với bài viết qua hệ thống bình luận phân cấp |
+| Upvote | Bình chọn bài viết hay và hữu ích |
+| Bình luận | Tương tác với bài viết qua hệ thống bình luận phân cấp (trả lời bình luận) |
+| Duyệt bài | Bài viết cần Admin duyệt trước khi hiển thị công khai |
 
 ### 📚 Kiến thức
 
@@ -90,8 +91,8 @@
 
 | Tính năng | Mô tả |
 |-----------|-------|
-| Dashboard | Xem thống kê tổng quan: số người dùng, chuyến đi, bài viết... |
-| Duyệt cung đường | Xem xét và phê duyệt/từ chối cung đường do người dùng đề xuất |
+| Dashboard | Xem thống kê tổng quan: số người dùng, chuyến đi, bài viết và biểu đồ phân tích |
+| Duyệt cung đường | Xem xét cung đường người dùng đóng góp, phê duyệt hoặc từ chối kèm lý do |
 | Duyệt chuyến đi | Kiểm tra nội dung trước khi cho phép công khai tuyển thành viên |
 | Duyệt bài viết | Kiểm duyệt nội dung cộng đồng trước khi hiển thị |
 | Xử lý báo cáo | Tiếp nhận và giải quyết các report vi phạm từ người dùng |
@@ -169,17 +170,16 @@ python manage.py runserver
 
 | STT | Màn hình | Ảnh | Mô tả |
 |:---:|----------|-----|-------|
-| 1 | Trang chủ | ![Trang chủ](LINK_ANH_TRANG_CHU) | Hero banner với thanh tìm kiếm nhanh, hiển thị Top 4 cung đường nổi bật và 6 chuyến đi sắp khởi hành. |
-| 2 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
-| 3 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Hiển thị thông tin địa hình, bản đồ tương tác (GeoJSON), galerry ảnh và hệ thống đánh giá/bình luận đa phương tiện. |
-| 4 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | (Admin) Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
-| 5 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
-| 6 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
-| 8 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Quy trình thiết lập chuyến đi 2 bước tối ưu: Chọn cung đường mẫu -> Điền thông tin. Tích hợp công cụ **Lập lịch trình (Itinerary Builder)** cho phép kéo thả các mốc hoạt động theo ngày/giờ chi tiết. |
-| 9 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Hệ thống chat realtime tích hợp trong chuyến đi: Gửi tin nhắn, chia sẻ file/ảnh, và danh sách thành viên online. |
-| 10 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
-| 11 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
-| 12 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Trang tổng hợp: Lịch sử chuyến đi đã duyệt, Bộ sưu tập huy hiệu (Gamification), Quản lý tủ đồ cá nhân và Bài viết đã đăng. |
+| 1 | Danh sách Cung đường | ![DS Cung đường](LINK_ANH_DS_CUNG_DUONG) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
+| 2 | Chi tiết Cung đường | ![CT Cung đường](LINK_ANH_CT_CUNG_DUONG) | Hiển thị thông tin địa hình, bản đồ tương tác (GeoJSON), galerry ảnh và hệ thống đánh giá/bình luận đa phương tiện. |
+| 3 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | (Admin) Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
+| 4 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
+| 5 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
+| 6 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Quy trình thiết lập chuyến đi 2 bước tối ưu: Chọn cung đường mẫu -> Điền thông tin. Tích hợp công cụ **Lập lịch trình (Itinerary Builder)** cho phép kéo thả các mốc hoạt động theo ngày/giờ chi tiết. |
+| 7 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Hệ thống chat realtime tích hợp trong chuyến đi: Gửi tin nhắn, chia sẻ file/ảnh, và danh sách thành viên online. |
+| 8 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
+| 9 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
+| 10 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Trang tổng hợp: Lịch sử chuyến đi đã duyệt, Bộ sưu tập huy hiệu (Gamification), Quản lý tủ đồ cá nhân và Bài viết đã đăng. |
 
 ### Giao diện Quản trị
 
@@ -203,7 +203,7 @@ trekking_web/
 ├── community/         # Bài viết cộng đồng, bình luận, upvote
 ├── articles/          # Bài viết kiến thức (quản lý bởi admin)
 ├── knowledge/         # Hiển thị kiến thức cho người dùng
-├── gamification/      # Huy hiệu và logic trao thưởng
+├── gamification/      # Huy hi\ệu và logic trao thưởng
 ├── report_admin/      # Xử lý báo cáo vi phạm
 ├── user_admin/        # Quản lý danh sách người dùng
 ├── core/              # Model dùng chung: TinhThanh, DoKho, VatDung, The

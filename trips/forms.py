@@ -146,8 +146,8 @@ class ChuyenDiForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         # Config định dạng ngày tháng
-        self.fields['ngay_bat_dau'].input_formats = ['%Y-%m-%dT%H:%M']
-        self.fields['ngay_ket_thuc'].input_formats = ['%Y-%m-%dT%H:%M']
+        self.fields['ngay_bat_dau'].input_formats = ['%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S']
+        self.fields['ngay_ket_thuc'].input_formats = ['%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S']
 
         # === LOGIC PHÂN QUYỀN TRẠNG THÁI ===
         if self.user and not self.user.is_staff:
