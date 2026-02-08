@@ -6,8 +6,10 @@
 {% block extra_css %}
 <!-- Leaflet for map preview -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+<!-- Leaflet Routing Machine -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" />
+<!-- LightGallery -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css" />
 <style>
     :root {
         --primary-color: #10b981;
@@ -22,6 +24,20 @@
         --radius-lg: 20px;
         --radius-md: 12px;
     }
+    /* Media Manager Grid (Admin Style) */
+    .media-manager-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; }
+    .media-item { position: relative; border-radius: 8px; overflow: hidden; border: 2px solid transparent; transition: border-color 0.3s ease; cursor: pointer; background: #f8f9fa; }
+    .media-item.is-cover { border-color: #22C55E; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+    .media-item img, .media-item video { width: 100%; height: 120px; object-fit: cover; display: block; transition: transform 0.3s ease; }
+    .media-item:hover img, .media-item:hover video { transform: scale(1.05); }
+    .media-item-actions { position: absolute; top: 8px; right: 8px; z-index: 10; display: flex; gap: 4px; opacity: 0; transition: opacity 0.2s; }
+    .media-item:hover .media-item-actions { opacity: 1; }
+    .media-action-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); transition: all 0.2s; color: #4b5563; }
+    .media-action-btn:hover { background: white; transform: scale(1.1); color: #111827; }
+    .media-action-btn.is-cover { background: #10b981; color: white; opacity: 1; }
+    .media-action-btn.is-cover:hover { background: #059669; }
+    .upload-zone.dragover { border-color: #22C55E !important; background-color: #ecfdf5 !important; }
+    .lg-toolbar .lg-icon { font-size: 20px; }
 
     body {
         background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
@@ -371,6 +387,106 @@
         border-radius: var(--radius-md) !important;
         border: 1.5px solid var(--border-color) !important;
     }
+
+    /* Map Styling */
+    #map {
+        height: 450px;
+        border-radius: var(--radius-md);
+        z-index: 1;
+    }
+
+    .img-thumbnail {
+        max-height: 50px;
+    }
+
+    .leaflet-routing-container {
+        display: none !important;
+        border: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    .search-results-wrapper {
+        position: relative;
+    }
+
+    .search-results-dropdown {
+        position: absolute;
+        width: 100%;
+        top: 100%;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-height: 250px;
+        overflow-y: auto;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .list-group-item {
+        padding: 10px 15px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+    }
+
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .waypoint-info p {
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+        word-break: break-all;
+    }
+
+    .waypoint-info .coord {
+        font-family: monospace;
+        color: #555;
+    }
+
+    .length-info {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #10b981;
+    }
+
+    .leaflet-context-menu {
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        padding: 5px 0;
+        list-style: none;
+        margin: 0;
+        z-index: 1001;
+    }
+
+    .leaflet-context-menu-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .leaflet-context-menu-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Custom Navigation Tabs - Emerald Theme */
+    .nav-pills .nav-link {
+        color: var(--text-muted);
+        background: transparent;
+        transition: all 0.2s;
+        border-radius: var(--radius-md);
+    }
+    .nav-pills .nav-link:hover {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary-color);
+    }
+    .nav-pills .nav-link.active {
+        background: var(--primary-color) !important;
+        color: white !important;
+        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+    }
 </style>
 {% endblock %}
 
@@ -397,229 +513,730 @@
         </div>
 
         <div class="form-body">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="contributionForm">
                 {% csrf_token %}
 
-                <!-- Thông tin cơ bản -->
-                <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class="fas fa-info-circle"></i> Thông tin cơ bản
-                    </h3>
+                <!-- TAB NAVIGATION -->
+                <ul class="nav nav-pills nav-fill mb-4 p-2 bg-light rounded-3" id="trekFormTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-bold" id="info-tab" data-bs-toggle="pill"
+                            data-bs-target="#info-pane" type="button" role="tab" aria-controls="info-pane"
+                            aria-selected="true">
+                            <i class="fas fa-info-circle me-2"></i> Thông tin chung
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-bold" id="map-media-tab" data-bs-toggle="pill"
+                            data-bs-target="#map-media-pane" type="button" role="tab" aria-controls="map-media-pane"
+                            aria-selected="false">
+                            <i class="fas fa-map-marked-alt me-2"></i> Bản đồ & Hình ảnh
+                        </button>
+                    </li>
+                </ul>
 
-                    <div class="form-group">
-                        <label for="id_ten">Tên cung đường *</label>
-                        {{ form.ten }}
-                    </div>
+                <!-- TAB CONTENT -->
+                <div class="tab-content pt-3" id="trekFormTabsContent">
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="id_tinh_thanh">Tỉnh/Thành phố *</label>
-                            {{ form.tinh_thanh }}
+                    <!-- TAB 1: INFO & SPECS -->
+                    <div class="tab-pane fade show active" id="info-pane" role="tabpanel" aria-labelledby="info-tab">
+
+                        <!-- Thông tin cơ bản -->
+                        <div class="form-section">
+                            <h3 class="form-section-title text-success">
+                                <i class="fas fa-file-alt"></i> Thông tin cơ bản
+                            </h3>
+
+                            <div class="mb-3">
+                                <label for="id_ten" class="form-label fw-bold">Tên cung đường <span
+                                        class="text-danger">*</span></label>
+                                {{ form.ten }}
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_tinh_thanh" class="form-label fw-bold">Tỉnh/Thành phố <span
+                                                class="text-danger">*</span></label>
+                                        {{ form.tinh_thanh }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_dia_diem_chi_tiet" class="form-label fw-bold">Địa điểm chi
+                                            tiết</label>
+                                        {{ form.dia_diem_chi_tiet }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_mo_ta" class="form-label fw-bold">Mô tả chi tiết</label>
+                                {{ form.mo_ta }}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="id_dia_diem_chi_tiet">Địa điểm chi tiết</label>
-                            {{ form.dia_diem_chi_tiet }}
+
+                        <!-- Thông số kỹ thuật -->
+                        <div class="form-section mt-4">
+                            <h3 class="form-section-title text-success">
+                                <i class="fas fa-sliders-h"></i> Thông số kỹ thuật
+                            </h3>
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="id_do_dai_km"
+                                            class="form-label small text-muted text-uppercase fw-bold">Độ dài
+                                            (km)</label>
+                                        {{ form.do_dai_km }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="id_thoi_gian_uoc_tinh_gio"
+                                            class="form-label small text-muted text-uppercase fw-bold">Thời gian
+                                            (giờ)</label>
+                                        {{ form.thoi_gian_uoc_tinh_gio }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="id_tong_do_cao_leo_m"
+                                            class="form-label small text-muted text-uppercase fw-bold">Độ cao leo
+                                            (m)</label>
+                                        {{ form.tong_do_cao_leo_m }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_do_kho"
+                                            class="form-label small text-muted text-uppercase fw-bold">Độ khó <span
+                                                class="text-danger">*</span></label>
+                                        {{ form.do_kho }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="id_mua_dep_nhat"
+                                            class="form-label small text-muted text-uppercase fw-bold">Mùa đẹp
+                                            nhất</label>
+                                        {{ form.mua_dep_nhat }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vật dụng gợi ý -->
+                        <div class="form-section mt-4">
+                            <h3 class="form-section-title text-success">
+                                <i class="fas fa-campground"></i> Vật dụng gợi ý
+                            </h3>
+                            <p class="text-muted small mb-3">Chọn các vật dụng cần thiết (có thể chọn nhiều)</p>
+                            <div class="card bg-light border-0 p-3 mb-3">
+                                <div class="checkbox-group"
+                                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;">
+                                    {{ form.vat_dung_goi_y }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+                            <button type="button" class="btn btn-success px-4 fw-bold shadow-sm"
+                                onclick="var triggerEl = document.querySelector('#trekFormTabs button[data-bs-target=\'#map-media-pane\']'); var tab = new bootstrap.Tab(triggerEl); tab.show();">
+                                Tiếp tục: Bản đồ & Hình ảnh <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="id_mo_ta">Mô tả chi tiết</label>
-                        {{ form.mo_ta }}
-                    </div>
-                </div>
+                    <!-- TAB 2: MAP & MEDIA -->
+                    <div class="tab-pane fade" id="map-media-pane" role="tabpanel" aria-labelledby="map-media-tab">
 
-                <!-- Thông số kỹ thuật -->
-                <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class="fas fa-ruler-combined"></i> Thông số kỹ thuật
-                    </h3>
+                        <!-- Bản đồ & Tính toán -->
+                        <div class="form-section">
+                            <h3 class="form-section-title text-success">
+                                <i class="fas fa-map-marked-alt"></i> Bản đồ & Lộ trình
+                            </h3>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="id_do_dai_km">Độ dài (km)</label>
-                            {{ form.do_dai_km }}
+                            <div class="alert alert-info d-flex align-items-center mb-3">
+                                <i class="fas fa-info-circle fa-lg me-3"></i>
+                                <div>
+                                    <strong>Hướng dẫn:</strong>
+                                    <ul class="mb-0 ps-3 small">
+                                        <li>Tìm kiếm địa điểm trên thanh tìm kiếm.</li>
+                                        <li><strong>Click chuột phải</strong> lên bản đồ để đặt điểm <strong>Bắt
+                                                đầu</strong> (Xanh) và <strong>Kết thúc</strong> (Đỏ).</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Search Bar -->
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                                <input type="text" id="general-search-input" class="form-control"
+                                    placeholder="Nhập tên địa điểm (VD: Fansipan...)">
+                                <button class="btn btn-outline-secondary" type="button" id="general-search-btn">Tìm
+                                    kiếm</button>
+                            </div>
+                            <div id="general-search-results"
+                                class="search-results-dropdown shadow-sm border rounded mb-3"
+                                style="max-height: 200px; overflow-y: auto;"></div>
+
+                            <!-- Map Container -->
+                            <div id="map" class="shadow-sm rounded border mb-3"
+                                style="height: 500px; width: 100%; position: relative; z-index: 1;"></div>
+
+                            <!-- Route Info Card -->
+                            <div class="card border-0 shadow-sm bg-light mb-4">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4 border-end">
+                                            <div id="start-point-info">
+                                                <small class="text-uppercase fw-bold text-success">📍 Điểm Bắt
+                                                    đầu</small>
+                                                <div class="text-truncate text-muted fst-italic">Click chuột phải bản đồ
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div id="end-point-info">
+                                                <small class="text-uppercase fw-bold text-danger">🏁 Điểm Kết
+                                                    thúc</small>
+                                                <div class="text-truncate text-muted fst-italic">Chưa chọn</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <small class="text-uppercase fw-bold text-muted d-block mb-1">Tổng quãng
+                                                đường</small>
+                                            <span id="length-display" class="h4 text-success fw-bold">0.00 km</span>
+                                            <button type="button" id="reset-route-btn"
+                                                class="btn btn-sm btn-outline-danger ms-2 rounded-pill px-3">
+                                                <i class="fas fa-undo me-1"></i> Làm lại
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hidden Input for GeoJSON -->
+                            {{ form.du_lieu_ban_do_geojson }}
                         </div>
-                        <div class="form-group">
-                            <label for="id_thoi_gian_uoc_tinh_gio">Thời gian ước tính (giờ)</label>
-                            {{ form.thoi_gian_uoc_tinh_gio }}
+
+                        <!-- MEDIA UPLOAD SECTION -->
+                        <div class="form-section mt-4">
+                            <h3 class="form-section-title text-success">
+                                <i class="fas fa-images"></i> Thư viện Hình ảnh & Video
+                            </h3>
+                            <p class="text-muted small mb-3">Ảnh đầu tiên sẽ được chọn làm ảnh bìa.</p>
+
+                            <div class="upload-zone text-center p-5 border rounded bg-white" id="uploadZone"
+                                onclick="document.getElementById('files_to_upload').click()"
+                                style="border: 2px dashed #e5e7eb !important; cursor: pointer;">
+
+                                <div class="mb-3">
+                                    <i class="fas fa-cloud-upload-alt fa-3x text-success opacity-50"></i>
+                                </div>
+                                <h6 class="fw-bold text-dark mb-1">Kéo thả file vào đây</h6>
+                                <p class="text-muted mb-3">hoặc click để chọn</p>
+                                <button type="button" class="btn btn-outline-success rounded-pill px-4">Chọn file tải
+                                    lên</button>
+                            </div>
+
+                            <input type="file" name="files_to_upload" id="files_to_upload" multiple
+                                accept="image/*,video/*" style="display: none;">
+                            <input type="hidden" name="new_cover_index" id="new_cover_index" value="0">
+
+                            <div id="uploadPreviewGrid" class="upload-preview-grid mt-4 row g-3"></div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="form-actions d-flex justify-content-between pt-4 border-top mt-4">
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="var triggerEl = document.querySelector('#trekFormTabs button[data-bs-target=\'#info-pane\']'); var tab = new bootstrap.Tab(triggerEl); tab.show();">
+                                <i class="fas fa-arrow-left me-2"></i> Quay lại
+                            </button>
+
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'treks:my_treks' %}" class="btn btn-light text-muted">Hủy bỏ</a>
+                                <button type="submit" class="btn btn-success px-4 fw-bold shadow-sm">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    {% if is_edit %}Cập nhật thông tin{% else %}Gửi đóng góp{% endif %}
+                                </button>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="id_tong_do_cao_leo_m">Tổng độ cao leo (m)</label>
-                            {{ form.tong_do_cao_leo_m }}
-                        </div>
-                        <div class="form-group">
-                            <label for="id_do_kho">Độ khó *</label>
-                            {{ form.do_kho }}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="id_mua_dep_nhat">Mùa đẹp nhất</label>
-                        {{ form.mua_dep_nhat }}
-                    </div>
-                </div>
-
-                <!-- Bản đồ (ẩn) -->
-                <div style="display: none;">
-                    {{ form.du_lieu_ban_do_geojson }}
-                </div>
-
-                <!-- MEDIA UPLOAD SECTION -->
-                <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class="fas fa-images"></i> Hình ảnh & Video
-                    </h3>
-                    <p class="text-muted small mb-3">Tải lên hình ảnh hoặc video về cung đường. Ảnh đầu tiên sẽ là ảnh
-                        bìa.</p>
-
-                    <div class="upload-zone" id="uploadZone"
-                        onclick="document.getElementById('files_to_upload').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Kéo thả file vào đây hoặc</p>
-                        <button type="button" class="btn-browse">Chọn file</button>
-                        <p class="mt-2"><small>Hỗ trợ: JPG, PNG, MP4 (tối đa 10MB/file)</small></p>
-                    </div>
-
-                    <input type="file" name="files_to_upload" id="files_to_upload" multiple accept="image/*,video/*"
-                        style="display: none;">
-                    <input type="hidden" name="new_cover_index" id="new_cover_index" value="0">
-
-                    <div id="uploadPreviewGrid" class="upload-preview-grid"></div>
-                </div>
-
-                <!-- Vật dụng gợi ý -->
-                <div class="form-section">
-                    <h3 class="form-section-title">
-                        <i class="fas fa-backpack"></i> Vật dụng gợi ý
-                    </h3>
-                    <p class="text-muted small mb-2">Chọn các vật dụng cần thiết cho cung đường này</p>
-                    <div class="checkbox-group">
-                        {{ form.vat_dung_goi_y }}
-                    </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="form-actions">
-                    <a href="{% url 'treks:my_treks' %}" class="btn-cancel">
-                        <i class="fas fa-times me-1"></i> Hủy
-                    </a>
-                    <button type="submit" class="btn-submit">
-                        <i class="fas fa-paper-plane"></i>
-                        {% if is_edit %}Cập nhật{% else %}Gửi đóng góp{% endif %}
-                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+</div>
 {% endblock %}
+
+<style>
+    /* --- Styles ported from Admin for Media Grid --- */
+    .media-manager-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+    }
+
+    .media-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
+        cursor: pointer;
+        background: #f8f9fa;
+    }
+
+    .media-item.is-cover {
+        border-color: #22C55E;
+        box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+    }
+
+    .media-item img,
+    .media-item video {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .media-item:hover img,
+    .media-item:hover video {
+        transform: scale(1.05);
+    }
+
+    .media-item-actions {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 10;
+        display: flex;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .media-item:hover .media-item-actions {
+        opacity: 1;
+    }
+
+    .media-action-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s;
+        color: #4b5563;
+    }
+
+    .media-action-btn:hover {
+        background: white;
+        transform: scale(1.1);
+        color: #111827;
+    }
+
+    .media-action-btn.is-cover {
+        background: #10b981;
+        color: white;
+        opacity: 1;
+    }
+
+    .media-action-btn.is-cover:hover {
+        background: #059669;
+    }
+
+    .upload-zone.dragover {
+        border-color: #22C55E !important;
+        background-color: #ecfdf5 !important;
+    }
+</style>
 
 {% block extra_js %}
 {{ form.media }}
+<!-- Leaflet Scripts (Unpkg - Same as Admin) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // --- 1. MEDIA UPLOAD LOGIC (Admin-style) ---
         const fileInput = document.getElementById('files_to_upload');
         const uploadZone = document.getElementById('uploadZone');
-        const previewGrid = document.getElementById('uploadPreviewGrid');
-        const coverIndexInput = document.getElementById('new_cover_index');
+        const previewGrid = document.getElementById('uploadPreviewGrid'); // Note: ID in HTML is uploadPreviewGrid
+        const newCoverInput = document.getElementById('new_cover_index');
+        const dataTransfer = new DataTransfer();
 
-        let selectedFiles = [];
-        let coverIndex = 0;
+        // Add class for styling
+        if (previewGrid) previewGrid.className = 'media-manager-grid mt-4';
 
-        // Drag and drop
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        if (uploadZone) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, preventDefaults, false);
+            });
+            function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, () => uploadZone.classList.add('dragover'), false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, () => uploadZone.classList.remove('dragover'), false);
+            });
+            uploadZone.addEventListener('drop', function (e) {
+                const dt = e.dataTransfer;
+                handleFiles(dt.files);
+            });
         }
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => uploadZone.classList.add('dragover'), false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => uploadZone.classList.remove('dragover'), false);
-        });
-
-        uploadZone.addEventListener('drop', function (e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        });
-
-        fileInput.addEventListener('change', function (e) {
-            handleFiles(this.files);
-        });
+        if (fileInput) {
+            fileInput.addEventListener('change', function (e) { handleFiles(this.files); });
+        }
 
         function handleFiles(files) {
-            [...files].forEach(file => {
-                if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
-                    selectedFiles.push(file);
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].type.startsWith('image/') || files[i].type.startsWith('video/')) {
+                    dataTransfer.items.add(files[i]);
                 }
-            });
-            updatePreview();
-            updateFileInput();
+            }
+            fileInput.files = dataTransfer.files; // Sync input
+            renderPreviews();
         }
 
-        function updatePreview() {
+        function renderPreviews() {
+            if (!previewGrid) return;
             previewGrid.innerHTML = '';
 
-            selectedFiles.forEach((file, index) => {
-                const div = document.createElement('div');
-                div.className = 'preview-item' + (index === coverIndex ? ' is-cover' : '');
+            const currentCoverIndex = newCoverInput.value !== '' ? parseInt(newCoverInput.value) : 0;
 
+            for (let i = 0; i < dataTransfer.files.length; i++) {
+                const file = dataTransfer.files[i];
+                const blobUrl = URL.createObjectURL(file);
+                const isCover = (i === currentCoverIndex);
                 const isVideo = file.type.startsWith('video/');
-                const mediaEl = isVideo ? document.createElement('video') : document.createElement('img');
-                mediaEl.src = URL.createObjectURL(file);
-                if (isVideo) mediaEl.muted = true;
 
-                const actions = document.createElement('div');
-                actions.className = 'preview-actions';
-                actions.innerHTML = `
-                <button type="button" class="preview-btn btn-cover ${index === coverIndex ? 'active' : ''}" onclick="setCover(${index})" title="Đặt làm ảnh bìa">
-                    <i class="fas fa-star"></i>
-                </button>
-                <button type="button" class="preview-btn btn-remove" onclick="removeFile(${index})" title="Xóa">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
+                const div = document.createElement('div');
+                div.className = `media-item ${isCover ? 'is-cover' : ''}`;
 
-                div.appendChild(mediaEl);
-                div.appendChild(actions);
+                div.innerHTML = `
+                    <div style="position: relative; width: 100%; height: 100%;">
+                        ${isVideo
+                        ? `<video src="${blobUrl}" muted style="width: 100%; height: 120px; object-fit: cover;"></video>`
+                        : `<img src="${blobUrl}" style="width: 100%; height: 120px; object-fit: cover;">`
+                    }
+                    </div>
+                    <div class="media-item-actions" style="opacity: 1;">
+                        <button type="button" class="media-action-btn btn-pin-upload ${isCover ? 'is-cover' : ''}" onclick="window.toggleNewCover(${i})" title="${isCover ? 'Ảnh bìa hiện tại' : 'Đặt làm ảnh bìa'}">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224.5-.5.5s-.5-.224-.5-.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354z" />
+                            </svg>
+                        </button>
+                        <button type="button" class="media-action-btn" onclick="window.removeFile(${i})" title="Xóa file này">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                        </button>
+                    </div>
+                `;
                 previewGrid.appendChild(div);
-            });
+            }
         }
 
-        function updateFileInput() {
-            const dt = new DataTransfer();
-            selectedFiles.forEach(file => dt.items.add(file));
-            fileInput.files = dt.files;
-        }
-
-        window.setCover = function (index) {
-            coverIndex = index;
-            coverIndexInput.value = index;
-            updatePreview();
-        };
-
+        // Expose global functions for onclick events
         window.removeFile = function (index) {
-            selectedFiles.splice(index, 1);
-            if (coverIndex >= selectedFiles.length) {
-                coverIndex = Math.max(0, selectedFiles.length - 1);
+            const newDataTransfer = new DataTransfer();
+            let newIndexCounter = 0;
+            const currentCover = newCoverInput.value !== '' ? parseInt(newCoverInput.value) : 0;
+            let newCover = -1;
+
+            for (let i = 0; i < dataTransfer.files.length; i++) {
+                if (i !== index) {
+                    newDataTransfer.items.add(dataTransfer.files[i]);
+                    if (i === currentCover) newCover = newIndexCounter;
+                    newIndexCounter++;
+                }
             }
-            if (index < coverIndex) {
-                coverIndex--;
-            }
-            coverIndexInput.value = coverIndex;
-            updatePreview();
-            updateFileInput();
+
+            dataTransfer.items.clear();
+            for (let i = 0; i < newDataTransfer.files.length; i++) dataTransfer.items.add(newDataTransfer.files[i]);
+
+            // Adjust cover index if needed
+            if (newCover === -1 && dataTransfer.files.length > 0) newCover = 0; // Default to first if cover removed
+
+            newCoverInput.value = (dataTransfer.files.length > 0) ? newCover : '';
+            fileInput.files = dataTransfer.files;
+            renderPreviews();
         };
+
+        window.toggleNewCover = function (index) {
+            newCoverInput.value = index;
+            renderPreviews();
+        };
+
+
+        // --- 2. MAP LOGIC ---
+        const mapElement = document.getElementById('map');
+        if (mapElement) {
+            // Check if Leaflet is loaded
+            if (typeof L === 'undefined') {
+                console.error("Leaflet library not loaded!");
+                mapElement.innerHTML = '<div class="alert alert-danger">Lỗi: Không thể tải thư viện bản đồ (Leaflet JS missing). Vui lòng tải lại trang.</div>';
+                return;
+            }
+
+            // Ensure map container has height before initialization
+            if (mapElement.offsetHeight === 0) {
+                mapElement.style.height = '450px';
+            }
+
+            try {
+                const map = L.map('map').setView([21.0285, 105.8542], 10);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                // Fix Leaflet map sizing issue in some layouts
+                setTimeout(() => { map.invalidateSize(); }, 800);
+
+                // Fix map size when switching to map tab
+                const mapTab = document.getElementById('map-media-tab');
+                if (mapTab) {
+                    mapTab.addEventListener('shown.bs.tab', function (e) {
+                        setTimeout(() => { map.invalidateSize(); }, 100);
+                    });
+                }
+
+
+                const geojsonInput = document.getElementById('id_du_lieu_ban_do_geojson');
+                const lengthDisplay = document.getElementById('length-display');
+                const doDaiKmInput = document.getElementById('id_do_dai_km');
+
+                // Make inputs READONLY via JS to prevent manual edits and confusion
+                if (doDaiKmInput) {
+                    doDaiKmInput.setAttribute('readonly', 'readonly');
+                    doDaiKmInput.style.backgroundColor = '#e9ecef'; // Visual cue
+                    doDaiKmInput.title = "Tự động tính toán từ bản đồ";
+                }
+                if (document.getElementById('id_tong_do_cao_leo_m')) {
+                    document.getElementById('id_tong_do_cao_leo_m').setAttribute('placeholder', 'Tự nhập hoặc chờ cập nhật demo...');
+                }
+
+                const resetButton = document.getElementById('reset-route-btn');
+                const startInfoDiv = document.getElementById('start-point-info');
+                const endInfoDiv = document.getElementById('end-point-info');
+                const generalSearchInput = document.getElementById('general-search-input');
+                const generalSearchBtn = document.getElementById('general-search-btn');
+                const generalSearchResults = document.getElementById('general-search-results');
+
+                let routingControl = null;
+                let startMarker = null;
+                let endMarker = null;
+                let contextMenu = null;
+
+                function updateRoute() {
+                    if (!startMarker || !endMarker) return;
+                    const waypoints = [startMarker.getLatLng(), endMarker.getLatLng()];
+
+                    const handleRoutesFound = function (e) {
+                        const route = e.routes[0];
+                        if (!route) return;
+                        const coordinates = route.coordinates.map(coord => [coord.lng, coord.lat]);
+                        const feature = { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: coordinates } };
+                        const featureCollection = { type: "FeatureCollection", features: [feature] };
+
+                        if (geojsonInput) geojsonInput.value = JSON.stringify(featureCollection);
+
+                        const roundTripLength = (route.summary.totalDistance / 1000) * 2; // Demo logic: round trip? kept existing
+                        if (lengthDisplay) lengthDisplay.textContent = `${roundTripLength.toFixed(2)} km`;
+                        if (doDaiKmInput) {
+                            doDaiKmInput.value = roundTripLength.toFixed(2);
+                            // Trigger change event just in case
+                            doDaiKmInput.dispatchEvent(new Event('change'));
+                            doDaiKmInput.dispatchEvent(new Event('input'));
+                        }
+                    };
+
+                    if (routingControl) {
+                        routingControl.setWaypoints(waypoints);
+                    } else {
+                        routingControl = L.Routing.control({
+                            waypoints: waypoints,
+                            routeWhileDragging: true, show: false, addWaypoints: false,
+                            router: L.Routing.osrmv1({ serviceUrl: 'https://routing.openstreetmap.de/routed-foot/route/v1', profile: 'foot' }),
+                            lineOptions: { styles: [{ color: '#EF4444', opacity: 1, weight: 5 }] },
+                            createMarker: () => null
+                        }).addTo(map);
+                        routingControl.on('routesfound', handleRoutesFound);
+                    }
+                }
+
+                function createDraggableMarker(latLng, isStart) {
+                    const iconUrl = isStart ? 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png' : 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png';
+                    const marker = L.marker(latLng, {
+                        draggable: true,
+                        icon: L.icon({
+                            iconUrl: iconUrl, shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                            iconSize: [25, 41], iconAnchor: [12, 41]
+                        })
+                    }).bindPopup(isStart ? 'Điểm bắt đầu' : 'Điểm kết thúc');
+
+                    marker.on('dragend', function () {
+                        updateRoute();
+                        reverseGeocode(this.getLatLng(), isStart ? startInfoDiv : endInfoDiv);
+                    });
+                    return marker;
+                }
+
+                function reverseGeocode(latLng, infoDiv) {
+                    if (!infoDiv) return;
+                    const type = infoDiv.id === 'start-point-info' ? 'start' : 'end';
+                    const icon = type === 'start' ? '📍' : '🏁';
+                    const label = type === 'start' ? 'Bắt đầu' : 'Kết thúc';
+                    const color = type === 'start' ? '#059669' : '#ef4444';
+
+                    infoDiv.innerHTML = `<h6 class="mb-2" style="font-weight: 700; color: ${color};">${icon} Điểm ${label}</h6><p class="text-muted">Đang tìm địa chỉ...</p><p class="coord">${latLng.lat.toFixed(6)}, ${latLng.lng.toFixed(6)}</p>`;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latLng.lat}&lon=${latLng.lng}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let name = "Không xác định";
+                            if (data && data.display_name) name = data.display_name;
+                            infoDiv.innerHTML = `<h6 class="mb-2" style="font-weight: 700; color: ${color};">${icon} Điểm ${label}</h6><p><strong>Vị trí:</strong> <small>${name}</small></p><p><strong>Tọa độ:</strong> <span class="coord">${latLng.lat.toFixed(6)}, ${latLng.lng.toFixed(6)}</span></p>`;
+                        })
+                        .catch(() => {
+                            infoDiv.innerHTML = `<h6 class="mb-2" style="font-weight: 700; color: ${color};">${icon} Điểm ${label}</h6><p class="text-danger">Không thể lấy địa chỉ</p><p class="coord">${latLng.lat.toFixed(6)}, ${latLng.lng.toFixed(6)}</p>`;
+                        });
+                }
+
+                function setStartPoint(latlng) {
+                    if (startMarker) startMarker.setLatLng(latlng);
+                    else startMarker = createDraggableMarker(latlng, true).addTo(map);
+                    reverseGeocode(latlng, startInfoDiv);
+                    updateRoute();
+                }
+
+                function setEndPoint(latlng) {
+                    if (endMarker) endMarker.setLatLng(latlng);
+                    else endMarker = createDraggableMarker(latlng, false).addTo(map);
+                    reverseGeocode(latlng, endInfoDiv);
+                    updateRoute();
+                }
+
+                function searchGeneralLocation() {
+                    const query = generalSearchInput.value.trim();
+                    if (query.length < 2) { generalSearchResults.innerHTML = ''; return; }
+                    generalSearchBtn.disabled = true;
+                    generalSearchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+                        .then(res => res.json()).then(data => {
+                            generalSearchResults.innerHTML = '';
+                            if (data && data.length > 0) {
+                                data.slice(0, 5).forEach(place => {
+                                    const item = document.createElement('div');
+                                    item.className = 'list-group-item list-group-item-action';
+                                    item.style.cursor = 'pointer';
+                                    item.innerHTML = `<small>${place.display_name}</small>`;
+                                    item.onclick = (e) => {
+                                        e.preventDefault();
+                                        map.setView(L.latLng(place.lat, place.lon), 13);
+                                        generalSearchResults.innerHTML = '';
+                                        generalSearchInput.value = place.display_name;
+                                    };
+                                    generalSearchResults.appendChild(item);
+                                });
+                            } else { generalSearchResults.innerHTML = '<div class="list-group-item">Không tìm thấy</div>'; }
+                        }).finally(() => {
+                            generalSearchBtn.disabled = false;
+                            generalSearchBtn.textContent = 'Tìm kiếm';
+                        });
+                }
+
+                function resetAll() {
+                    if (routingControl) routingControl.setWaypoints([]);
+                    if (startMarker) map.removeLayer(startMarker);
+                    if (endMarker) map.removeLayer(endMarker);
+                    startMarker = null; endMarker = null;
+                    if (lengthDisplay) lengthDisplay.textContent = '0.00 km';
+                    if (startInfoDiv) startInfoDiv.innerHTML = `<small class="text-uppercase fw-bold text-success">📍 Điểm Bắt đầu</small><div class="text-truncate text-muted fst-italic">Click chuột phải bản đồ</div>`;
+                    if (endInfoDiv) endInfoDiv.innerHTML = `<small class="text-uppercase fw-bold text-danger">🏁 Điểm Kết thúc</small><div class="text-truncate text-muted fst-italic">Chưa chọn</div>`;
+                    if (doDaiKmInput) doDaiKmInput.value = '';
+                    if (geojsonInput) geojsonInput.value = '';
+                    // Clear routing control if exists
+                    if (routingControl) {
+                        map.removeControl(routingControl);
+                        routingControl = null;
+                    }
+                }
+
+                map.on('contextmenu', function (e) {
+                    const menuItems = document.createElement('ul');
+                    menuItems.className = 'leaflet-context-menu p-2 bg-white shadow rounded list-unstyled mb-0';
+                    const setStart = document.createElement('li');
+                    setStart.className = 'dropdown-item';
+                    setStart.style.cursor = 'pointer';
+                    setStart.innerHTML = '<span style="color: #059669;">📍</span> Đặt làm điểm bắt đầu';
+                    setStart.onclick = () => { setStartPoint(e.latlng); if (contextMenu) map.closePopup(contextMenu); };
+
+                    const setEnd = document.createElement('li');
+                    setEnd.className = 'dropdown-item';
+                    setEnd.style.cursor = 'pointer';
+                    setEnd.innerHTML = '<span style="color: #ef4444;">🏁</span> Đặt làm điểm kết thúc';
+                    setEnd.onclick = () => { setEndPoint(e.latlng); if (contextMenu) map.closePopup(contextMenu); };
+
+                    menuItems.appendChild(setStart);
+                    menuItems.appendChild(setEnd);
+                    contextMenu = L.popup({ closeButton: true, minWidth: 180 }).setLatLng(e.latlng).setContent(menuItems).openOn(map);
+                });
+
+                if (resetButton) resetButton.addEventListener('click', resetAll);
+                if (generalSearchBtn) generalSearchBtn.addEventListener('click', searchGeneralLocation);
+                if (generalSearchInput) generalSearchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); searchGeneralLocation(); } });
+
+                document.addEventListener('click', (e) => {
+                    if (generalSearchResults && !e.target.closest('.search-results-wrapper')) {
+                        generalSearchResults.innerHTML = '';
+                    }
+                });
+
+                // --- LOAD EXISTING MAP DATA (EDIT MODE) ---
+                if (geojsonInput && geojsonInput.value) {
+                    try {
+                        let rawVal = geojsonInput.value;
+                        if (rawVal.startsWith('"') && rawVal.endsWith('"')) rawVal = JSON.parse(rawVal);
+                        const geojsonData = (typeof rawVal === 'string') ? JSON.parse(rawVal) : rawVal;
+
+                        if (geojsonData && geojsonData.features && geojsonData.features.length > 0) {
+                            const feature = geojsonData.features[0];
+                            if (feature.geometry && feature.geometry.type === 'LineString' && feature.geometry.coordinates.length > 1) {
+                                const coords = feature.geometry.coordinates;
+                                const startLatLng = L.latLng(coords[0][1], coords[0][0]);
+                                const endLatLng = L.latLng(coords[coords.length - 1][1], coords[coords.length - 1][0]);
+
+                                setStartPoint(startLatLng);
+                                setEndPoint(endLatLng);
+
+                                setTimeout(() => {
+                                    if (routingControl) map.fitBounds(routingControl.getBounds());
+                                }, 800);
+                            }
+                        }
+                    } catch (e) {
+                        console.error("Error loading map data:", e);
+                    }
+                }
+            } catch (err) {
+                console.error("Map global error: ", err);
+            }
+        }
     });
 </script>
 {% endblock %}
