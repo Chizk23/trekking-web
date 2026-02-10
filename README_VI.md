@@ -178,6 +178,7 @@ python manage.py runserver
 | 8 | Góc Cộng đồng | <img src="docs/images/congdong.png" width="100%"> | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
 | 9 | Kiến thức | <img src="docs/images/khokt.png" width="100%">| Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
 | 10 | Hồ sơ cá nhân | ![Hồ sơ](docs/images/hosocanhan.png) | Trang tổng hợp: Lịch sử chuyến đi đã duyệt, Bộ sưu tập huy hiệu (Gamification), Quản lý tủ đồ cá nhân và Bài viết đã đăng. |
+| 11 | Hệ thống Gamification | ![Gamification](docs/images/gamefication.png) | **Cơ chế Vinh danh**: Hệ thống tự động theo dõi hoạt động người dùng (tham gia chuyến đi, đăng bài, tương tác) để mở khóa các Huy hiệu (Badges) độc đáo. Khuyến khích sự đóng góp tích cực cho cộng đồng. |
 
 ### Giao diện Quản trị
 
@@ -186,7 +187,7 @@ python manage.py runserver
 | 13 | Dashboard | ![Dashboard](docs/images/dashboard.png) | **Trung tâm Phân tích Dữ liệu**: Hiển thị các chỉ số KPI quan trọng (User, Trip, Doanh thu) và biểu đồ tăng trưởng thực tế. Hỗ trợ ra quyết định nhờ Ma trận BCG đánh giá chất lượng cung đường và Phễu chuyển đổi người dùng. |
 | 14 | Duyệt Cung đường | ![Duyệt CD](docs/images/duyetcungduong.png) | **Quản lý & Kiểm duyệt**: Tích hợp Bộ lọc nhanh (Quick Filters) giúp phát hiện lỗi như thiếu ảnh, thiếu bản đồ hay rating thấp. Admin có thể duyệt nhanh hoặc yêu cầu chỉnh sửa dữ liệu GeoJSON trực tiếp. |
 | 15 | Duyệt Chuyến đi | ![Duyệt Trip](docs/images/duyetchuyendi.png) | **Kiểm soát Rủi ro**: Hệ thống tự động ưu tiên các chuyến cần duyệt và cảnh báo rủi ro (Chuyến đi "Ma", Sắp khởi hành). Giúp Admin tập trung xử lý các trường hợp gấp hoặc vi phạm quy định an toàn. |
-| 16 | Duyệt Bài viết | ![Duyệt Bài viết](docs/images/congdong.png) | **Kiểm duyệt Cộng đồng**: Cho phép duyệt hoặc từ chối hàng loạt (Bulk Actions) bài viết với giao diện tối ưu. Tích hợp xem trước Media ngay trong danh sách giúp quy trình kiểm duyệt nhanh chóng hơn. |
+| 16 | Duyệt Bài viết | ![Duyệt Bài viết](docs/images/quanlybaiviet.png) | **Kiểm duyệt Cộng đồng**: Cho phép duyệt hoặc từ chối hàng loạt (Bulk Actions) bài viết với giao diện tối ưu. Tích hợp xem trước Media ngay trong danh sách giúp quy trình kiểm duyệt nhanh chóng hơn. |
 | 17 | Quản lý Báo cáo | ![Quản lý Báo cáo](docs/images/thongkevabaocao.png) | **Xử lý Vi phạm**: Quy trình khép kín với 3 mức độ hành động (Bỏ qua, Yêu cầu sửa, Xóa bài). Hệ thống tự động gửi thông báo phản hồi kết quả xử lý cho người dùng ngay lập tức. |
 | 18 | **Quản lý Người dùng** | ![Quản lý User](docs/images/quanlyuser.png) | **Quản trị Tài khoản**: Danh sách người dùng với bộ lọc theo trạng thái (Active/Locked) và vai trò (User/Staff). Hỗ trợ xem chi tiết hồ sơ, lịch sử hoạt động (Trip/Post) và khóa/mở khóa tài khoản nhanh chóng. |
 
