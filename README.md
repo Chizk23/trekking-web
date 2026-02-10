@@ -1,181 +1,225 @@
-# 🏔️ TrekViet - Trekking Route & Expedition Management Platform
+# TrekViet - Vietnam Trekking Community Platform
 
-**TrekViet** is a professional full-stack platform designed for the trekking and hiking community in Vietnam. It enables users to discover new trails, organize group expeditions with detailed logistics, and share survival expertise.
+> A web platform connecting the trekking and mountaineering community in Vietnam - discovering trails, organizing group trips, and sharing experiences.
 
----
+<p align="center">
+  <img src="docs/images/banner.png" width="100%" />
+</p>
 
-## 🌟 Main Features
+## Table of Contents
 
-### 1. Interactive Home Page
-A modern landing page designed to showcase the beauty of Vietnam's nature and provide quick access to popular trails.
-> ![Home Page 1](picture/so1.png)
-> ![Home Page 2](picture/so2.png)
-> ![Home Page 3](picture/so3.png)
-> ![Home Page 2](picture/so4.png)
-> ![Home Page 3](picture/so5.png)
-
-### 2. Advanced Trek Discovery
-A comprehensive library of trekking routes with GIS data.
-*   **Technical Specs:** Elevation profiles, total distance, and difficulty levels (Easy to Expert).
-*   **Interactive Maps:** Visualized trail paths using GeoJSON.
-*   **Suggested Gear:** Automatic equipment checklists tailored to specific terrains.
-> ![Trek Discovery](picture/so6.png)
-> ![Trek Discovery](picture/so6.1.png)
-> ![Trek Discovery](picture/so6.2.png)
-### 3. Expedition & Trip Hub
-Organize group adventures or join existing expeditions.
-*   **Member Management:** Role-based access (Lead, Co-lead, Member) with an approval system for new joiners.
-*   **Privacy Controls:** Private trips accessible only via **Secret Invitation Codes**.
-*   **Itinerary Planning:** Dynamic timelines to manage day-by-day activities.
-> ![Trip Hub](picture/so7.png)
-> ![Trip Hub](picture/so7.1.png)
-
-
-### 4. Real-time Communication Center
-Dedicated chat rooms for every trip to ensure seamless coordination.
-*   **Rich Messaging:** Supports media sharing, message replies, and reactions.
-*   **Notifications:** Instant system alerts for itinerary updates or member requests.
-> ![Chat Hub](picture/so8.png)
-
-### 5. Personal Gear & Achievement Dashboard
-*   **Inventory Manager:** Track personal trekking equipment and gear conditions.
-*   **Activity Stats:** Data-driven tracking of total kilometers conquered and summits reached.
-> ![User Dashboard](picture/so9.png)
-
-## 6. Community
-
-A social space where trekkers connect, share real experiences, and inspire each other.
-
-### Features
-- **Trip Reviews:** Users can rate and review completed trekking routes with photos and personal insights.
-- **Experience Sharing:** Community posts about memorable journeys, challenges, and tips.
-- **Discussion Feed:** A space to ask questions, exchange advice, and build connections with fellow trekkers.
-> ![Community Feed](picture/so10.png)
-> ![Community Feed](picture/so11.png)
-> ![Community Feed](picture/so11.1.png)
-> ![Community Feed](picture/so12.png)
-> ![Community Feed](picture/so12.1.png)
-
-
-## 7. Knowledge Base
-
-A structured learning hub providing essential trekking knowledge and survival skills.
-
-### Features
-- **Survival Guides:** Professional articles covering first aid, navigation, and wilderness safety.
-- **Preparation Tips:** Gear selection, packing strategies, and trip planning advice.
-- **Skill Development:** Practical techniques for outdoor endurance, safety awareness, and responsible trekking.
-
-### Preview
-![Knowledge Base](picture/so13.png)
-> ![Knowledge Base](picture/so13.1.png)
-![Knowledge Base](picture/so14.png)
-![Knowledge Base](picture/so15.png)
----
-
-## 👑 Administrative Hub (System Command Center)
-
-TrekViet features a high-performance administration dashboard for system owners to monitor, moderate, and educate the community.
-
-### 1. Operations Dashboard
-A bird's-eye view of the system's health and real-time activity.
-*   **Real-time Metrics:** Monitor "New Members," "Pending Approvals," and "Upcoming Departures."
-*   **Risk Management:** Integrated "Risk Warning" system to track potential issues in active trips.
-> ![Admin Dashboard](picture/so16.png)
-> ![Admin Dashboard](picture/so16.1.png)
-
-### 2. Knowledge Base & Content Management (CMS)
-A specialized module for managing professional hiking expertise and survival guides.
-*   **Article Management:** Admin-only interface to create, edit, and publish verified survival articles.
-*   **Categorization:** Organize knowledge into structured sections like "Survival Skills," "First Aid," and "Gear Guides."
-*   **Expert Verification:** Moderating and approving high-quality articles submitted by the community.
-> ![Knowledge Management](picture/so21.png)
-
-### 3. Trail & Expedition Moderation
-*   **Route Verification:** Admins review user-submitted trails for technical accuracy before they go public.
-*   **Trip Oversight:** Power to monitor and manage all active group expeditions for safety compliance.
-> ![Content Moderation](picture/so17.png)
-> ![Content Moderation](picture/so17.1.png)
-> ![Content Moderation](picture/so17.2.png)
-
-### 4. Route Management
-
-A dedicated administrative interface for managing trekking routes.
-
-* **Route Control:** Admins can add, edit, verify, or remove trekking routes to maintain data accuracy.
-* **Safety Review:** Ensure all published routes meet safety and quality standards.
-
-> ![Route Management](picture/so18.png)
-> ![Route Management](picture/so18.1.png)
-> ![Route Management](picture/so18.2.png)
+1. [Introduction](#introduction)
+2. [Key Features](#key-features)
+3. [Technologies](#technologies)
+4. [Installation](#installation)
+5. [Screenshots](#screenshots)
+6. [Project Structure](#project-structure)
 
 ---
 
-### 5. Statistics & Reporting
+## Introduction
 
-Analytical tools that provide insights into system usage and trekking activity.
+**TrekViet** is a web platform dedicated to the trekking community in Vietnam. Users can search for suitable trails, organize or join group trips, and share their experiences with the community.
 
-* **Usage Analytics:** Monitor user activity, trip frequency, and route popularity.
-* **Reports Dashboard:** Visual summaries to support decision-making and system improvements.
+**Main Modules:**
+- **Treks:** Manage information about trekking routes across Vietnam.
+- **Trips:** Organize group trips with schedules and real-time chat.
+- **Community:** Share posts, photos, and interact with other members.
+- **Knowledge:** Guides on skills, equipment, and safety.
+- **Gamification:** Automated badge system rewarding user achievements.
 
-> ![Statistics & Reports](picture/so20.png)
-> ![Statistics & Reports](picture/so20.1.png)
-
----
-
-### 6. User Safety & Security
-*   **Report Handling:** Efficiently process user reports regarding harassment or inappropriate behavior.
-*   **Account Control:** Tools to verify professional guides, warn users, or suspend accounts.
-*   **Global Broadcasts:** Centralized engine to send urgent weather alerts or system updates to all users.
-> ![Security Management](picture/so19.png)
-> ![Security Management](picture/so19.1.png)
-
----
-## 🛠️ Technology Stack & Architecture
-
-### **System Architecture**
-The project follows the **Django MVT (Model-View-Template)** architecture, modularized into key applications:
-- **`treks`**: GIS route data, mapping, and trail review engine.
-- **`trips`**: Logistics, member approval logic, and real-time chat infrastructure.
-- **`accounts`**: User profiles, gear inventory, and achievement tracking.
-- **`community`**: Social feed, discussion logic, and user interactions.
-- **`articles`**: CMS for educational content and survival guides.
-
-### **Tech Specs**
-- **Backend:** Python 3.8+, Django 4.2
-- **Database:** MySQL (Relational data management)
-- **Geospatial:** GDAL & GeoJSON for trail mapping.
-- **Frontend:** Bootstrap 5, Vanilla JavaScript, AJAX (Chat updates).
 
 ---
 
-## 🚀 Installation & Setup
+## Key Features
 
-### 1. Prerequisites
-- Python 3.8+
-- MySQL Server
-- GDAL Library (required for Map data processing)
+### 🗺️ Trek Management
 
-### 2. Run the Project
+| Feature | Description |
+|---------|-------------|
+| Discover Treks | Search and filter by province, difficulty, altitude, or estimated duration. |
+| View Details | Information on length, altitude, estimated time, and suggested equipment list. |
+| Ratings & Reviews | Users rate 1-5 stars and write reviews with images. |
+| Gallery | View and manage images/videos for each trek. |
+| **Contribute Trek** | Users submit new trail data with media, pending Admin approval. |
+| **Contribution Mgmt** | View submitted trails and track status (Pending/Approved/Rejected). |
+
+### 🎒 Trip Organization
+
+| Feature | Description |
+|---------|-------------|
+| Create Trip | Select a trek, input member limit, cost, and meeting point. |
+| Itinerary Builder | Build a detailed plan by day and specific time slots. |
+| Public/Private Mode | Private trips require an invitation code to join. |
+| Member Management | Organizer approves requests and assigns roles (Leader/Member). |
+| Group Chat | Exchange info, send media, reply to messages, and react with emojis. |
+| Auto Status | System updates: Pending → Recruiting → Ongoing → Completed. |
+
+### 👥 Community
+
+| Feature | Description |
+|---------|-------------|
+| Write Posts | Share trekking experiences with images and videos. |
+| Tagging | Link posts to specific trips or topics. |
+| Upvote | Vote for helpful and interesting posts. |
+| Comments | Interact via a threaded comment system (nested replies). |
+| Post Approval | Posts require Admin approval before being publicly displayed. |
+
+### 📚 Knowledge
+
+| Feature | Description |
+|---------|-------------|
+| Guide Articles | Share knowledge by category: Techniques, Gear, Safety... |
+| Rich Editor | Write rich content using TinyMCE editor. |
+| Categorization | Manage articles by categories for easy searching. |
+
+### 🏆 Gamification
+
+| Badge Type | Example Condition |
+|------------|-------------------|
+| Activity | Join or organize 5/10/20 trips. |
+| Contribution | Post 10 articles or 50 comments in the community. |
+| Fitness | Accumulate 100km distance or 5000m altitude. |
+| Exploration | Visit 10 different provinces. |
+| Challenge | Complete a "Expert" difficulty trek. |
+
+> The system automatically checks and awards badges when users meet the conditions.
+
+### 🔧 Administration
+
+| Feature | Description |
+|---------|-------------|
+| Dashboard | View overview stats: users, trips, posts, and analytical charts. |
+| Trek Approval | Review user-contributed trails, approve or reject with reasons. |
+| Trip Approval | Check content before allowing public member recruitment. |
+| Post Approval | Moderate community content before display. |
+| Report Handling | Receive and resolve violation reports from users. |
+
+---
+
+## Technologies
+
+### Backend
+
+| Technology | Version |
+|------------|---------|
+| Python | 3.8+ |
+| Django | 4.2.23 |
+| MySQL | 5.7+ |
+| Pillow | 11.3.0 |
+
+### Frontend
+
+| Technology | Description |
+|------------|-------------|
+| Bootstrap 5 | Build responsive interfaces. |
+| TinyMCE | Rich text editor for posts. |
+| Font Awesome | Icons for UI components. |
+
+---
+
+## Installation
+
+### Requirements
+- Python 3.8 or higher
+- MySQL 5.7 or higher
+
+### Steps
+
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/trekviet.git
-cd trekking-web-trangchu_v3
+# 1. Clone repository
+git clone <repo_url>
+cd trekking_web
 
-# Setup virtual environment
+# 2. Create virtual environment
 python -m venv venv
-source venv/bin/activate # Windows: venv\Scripts\activate
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
 
-# Install dependencies
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# Database Setup
-# 1. Create a MySQL database named 'trekking_db'
-# 2. Update settings.py with your DB credentials
+# 4. Create database
+mysql -u root -p
+CREATE DATABASE trekking_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-# Initialize Database
+# 5. Configure database in settings.py
+
+# 6. Run migrations
+python manage.py makemigrations
 python manage.py migrate
-python manage.py createsuperuser # Create your Admin account
 
-# Start the server
+# 7. Create admin account
+python manage.py createsuperuser
+
+# 8. Start server
 python manage.py runserver
+```
+
+**Access:**
+- Homepage: http://127.0.0.1:8000
+- Admin Dashboard: http://127.0.0.1:8000/dashboard/
+
+---
+
+## Screenshots
+
+### User Interface
+
+| No. | Screen | Image | Description |
+|:---:|--------|-------|-------------|
+| 1 | Trek List | ![Trek List](docs/images/danhsachcungduong.png) | Advanced filters: Province, difficulty, length (km), time, and rating. Supports keyword search. |
+| 2 | Trek Details | <img src="docs/images/chitiecd1.png" width="100%"><br><img src="docs/images/chitietcd2.png" width="100%"><br><img src="docs/images/chitietcd3.png" width="100%"><br><img src="docs/images/chitietcd4.png" width="100%"> | Displays terrain info, interactive map (GeoJSON), gallery, and multimedia review/rating system. |
+| 3 | Trek Creation Form | <img src="docs/images/taocd1.png" width="100%"><br><img src="docs/images/taocd2.png" width="100%"><br><img src="docs/images/taocd3.png" width="100%"> | Detailed input interface with CKEditor/TinyMCE, integrated GeoJSON map upload, and suggested gear management. |
+| 4 | Trip Hub | ![Trip Hub](docs/images/triphub.png) | Search trips by budget, duration, departure date. Filters for "Available spots only" and status (Upcoming, Recruiting). |
+| 5 | Trip Details | <img src="docs/images/chitietchuyendi1.png" width="100%"><br><img src="docs/images/chitietchuyendi2.png" width="100%"><br><img src="docs/images/chitietchuyendi3.png" width="100%"> | Detailed itinerary (Timeline), member list, and join mechanism (Public/Private with invite code). |
+| 6 | Trip Creation Form | <img src="docs/images/tạochuyendi1.png" width="100%"><br><img src="docs/images/taochuyendi2.png" width="100%"> | Optimal 2-step trip setup: Select template trek -> Fill info. Integrated **Itinerary Builder** tool allows dragging and dropping activities by day/hour. |
+| 7 | Group Chat | ![Chat](docs/images/tinnhan.png) | Real-time chat system integrated within trips: messaging, file/photo sharing, and online member list. |
+| 8 | Community Corner | <img src="docs/images/congdong.png" width="100%"> | List of news/sharing posts with Upvote, commenting, and author card (Avatar/Name) features. |
+| 9 | Knowledge | <img src="docs/images/khokt.png" width="100%">| Library of guide articles (Skills, Gear) categorized by topic, displayed as Grid cards. |
+| 10 | Personal Profile | ![Profile](docs/images/hosocanhan.png) | Overview page: History of trips, Badge collection (Gamification), Gear locker management, and Posted articles. |
+
+### Admin Interface
+
+| No. | Screen | Image | Description |
+|:---:|--------|-------|-------------|
+| 13 | Dashboard | ![Dashboard](docs/images/dashboard.png) | **Data Analytics Hub**: Displays key KPIs (User, Trip, Revenue) and actual growth charts. Supports decision making via BCG Matrix for trek quality and User Conversion Funnel. |
+| 14 | Trek Approval | ![Approve Trek](docs/images/duyetcungduong.png) | **Management & Moderation**: Integrated Quick Filters help detect errors like missing photos, maps, or low ratings. Admins can quick-approve or request GeoJSON data edits directly. |
+| 15 | Trip Approval | ![Approve Trip](docs/images/duyetchuyendi.png) | **Risk Control**: System automatically prioritizes trips needing approval and warns of risks (Ghost Trips, Departing Soon). Helps Admins focus on urgent cases or safety violations. |
+| 16 | Post Approval | ![Approve Post](docs/images/quanlybaiviet.png) | **Community Moderation**: Allows Bulk Actions (Approve/Reject) for posts with an optimized interface. Integrated Media preview within the list speeds up moderation. |
+| 17 | Multi-dimensional Analysis | ![Analytics](docs/images/thongkevabaocao.png) | **Detailed Analytics**: Detailed reporting system for each module: Users, Trips, Treks, and Content. Helps Admins grasp trends and operational efficiency of the entire platform. |
+| 18 | User Management | ![User Mgmt](docs/images/quanlyuser.png) | **Account Administration**: User statistics (New/Active/Locked). Integrated filters by Role (Admin/Member) and Status. Supports viewing profile details (Interests, Gear), activity history, and performing Lock/Unlock or Delete actions. |
+| 19 | Gamification System | ![Gamification](docs/images/gamefication.png) | **Badge Management**: Configure badge criteria and track user progress. System automatically awards badges based on real activity data (trips joined, posts contributed). |
+
+---
+
+## Project Structure
+
+```
+trekking_web/
+├── accounts/          # Registration, login, and user profiles
+├── treks/             # CRUD treks, ratings, media
+├── trips/             # Create trips, manage members, chat
+├── community/         # Community posts, comments, upvotes
+├── articles/          # Knowledge articles (managed by admin)
+├── knowledge/         # Knowledge display for users
+├── gamification/      # Badges and reward logic
+├── report_admin/      # Violation report handling
+├── user_admin/        # User list management
+├── core/              # Shared models: Province, Difficulty, Gear, Tags
+├── templates/         # HTML templates
+├── static/            # CSS, JavaScript, images
+├── media/             # User uploaded files
+└── requirements.txt   # Python dependencies list
+```
+
+---
+
+## Development Team
+
+- **Nguyen Thanh Huyen** - GitHub: [@Chizk23](https://github.com/Chizk23)
+- **Tran Thi Phuong** - GitHub: [@PhuongTran2212](https://github.com/PhuongTran2212)
+
+---
+
+**⭐ If you find this project useful, give us a star!**
