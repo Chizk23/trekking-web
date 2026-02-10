@@ -170,14 +170,14 @@ python manage.py runserver
 |:---:|----------|-----|-------|
 | 1 | Danh sách Cung đường | ![DS Cung đường](docs/images/danhsachcungduong.png) | Bộ lọc chuyên sâu: Tỉnh thành, độ khó, độ dài (km), thời gian và đánh giá. Hỗ trợ tìm kiếm từ khóa. |
 | 2 | Chi tiết Cung đường | <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;"><img src="docs/images/chitiecd1.png" width="100%"><img src="docs/images/chitietcd2.png" width="100%"><img src="docs/images/chitietcd3.png" width="100%"><img src="docs/images/chitietcd4.png" width="100%"></div> | Hiển thị thông tin địa hình, bản đồ tương tác (GeoJSON), galerry ảnh và hệ thống đánh giá/bình luận đa phương tiện. |
-| 3 | Form tạo Cung đường | ![Form Cung đường](LINK_ANH_FORM_TAO_CUNG_DUONG) | (Admin) Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
-| 4 | Trip Hub | ![Trip Hub](LINK_ANH_TRIP_HUB) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
-| 5 | Chi tiết Chuyến đi | ![CT Chuyến đi](LINK_ANH_CT_CHUYEN_DI) | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
-| 6 | Form tạo Chuyến đi | ![Form Chuyến đi](LINK_ANH_FORM_TAO_CHUYEN_DI) | Quy trình thiết lập chuyến đi 2 bước tối ưu: Chọn cung đường mẫu -> Điền thông tin. Tích hợp công cụ **Lập lịch trình (Itinerary Builder)** cho phép kéo thả các mốc hoạt động theo ngày/giờ chi tiết. |
-| 7 | Chat nhóm | ![Chat](LINK_ANH_CHAT_NHOM) | Hệ thống chat realtime tích hợp trong chuyến đi: Gửi tin nhắn, chia sẻ file/ảnh, và danh sách thành viên online. |
-| 8 | Góc Cộng đồng | ![Cộng đồng](LINK_ANH_CONG_DONG) | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
-| 9 | Kiến thức | ![Kiến thức](LINK_ANH_KIEN_THUC) | Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
-| 10 | Hồ sơ cá nhân | ![Hồ sơ](LINK_ANH_HO_SO) | Trang tổng hợp: Lịch sử chuyến đi đã duyệt, Bộ sưu tập huy hiệu (Gamification), Quản lý tủ đồ cá nhân và Bài viết đã đăng. |
+| 3 | Form tạo Cung đường | <div style="display: flex; gap: 10px;"><img src="docs/images/taocd1.png" width="32%"><img src="docs/images/taocd2.png" width="32%"><img src="docs/images/taocd3.png" width="32%"></div> | Giao diện nhập liệu chi tiết với CKEditor/TinyMCE, tích hợp upload bản đồ GeoJSON và quản lý vật dụng gợi ý. |
+| 4 | Trip Hub | ![Trip Hub](docs/images/triphub.png) | Tìm kiếm chuyến đi theo ngân sách, thời lượng, ngày khởi hành. Có bộ lọc "Chỉ hiện chuyến còn chỗ" và hiển thị trạng thái (Sắp đi, Đang tuyển). |
+| 5 | Chi tiết Chuyến đi | <div style="display: flex; gap: 10px;"><img src="docs/images/chitietchuyendi1.png" width="32%"><img src="docs/images/chitietchuyendi2.png" width="32%"><img src="docs/images/chitietchuyendi3.png" width="32%"></div> | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
+| 6 | Form tạo Chuyến đi | <div style="display: flex; gap: 10px;"><img src="docs/images/tạochuyendi1.png" width="48%"><img src="docs/images/taochuyendi2.png" width="48%"></div> | Quy trình thiết lập chuyến đi 2 bước tối ưu: Chọn cung đường mẫu -> Điền thông tin. Tích hợp công cụ **Lập lịch trình (Itinerary Builder)** cho phép kéo thả các mốc hoạt động theo ngày/giờ chi tiết. |
+| 7 | Chat nhóm | ![Chat](docs/images/tinnhan.png) | Hệ thống chat realtime tích hợp trong chuyến đi: Gửi tin nhắn, chia sẻ file/ảnh, và danh sách thành viên online. |
+| 8 | Góc Cộng đồng | <div style="display: flex; gap: 10px;"><img src="docs/images/congdong.png" width="48%"><img src="docs/images/congdong1.png" width="48%"></div> | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
+| 9 | Kiến thức | <div style="display: flex; gap: 10px;"><img src="docs/images/khokt.png" width="48%"><img src="docs/images/khokt2.png" width="48%"></div> | Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
+| 10 | Hồ sơ cá nhân | ![Hồ sơ](docs/images/hosocanhan.png) | Trang tổng hợp: Lịch sử chuyến đi đã duyệt, Bộ sưu tập huy hiệu (Gamification), Quản lý tủ đồ cá nhân và Bài viết đã đăng. |
 
 ### Giao diện Quản trị
 

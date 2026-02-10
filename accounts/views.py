@@ -201,6 +201,10 @@ def profile_view(request, username):
     # 7. Danh sách Tags cho JS (nếu cần)
     all_tags_list = list(The.objects.values_list('ten', flat=True))
 
+    # 8. Tính tổng điểm thưởng từ huy hiệu
+    from django.db.models import Sum
+    total_points = badges_earned.aggregate(total=Sum('huy_hieu__diem_thuong'))['total'] or 0
+
     context = {
         'profile_user': profile_user,
         'is_own_profile': is_own_profile,
@@ -211,6 +215,7 @@ def profile_view(request, username):
         'grouped_equipment': grouped_equipment,
         'all_tags_whitelist': json.dumps(all_tags_list),
         'now': timezone.now(), # Để so sánh ngày tháng trong template
+        'total_points': total_points, # <--- Added total_points
     }
     return render(request, 'accounts/profile_detail.html', context)
 
