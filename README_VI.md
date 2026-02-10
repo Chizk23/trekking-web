@@ -217,10 +217,8 @@ trekking_web/
 
 ## Nhóm phát triển
 
-| Thành viên | Module phụ trách |
-|------------|------------------|
-| Developer 1 | Treks, Trips, User Admin |
-| Developer 2 | Community, Knowledge, Gamification, Articles, Reports |
+- **Nguyễn Thanh Huyền** - GitHub: [@Chizk23](https://github.com/Chizk23)
+- **Trần Thị Phượng** - GitHub: [@PhuongTran2212](https://github.com/PhuongTran2212)
 
 ---
 
