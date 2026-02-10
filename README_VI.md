@@ -188,7 +188,7 @@ python manage.py runserver
 | 15 | Duyệt Chuyến đi | ![Duyệt Trip](docs/images/duyetchuyendi.png) | **Kiểm soát Rủi ro**: Hệ thống tự động ưu tiên các chuyến cần duyệt và cảnh báo rủi ro (Chuyến đi "Ma", Sắp khởi hành). Giúp Admin tập trung xử lý các trường hợp gấp hoặc vi phạm quy định an toàn. |
 | 16 | Duyệt Bài viết | ![Duyệt Bài viết](docs/images/quanlybaiviet.png) | **Kiểm duyệt Cộng đồng**: Cho phép duyệt hoặc từ chối hàng loạt (Bulk Actions) bài viết với giao diện tối ưu. Tích hợp xem trước Media ngay trong danh sách giúp quy trình kiểm duyệt nhanh chóng hơn. |
 | 17 | Thống kê và Báo cáo | ![Thống kê và Báo cáo](docs/images/thongkevabaocao.png) | **Giám sát & Xử lý**: Tổng hợp báo cáo vi phạm từ người dùng và thống kê xu hướng nội dung xấu. Quy trình xử lý khép kín (Cảnh báo/Xóa/Khóa) giúp duy trì môi trường cộng đồng lành mạnh. |
-| 18 | Quản lý Người dùng | ![Quản lý User](docs/images/quanlyuser.png) | **Quản trị Tài khoản**: Danh sách người dùng với bộ lọc theo trạng thái (Active/Locked) và vai trò (User/Staff). Hỗ trợ xem chi tiết hồ sơ, lịch sử hoạt động (Trip/Post) và khóa/mở khóa tài khoản nhanh chóng. |
+| 18 | Quản lý Người dùng | ![Quản lý User](docs/images/quanlyuser.png) | **Quản trị Tài khoản**: Thống kê người dùng (Mới/Active/Locked). Tích hợp bộ lọc theo Vai trò (Admin/Thành viên) và Trạng thái. Hỗ trợ xem chi tiết hồ sơ (Sở thích, Đồ dùng), lịch sử hoạt động và thực hiện Khóa/Mở khóa hoặc Xóa tài khoản. |
 | 19 | Hệ thống Gamification | ![Gamification](docs/images/gamefication.png) | **Quản lý Vinh danh**: Thiết lập các tiêu chí đạt danh hiệu (Badges) và theo dõi tiến độ người dùng. Hệ thống tự động cấp phát huy hiệu dựa trên dữ liệu hoạt động thực tế (số chuyến đi, bài đóng góp). |
 
 ---
