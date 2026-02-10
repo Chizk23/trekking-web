@@ -441,6 +441,35 @@
         gap: 4px;
     }
 
+    /* Badge Số lượng Hashtag */
+    .badge-tags {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.95);
+        color: #4b5563;
+        /* text-gray-600 */
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .badge-tags:hover {
+        background: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        color: #10b981;
+        /* Primary green on hover */
+    }
+
     /* Card Body */
     .card-body {
         padding: 1.25rem 1.5rem 1rem;
@@ -874,6 +903,15 @@
                     <div class="badge-user-status bg-warning text-dark"><i class="fas fa-clock me-1"></i>Chờ duyệt</div>
                     {% endif %}
                     {% endif %}
+
+
+                    <!-- Hashtag Count Badge (Topic) -->
+                    {% if trip.tags.all.exists %}
+                    <div class="badge-tags" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{% for tag in trip.tags.all %}#{{ tag.ten }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                        <i class="fas fa-hashtag" style="font-size: 0.7rem;"></i> {{ trip.tags.count }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Body -->
@@ -1061,6 +1099,15 @@
             if (e.key === 'Enter') handleTripCodeSubmit();
         });
     });
+
+    // Initialize Bootstrap Tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+            container: 'body',
+            trigger: 'hover focus click'
+        })
+    })
 
     // --- HÀM XỬ LÝ CHÍNH ---
     function handleTripCodeSubmit() {
