@@ -175,8 +175,8 @@ python manage.py runserver
 | 5 | Chi tiết Chuyến đi | <img src="docs/images/chitietchuyendi1.png" width="100%"><br><img src="docs/images/chitietchuyendi2.png" width="100%"><br><img src="docs/images/chitietchuyendi3.png" width="100%"> | Thông tin chi tiết lịch trình (Timeline), danh sách thành viên tham gia, và cơ chế tham gia (Công khai/Riêng tư với mã mời). |
 | 6 | Form tạo Chuyến đi | <img src="docs/images/tạochuyendi1.png" width="100%"><br><img src="docs/images/taochuyendi2.png" width="100%"> | Quy trình thiết lập chuyến đi 2 bước tối ưu: Chọn cung đường mẫu -> Điền thông tin. Tích hợp công cụ **Lập lịch trình (Itinerary Builder)** cho phép kéo thả các mốc hoạt động theo ngày/giờ chi tiết. |
 | 7 | Chat nhóm | ![Chat](docs/images/tinnhan.png) | Hệ thống chat realtime tích hợp trong chuyến đi: Gửi tin nhắn, chia sẻ file/ảnh, và danh sách thành viên online. |
-| 8 | Góc Cộng đồng | <img src="docs/images/congdong.png" width="100%"><br><img src="docs/images/congdong1.png" width="100%"> | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
-| 9 | Kiến thức | <img src="docs/images/khokt.png" width="100%"><br><img src="docs/images/khokt2.png" width="100%"> | Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
+| 8 | Góc Cộng đồng | <img src="docs/images/congdong.png" width="100%"> | Danh sách bài viết tin tức/chia sẻ với tính năng Upvote, bình luận và hiển thị thẻ tác giả (Avatar/Tên). |
+| 9 | Kiến thức | <img src="docs/images/khokt.png" width="100%">| Thư viện bài viết hướng dẫn (Kỹ năng, Trang bị) được phân loại theo chuyên mục, hiển thị dạng thẻ Grid. |
 | 10 | Hồ sơ cá nhân | ![Hồ sơ](docs/images/hosocanhan.png) | Trang tổng hợp: Lịch sử chuyến đi đã duyệt, Bộ sưu tập huy hiệu (Gamification), Quản lý tủ đồ cá nhân và Bài viết đã đăng. |
 
 ### Giao diện Quản trị
