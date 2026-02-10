@@ -241,6 +241,14 @@ class ChuyenDi(models.Model):
         con_lai = self.so_luong_toi_da - da_tham_gia
         return con_lai if con_lai > 0 else 0
 
+    @property
+    def member_count_display(self):
+        """Trả về chuỗi hiển thị số lượng thành viên (VD: 5 / 12)"""
+        current = getattr(self, 'so_thanh_vien_tham_gia', None)
+        if current is None:
+             current = self.thanh_vien.filter(trang_thai_tham_gia='DA_THAM_GIA').count()
+        return f"{current} / {self.so_luong_toi_da}"
+
     
 # ==========================================================
 # === 2. MODEL TIMELINE ===
