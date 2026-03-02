@@ -1,0 +1,196 @@
+{% extends base_template|default:"base.html" %}
+{% load humanize %}
+
+{% block title %}Thông báo{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width: 800px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0"><i class="fas fa-bell me-2 text-warning"></i>Thông báo</h3>
+        {% if notifications %}
+        <div class="d-flex gap-2">
+            <!-- Nút batch actions (ẩn khi chưa chọn) -->
+            <div id="batchActions" style="display: none;" class="d-flex gap-2">
+                <span id="selectedCount" class="badge bg-primary align-self-center">0 đã chọn</span>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteSelected()">
+                    <i class="fas fa-trash me-1"></i>Xóa đã chọn
+                </button>
+            </div>
+            <button class="btn btn-sm btn-outline-success" id="markAllReadBtn">
+                <i class="fas fa-check-double me-1"></i>Đã đọc tất cả
+            </button>
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteAll()">
+                <i class="fas fa-trash-alt me-1"></i>Xóa hết
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if notifications %}
+    <div class="list-group shadow-sm" id="notifListGroup">
+        {% for notif in notifications %}
+        <div class="list-group-item py-3 {% if not notif.da_doc %}bg-light border-start border-4 border-success{% endif %}"
+             id="notif-item-{{ notif.id }}" style="transition: all 0.3s;">
+            <div class="d-flex align-items-start gap-3">
+                <!-- Checkbox -->
+                <input type="checkbox" class="form-check-input notif-checkbox mt-2" 
+                       value="{{ notif.id }}" onchange="updateBatchUI()">
+                
+                <!-- Icon -->
+                <i class="{{ notif.icon }}" style="font-size: 1.3rem; margin-top: 3px;"></i>
+                
+                <!-- Content (clickable) -->
+                <a href="{% if notif.lien_ket %}{{ notif.lien_ket }}{% else %}#{% endif %}"
+                   class="flex-grow-1 text-decoration-none"
+                   {% if not notif.da_doc %}onclick="markRead({{ notif.id }})"{% endif %}>
+                    <div class="d-flex justify-content-between">
+                        <strong class="{% if not notif.da_doc %}text-dark{% else %}text-muted{% endif %}">
+                            {{ notif.tieu_de }}
+                        </strong>
+                        <small class="text-muted ms-2 text-nowrap">{{ notif.ngay_tao|naturaltime }}</small>
+                    </div>
+                    {% if notif.noi_dung %}
+                    <p class="mb-0 small text-muted mt-1">{{ notif.noi_dung|truncatewords:30 }}</p>
+                    {% endif %}
+                </a>
+                
+                <!-- Actions -->
+                <div class="d-flex align-items-center gap-1">
+                    {% if not notif.da_doc %}
+                    <span class="badge bg-success rounded-pill" style="font-size: 0.6rem;">Mới</span>
+                    {% endif %}
+                    <button class="btn btn-sm btn-outline-danger border-0 py-0 px-1" 
+                            onclick="deleteSingle({{ notif.id }})" title="Xóa">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Phân trang -->
+    {% if notifications.has_other_pages %}
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if notifications.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ notifications.previous_page_number }}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+            {% for num in notifications.paginator.page_range %}
+                {% if notifications.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > notifications.number|add:'-3' and num < notifications.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if notifications.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ notifications.next_page_number }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-bell-slash text-muted" style="font-size: 3rem;"></i>
+        <p class="text-muted mt-3">Chưa có thông báo nào.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+const csrfToken = '{{ csrf_token }}';
+
+// === MARK READ ===
+function markRead(id) {
+    fetch(`/thong-bao/${id}/read/`, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }
+    });
+}
+
+document.getElementById('markAllReadBtn')?.addEventListener('click', function() {
+    fetch('/thong-bao/read-all/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }
+    }).then(() => location.reload());
+});
+
+// === DELETE SINGLE ===
+function deleteSingle(id) {
+    const item = document.getElementById('notif-item-' + id);
+    item.style.opacity = '0.3';
+    fetch(`/thong-bao/${id}/delete/`, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }
+    }).then(r => r.json()).then(data => {
+        if (data.status === 'success') {
+            item.style.height = item.offsetHeight + 'px';
+            requestAnimationFrame(() => {
+                item.style.height = '0';
+                item.style.padding = '0';
+                item.style.margin = '0';
+                item.style.overflow = 'hidden';
+            });
+            setTimeout(() => item.remove(), 300);
+        } else {
+            item.style.opacity = '1';
+        }
+    });
+}
+
+// === DELETE SELECTED (batch) ===
+function deleteSelected() {
+    const checkboxes = document.querySelectorAll('.notif-checkbox:checked');
+    const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+    if (ids.length === 0) return;
+    if (!confirm(`Xóa ${ids.length} thông báo đã chọn?`)) return;
+
+    fetch('/thong-bao/delete-selected/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: ids })
+    }).then(r => r.json()).then(data => {
+        if (data.status === 'success') {
+            ids.forEach(id => {
+                const item = document.getElementById('notif-item-' + id);
+                if (item) item.remove();
+            });
+            updateBatchUI();
+        }
+    });
+}
+
+// === DELETE ALL ===
+function deleteAll() {
+    if (!confirm('Xóa TẤT CẢ thông báo? Không thể hoàn tác.')) return;
+    fetch('/thong-bao/delete-all/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }
+    }).then(r => r.json()).then(data => {
+        if (data.status === 'success') location.reload();
+    });
+}
+
+// === BATCH UI ===
+function updateBatchUI() {
+    const checked = document.querySelectorAll('.notif-checkbox:checked').length;
+    const batchEl = document.getElementById('batchActions');
+    const countEl = document.getElementById('selectedCount');
+    if (checked > 0) {
+        batchEl.style.display = 'flex';
+        countEl.textContent = checked + ' đã chọn';
+    } else {
+        batchEl.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

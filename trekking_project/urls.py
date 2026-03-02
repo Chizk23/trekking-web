@@ -26,6 +26,8 @@ urlpatterns = [
     path("community/", include(("community.urls", "community"), namespace="community")),
     # Knowledge (Kiến thức) - Của bạn bạn
     path('knowledge/', include('knowledge.urls', namespace='knowledge')),
+    # Notifications (Thông báo)
+    path('thong-bao/', include('notifications.urls', namespace='notifications')),
 
 
     # --- DASHBOARD URLs (Dành cho quản trị viên) ---

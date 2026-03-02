@@ -1362,7 +1362,7 @@
                     <!-- Hiển thị 4 thành viên tiếp theo -->
                     {% for member in members %}
                         {% if member.user != trip.nguoi_to_chuc %}
-                            {% if forloop.counter <= 5 %} 
+                            {% if forloop.counter <= 5 %}
                             <div class="member-row">
                                 <img src="{{ member.user.taikhoanhoso.avatar_url|default:'/static/images/default-avatar.png' }}">
                                 <div class="fw-bold">{{ member.user.get_full_name|default:member.user.username }}</div>

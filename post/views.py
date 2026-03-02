@@ -68,18 +68,32 @@ def post_update_status_view(request, post_id, status):
     """Cập nhật trạng thái bài viết"""
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
-        # Lưu ý: Đảm bảo Post.TrangThaiBaiViet.values trả về đúng list string
-        # Nếu model dùng TextChoices, cách này ổn.
         valid_statuses = Post.TrangThaiBaiViet.values 
         
         if status in valid_statuses:
             post.trang_thai = status
             post.save()
             
-            if status == 'da_duyet': # Hoặc Post.TrangThaiBaiViet.DA_DUYET
+            # Gửi thông báo cho tác giả
+            from notifications.utils import create_notification
+            if status == 'da_duyet':
                 messages.success(request, f'Đã duyệt: "{post.tieu_de}"')
+                create_notification(
+                    nguoi_nhan=post.tac_gia,
+                    loai='POST_APPROVED',
+                    tieu_de='Bài viết đã được duyệt!',
+                    noi_dung=f'Bài viết "{post.tieu_de}" của bạn đã được Admin duyệt và hiển thị trên cộng đồng.',
+                    lien_ket=f'/community/bai-viet/{post.id}/'
+                )
             elif status == 'tu_choi':
                 messages.warning(request, f'Đã từ chối: "{post.tieu_de}"')
+                create_notification(
+                    nguoi_nhan=post.tac_gia,
+                    loai='POST_REJECTED',
+                    tieu_de='Bài viết bị từ chối',
+                    noi_dung=f'Bài viết "{post.tieu_de}" của bạn đã bị từ chối.',
+                    lien_ket=''
+                )
         else:
             messages.error(request, 'Trạng thái không hợp lệ.')
             

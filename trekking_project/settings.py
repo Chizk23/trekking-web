@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'report_admin.apps.ReportAdminConfig', # Của bạn
     'articles.apps.ArticlesConfig',      # Của bạn
     'user_admin.apps.UserAdminConfig',   # Của bạn (Mới)
+    'notifications.apps.NotificationsConfig',  # Hệ thống thông báo
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notification_context',
             ],
         },
     },

@@ -165,21 +165,11 @@ def sua_bai_viet(request, bai_viet_id):
         if form.is_valid():
             bai_viet = form.save(commit=False)
             
-            # --- LOGIC MỚI: RESET DỮ LIỆU ---
-            # 1. Đưa trạng thái về chờ duyệt
+            # --- FIX: Chỉ đưa về chờ duyệt, GIỮ NGUYÊN bình luận & upvote ---
+            # Lý do: Xóa bình luận/vote là phá hủy dữ liệu cộng đồng không cần thiết.
+            # Admin cần duyệt lại nội dung mới, nhưng các tương tác cũ vẫn có giá trị.
             bai_viet.trang_thai = CongDongBaiViet.TrangThaiBaiViet.CHO_DUYET
-            
-            # 2. Reset số lượt bình chọn về 0
-            bai_viet.luot_binh_chon = 0
-            
-            # 3. Xóa lịch sử ai đã bình chọn (để họ có thể vote lại từ đầu)
-            # Lưu ý: 'binh_chon' là related_name trong models.py
-            bai_viet.binh_chon.all().delete()
-            
-            # 4. Xóa toàn bộ bình luận cũ
-            # Lưu ý: 'binh_luan' là related_name trong models.py
-            bai_viet.binh_luan.all().delete()
-            # --------------------------------
+            # ----------------------------------------------------------------
 
             bai_viet.save()
             

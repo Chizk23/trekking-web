@@ -449,6 +449,17 @@ def quick_approve_trek(request, pk):
         trek.trang_thai = TrangThaiDuyet.DA_DUYET
         trek.save()
         messages.success(request, f"✅ Đã duyệt nhanh: {trek.ten}")
+        
+        # Gửi thông báo cho người đóng góp
+        if trek.nguoi_tao:
+            from notifications.utils import create_notification
+            create_notification(
+                nguoi_nhan=trek.nguoi_tao,
+                loai='TREK_APPROVED',
+                tieu_de='Cung đường đã được duyệt!',
+                noi_dung=f'Cung đường "{trek.ten}" bạn đóng góp đã được Admin duyệt.',
+                lien_ket=trek.get_absolute_url() if hasattr(trek, 'get_absolute_url') else ''
+            )
     
     # Quay lại đúng trang danh sách mà admin đang đứng
     return redirect('treks_admin:cung_duong_list')

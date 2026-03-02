@@ -1,6 +1,6 @@
 {% comment %}
-    File: templates/trips/partials/detail_tab_members.html
-    Variables: is_organizer, pending_requests, trip
+File: templates/trips/partials/detail_tab_members.html
+Variables: is_organizer, pending_requests, trip
 {% endcomment %}
 {% if is_organizer and pending_requests %}
 <h4 class="mb-3">Yêu cầu đang chờ ({{ pending_requests.count }})</h4>
@@ -12,31 +12,119 @@
                 <img src="{{ req.user.taikhoanhoso.avatar_url }}" class="member-avatar" alt="Avatar">
                 <div>
                     <strong>{{ req.user.username }}</strong>
-                    {% if req.ly_do_tham_gia %}<p class="small text-muted mb-0 fst-italic">"{{ req.ly_do_tham_gia }}"</p>{% endif %}
+                    {% if req.ly_do_tham_gia %}<p class="small text-muted mb-0 fst-italic">"{{ req.ly_do_tham_gia }}"
+                    </p>{% endif %}
                 </div>
             </div>
             <div>
-                <button class="btn btn-sm btn-success approve-btn" data-member-id="{{ req.id }}"><i class="fas fa-check"></i> Duyệt</button>
-                <button class="btn btn-sm btn-danger reject-btn ms-1" data-member-id="{{ req.id }}"><i class="fas fa-times"></i> Từ chối</button>
+                <button class="btn btn-sm btn-success approve-btn" data-member-id="{{ req.id }}">
+                    <i class="fas fa-check"></i> Duyệt
+                </button>
+                <!-- Nút Từ chối: mở modal để nhập lý do -->
+                <button class="btn btn-sm btn-danger ms-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#rejectModal"
+                        data-member-id="{{ req.id }}"
+                        data-username="{{ req.user.username }}"
+                        data-reject-url="{% url 'trips:reject_member' trip.pk req.id %}">
+                    <i class="fas fa-times"></i> Từ chối
+                </button>
             </div>
         </div>
     </li>
     {% endfor %}
 </ul>
 <hr>
+
+<!-- Modal nhập lý do từ chối -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">
+                    <i class="fas fa-times-circle text-danger me-2"></i>Từ chối yêu cầu tham gia
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn đang từ chối yêu cầu của <strong id="rejectUsername"></strong>.</p>
+                <div class="mb-3">
+                    <label for="rejectReason" class="form-label">Lý do từ chối <span class="text-muted small">(tuỳ
+                            chọn)</span></label>
+                    <textarea class="form-control" id="rejectReason" rows="3"
+                        placeholder="VD: Chuyến đi phù hợp người có kinh nghiệm, bạn chưa đủ điều kiện..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                <button type="button" class="btn btn-danger" id="confirmRejectBtn">
+                    <i class="fas fa-times me-1"></i> Xác nhận từ chối
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const rejectModal = document.getElementById('rejectModal');
+        let currentMemberId = null;
+
+        // Khi mở modal: lưu member_id, username và reject_url từ button
+        rejectModal.addEventListener('show.bs.modal', function (event) {
+            const btn = event.relatedTarget;
+            currentMemberId = btn.getAttribute('data-member-id');
+            const username = btn.getAttribute('data-username');
+            const rejectUrl = btn.getAttribute('data-reject-url');
+            document.getElementById('rejectUsername').textContent = username;
+            document.getElementById('rejectReason').value = '';
+            // Truyền URL vào confirm button để dùng khi submit
+            document.getElementById('confirmRejectBtn').setAttribute('data-reject-url', rejectUrl);
+        });
+
+        // Khi nhấn "Xác nhận từ chối"
+        document.getElementById('confirmRejectBtn').addEventListener('click', function () {
+            if (!currentMemberId) return;
+
+            const ly_do = document.getElementById('rejectReason').value.trim();
+            const url = document.getElementById('confirmRejectBtn').getAttribute('data-reject-url');
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value
+                || '{{ csrf_token }}';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `ly_do=${encodeURIComponent(ly_do)}`
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        bootstrap.Modal.getInstance(rejectModal).hide();
+                        location.reload();
+                    } else {
+                        alert('Lỗi: ' + (data.message || 'Không thể từ chối.'));
+                    }
+                })
+                .catch(err => alert('Lỗi kết nối: ' + err));
+        });
+    })();
+</script>
 {% endif %}
 
 <h4 class="mb-3">Danh sách thành viên</h4>
 <ul class="list-group">
     {% for member in trip.thanh_vien.all %}
-        {% if member.trang_thai_tham_gia == 'DA_THAM_GIA' %}
-        <li class="list-group-item member-list-item">
-            <img src="{{ member.user.taikhoanhoso.avatar_url }}" class="member-avatar" alt="Avatar">
-            <div>
-                <strong>{{ member.user.username }}</strong>
-                {% if member.vai_tro == 'TRUONG_DOAN' %}<span class="badge bg-primary ms-2">Trưởng đoàn</span>{% endif %}
-            </div>
-        </li>
-        {% endif %}
+    {% if member.trang_thai_tham_gia == 'DA_THAM_GIA' %}
+    <li class="list-group-item member-list-item">
+        <img src="{{ member.user.taikhoanhoso.avatar_url }}" class="member-avatar" alt="Avatar">
+        <div>
+            <strong>{{ member.user.username }}</strong>
+            {% if member.vai_tro == 'TRUONG_DOAN' %}<span class="badge bg-primary ms-2">Trưởng đoàn</span>{% endif %}
+        </div>
+    </li>
+    {% endif %}
     {% endfor %}
 </ul>

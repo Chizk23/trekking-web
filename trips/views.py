@@ -1,5 +1,6 @@
 # trips/views.py
 from django.db.models import Case, When # Thêm vào đầu file views.py
+from notifications.utils import create_notification
 import datetime
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseForbidden
@@ -314,7 +315,13 @@ class TripUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         
         if form.is_valid() and timeline_formset.is_valid():
             with transaction.atomic():
-                self.object = form.save()
+                self.object = form.save(commit=False)
+                # FIX: Khi Host sửa trip đã duyệt → Đưa về chờ duyệt lại
+                # Ngăn Host thay đổi nội dung lén sau khi Admin đã duyệt
+                if self.object.trang_thai == 'DANG_TUYEN':
+                    self.object.trang_thai = 'CHO_DUYET'
+                self.object.save()
+                form.save_m2m()
                 timeline_formset.instance = self.object
                 timeline_formset.save()
                 
@@ -348,29 +355,21 @@ def find_trip_by_code(request):
     if not code:
         return JsonResponse({'status': 'error', 'message': 'Vui lòng nhập mã chuyến đi.'})
 
-    # Tìm chuyến đi có mã bắt đầu bằng chuỗi nhập vào
-    # Lưu ý: Chuyển UUID sang chuỗi để so sánh startswith
-    trip = None
-    all_trips = ChuyenDi.objects.all()
-    
-    # Cách so sánh thủ công để hỗ trợ startswith cho UUID field (hoặc dùng filter nếu DB hỗ trợ cast)
-    for t in all_trips:
-        if str(t.ma_moi).startswith(code):
-            trip = t
-            break
+    # FIX: Dùng DB filter thay vì load toàn bộ trips vào memory (O(n) → O(log n))
+    # MySQL hỗ trợ LIKE 'prefix%' trực tiếp trên CharField cast từ UUID
+    trip = ChuyenDi.objects.filter(
+        ma_moi__startswith=code
+    ).first()
 
     if trip:
-        # --- LOGIC MỚI: Cấp quyền ngay lập tức ---
-        # Nếu mã đúng, lưu session luôn để vào trang chi tiết không bị hỏi lại
         request.session[f'access_granted_{trip.pk}'] = True
-        
         return JsonResponse({
             'status': 'success',
             'url': trip.get_absolute_url()
-        }) 
-    else: 
+        })
+    else:
         return JsonResponse({
-            'status': 'error', 
+            'status': 'error',
             'message': 'Không tìm thấy chuyến đi nào với mã này.'
         })
 
@@ -494,9 +493,13 @@ def join_trip_request(request, pk):
         if membership.trang_thai_tham_gia in ['DA_THAM_GIA', 'DA_GUI_YEU_CAU']:
             return JsonResponse({'status': 'error', 'message': 'Bạn đã gửi yêu cầu hoặc đang là thành viên.'}, status=400)
         
-        # Nếu bị từ chối -> Có thể chặn hoặc cho gửi lại (Tùy bạn, ở đây tôi cho chặn để tránh spam)
+        # FIX: Cho phép gửi lại yêu cầu sau khi bị từ chối (thay vì cấm vĩnh viễn)
         if membership.trang_thai_tham_gia == 'BI_TU_CHOI':
-             return JsonResponse({'status': 'error', 'message': 'Yêu cầu của bạn trước đó đã bị từ chối.'}, status=400)
+            membership.trang_thai_tham_gia = 'DA_GUI_YEU_CAU'
+            membership.ly_do_tham_gia = request.POST.get('reason', '').strip()
+            membership.ngay_tham_gia = timezone.now()
+            membership.save()
+            return JsonResponse({'status': 'success', 'message': 'Đã gửi lại yêu cầu tham gia.'})
 
         # Nếu ĐÃ RỜI ĐI -> KÍCH HOẠT LẠI (UPDATE)
         if membership.trang_thai_tham_gia == 'DA_ROI_DI':
@@ -513,6 +516,14 @@ def join_trip_request(request, pk):
             user=request.user,
             ly_do_tham_gia=ly_do,
             trang_thai_tham_gia='DA_GUI_YEU_CAU'
+        )
+        # Thông báo cho Host
+        create_notification(
+            nguoi_nhan=trip.nguoi_to_chuc,
+            loai='MEMBER_JOINED',
+            tieu_de=f'{request.user.get_full_name() or request.user.username} xin vào chuyến đi',
+            noi_dung=f'Yêu cầu tham gia chuyến "{trip.ten_chuyen_di}".',
+            lien_ket=trip.get_absolute_url()
         )
         return JsonResponse({'status': 'success', 'message': 'Đã gửi yêu cầu tham gia.'})
     
@@ -548,6 +559,14 @@ def approve_member(request, pk, member_id):
         return JsonResponse({'status': 'error', 'message': 'Chuyến đi đã đủ thành viên, không thể duyệt thêm.'}, status=400)
     membership.trang_thai_tham_gia = 'DA_THAM_GIA'
     membership.save()
+    # Thông báo cho User
+    create_notification(
+        nguoi_nhan=membership.user,
+        loai='MEMBER_APPROVED',
+        tieu_de='Bạn đã được duyệt vào chuyến đi!',
+        noi_dung=f'Yêu cầu tham gia chuyến "{trip.ten_chuyen_di}" đã được chấp nhận.',
+        lien_ket=trip.get_absolute_url()
+    )
     return JsonResponse({'status': 'success', 'message': f'Đã duyệt thành viên {membership.user.username}.'})
 
 @login_required
@@ -555,9 +574,25 @@ def approve_member(request, pk, member_id):
 def reject_member(request, pk, member_id):
     trip = get_object_or_404(ChuyenDi, pk=pk, nguoi_to_chuc=request.user)
     membership = get_object_or_404(ChuyenDiThanhVien, pk=member_id, chuyen_di=trip)
+    ly_do = request.POST.get('ly_do', '').strip()
     membership.trang_thai_tham_gia = 'BI_TU_CHOI'
+    membership.ly_do_tu_choi = ly_do if ly_do else None
     membership.save()
+    # Thông báo cho User kèm lý do từ chối
+    noi_dung_tb = f'Yêu cầu tham gia chuyến "{trip.ten_chuyen_di}" đã bị từ chối.'
+    if ly_do:
+        noi_dung_tb += f' Lý do: {ly_do}'
+    create_notification(
+        nguoi_nhan=membership.user,
+        loai='MEMBER_REJECTED',
+        tieu_de='Yêu cầu tham gia bị từ chối',
+        noi_dung=noi_dung_tb,
+        lien_ket=trip.get_absolute_url()
+    )
     return JsonResponse({'status': 'success', 'message': f'Đã từ chối thành viên {membership.user.username}.'})
+
+
+
 
 @login_required
 @require_POST
@@ -721,6 +756,9 @@ class TripChatRoomView(LoginRequiredMixin, DetailView):
             trang_thai_tham_gia='DA_THAM_GIA'
         ).select_related('user__taikhoanhoso')
 
+        # FIX: Truyền is_organizer vào context để template hiện nút Kick
+        context['is_organizer'] = (trip.nguoi_to_chuc == user)
+
         # --- 3. MEDIA (ẢNH/VIDEO) ---
         context['chat_media_files'] = ChuyenDiTinNhanMedia.objects.filter(
             tin_nhan__chuyen_di=trip,
@@ -756,7 +794,9 @@ def get_my_chat_groups(request):
     # 5. Annotate & Order
     my_trips = my_trips.annotate(
         last_activity=Subquery(last_msg_qs.values('thoi_gian_gui')[:1]),
-        preview_content=Subquery(last_msg_qs.values('noi_dung')[:1])
+        preview_content=Subquery(last_msg_qs.values('noi_dung')[:1]),
+        preview_sender_name=Subquery(last_msg_qs.values('nguoi_gui__first_name')[:1]),
+        preview_sender_username=Subquery(last_msg_qs.values('nguoi_gui__username')[:1])
     ).order_by(F('last_activity').desc(nulls_last=True), '-ngay_tao')
 
     data = []
@@ -774,18 +814,93 @@ def get_my_chat_groups(request):
         # Xử lý lấy tên người tổ chức
         organizer_name = trip.nguoi_to_chuc.get_full_name() or trip.nguoi_to_chuc.username
 
+        # Xử lý nội dung tin nhắn preview kèm tên người gửi
+        sender_name = trip.preview_sender_name if trip.preview_sender_name else trip.preview_sender_username
+        if sender_name and trip.preview_content:
+            last_msg_display = f"{sender_name}: {trip.preview_content}"
+        elif trip.preview_content:
+            last_msg_display = trip.preview_content
+        else:
+            last_msg_display = "Chưa có tin nhắn"
+
         data.append({
             'id': trip.id,
             'name': trip.ten_chuyen_di,
             'cover': cover,
             'url': trip.get_chat_url() if hasattr(trip, 'get_chat_url') else f"/chuyen-di/chat/{trip.pk}/", # Fallback URL
-            'status_name': trip.trang_thai.ten if trip.trang_thai else "",
-            'last_msg': trip.preview_content or "Chưa có tin nhắn",
+            'status_name': trip.get_trang_thai_display() if trip.trang_thai else "",
+            'last_msg': last_msg_display,
             'last_time': time_str,
             'organizer': organizer_name
         })
     
+    # Reset last_chat_check when user actually opens the dropdown list
+    request.session['last_chat_check'] = timezone.now().isoformat()
+    
     return JsonResponse({'groups': data})
+
+@login_required
+def chat_unread_count(request):
+    """API đếm số nhóm chat có tin nhắn mới (cho icon chat trên navbar)"""
+    user = request.user
+    
+    # Lấy thời gian check cuối từ session
+    from datetime import datetime
+    last_check_str = request.session.get('last_chat_check')
+    
+    # Lấy tất cả trips mà user tham gia
+    my_trip_ids = ChuyenDi.objects.filter(
+        Q(thanh_vien__user=user, thanh_vien__trang_thai_tham_gia='DA_THAM_GIA') | 
+        Q(nguoi_to_chuc=user)
+    ).distinct().values_list('pk', flat=True)
+    
+    if last_check_str:
+        from django.utils.dateparse import parse_datetime
+        last_check = parse_datetime(last_check_str)
+        if last_check:
+            # Đếm groups có tin nhắn mới kể từ lần check cuối (loại bỏ tin nhắn của chính mình)
+            from trips.models import ChuyenDiTinNhan
+            count = ChuyenDiTinNhan.objects.filter(
+                chuyen_di_id__in=my_trip_ids,
+                thoi_gian_gui__gt=last_check,
+                da_xoa=False
+            ).exclude(nguoi_gui=user).values('chuyen_di').distinct().count()
+        else:
+            count = 0
+    else:
+        count = 0
+    
+    # KHÔNG THỂ CẬP NHẬT request.session['last_chat_check'] ở đây!
+    # Nếu cập nhật ở logic đếm (poll liên tục 30s), thì sau 30s unread count sẽ tự biến mất vì query đếm bị lệch time mới nhất.
+    # Chỉ reset time khi user thực sự gọi API mở list xem (`get_my_chat_groups`).
+    
+    return JsonResponse({'count': count})
+
+@login_required
+def redirect_to_latest_chat(request):
+    """Redirect tới phòng chat hoạt động gần nhất của user. Nút icon chat ở Navbar sẽ gọi URL này."""
+    user = request.user
+    
+    # Tìm trip có tin nhắn mới nhất
+    last_msg_qs = ChuyenDiTinNhan.objects.filter(chuyen_di=OuterRef('pk')).order_by('-thoi_gian_gui')
+    
+    my_trips = ChuyenDi.objects.filter(
+        Q(thanh_vien__user=user, thanh_vien__trang_thai_tham_gia='DA_THAM_GIA') | 
+        Q(nguoi_to_chuc=user)
+    ).distinct().annotate(
+        last_activity=Subquery(last_msg_qs.values('thoi_gian_gui')[:1])
+    ).order_by(F('last_activity').desc(nulls_last=True), '-ngay_tao')
+    
+    latest_trip = my_trips.first()
+    if latest_trip:
+        if hasattr(latest_trip, 'get_chat_url'):
+            return redirect(latest_trip.get_chat_url())
+        return redirect('trips:chat_room', trip_id=latest_trip.pk)
+    else:
+        # Nếu chưa tham gia chuyến nào, về trang danh sách
+        messages.info(request, "Bạn chưa tham gia nhóm chat nào.")
+        return redirect('trips:my_trips')
+
 @login_required # Bắt buộc phải đăng nhập
 @require_POST   # Chỉ chấp nhận method POST (chặn GET truy cập trực tiếp)
 def send_chat_message(request, trip_id):
@@ -1327,72 +1442,8 @@ class TripAdminListView(AdminRequiredMixin, ListView):
 
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        # Thống kê nhanh cho Dashboard Mini
-        today = timezone.now()
-        base_qs = ChuyenDi.objects.all()
-        
-        context['stats'] = {
-            # Tổng số chuyến đang hoạt động (Đã duyệt & Đang tuyển)
-            'total_active': base_qs.filter(trang_thai='DANG_TUYEN').count(),
-            
-            # Đang chờ duyệt (Quan trọng nhất với Admin)
-            'pending_count': base_qs.filter(trang_thai='CHO_DUYET').count(),
-            
-            # Đang diễn ra thực tế (Trên núi)
-            'ongoing_count': base_qs.filter(
-                trang_thai='DANG_TUYEN',
-                ngay_bat_dau__lte=today, 
-                ngay_ket_thuc__gte=today
-            ).count(),
-            
-            # Sắp đi gấp (24h tới)
-            'urgent_24h': base_qs.filter(
-                trang_thai='DANG_TUYEN',
-                ngay_bat_dau__range=(today, today + datetime.timedelta(days=1))
-            ).count(),
-            
-            # Đã hủy hoặc Bị từ chối
-            'canceled': base_qs.filter(trang_thai__in=['DA_HUY', 'BI_TU_CHOI']).count()
-        }
-        
-        context['page_title'] = "Giám sát & Quản lý Chuyến đi"
-        context['filter_form'] = getattr(self, 'filter_form', TripAdminFilterForm(self.request.GET))
-        
-        # Giữ lại param trên URL khi phân trang
-        params = self.request.GET.copy()
-        if 'page' in params: del params['page']
-        context['query_params'] = params.urlencode()
-        context['now'] = today
-        
-        return context
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        # Thống kê nhanh
-        today = timezone.now()
-        base_qs = ChuyenDi.objects.all()
-        
-        context['stats'] = {
-            'total_active': base_qs.filter(trang_thai='DANG_TUYEN').count(),
-            'ongoing_count': base_qs.filter(ngay_bat_dau__lte=today, ngay_ket_thuc__gte=today).count(),
-            'urgent_24h': base_qs.filter(ngay_bat_dau__range=(today, today + datetime.timedelta(days=1))).count(),
-            'canceled': base_qs.filter(trang_thai='DA_HUY').count()
-        }
-        
-        context['page_title'] = "Giám sát & Quản lý Chuyến đi"
-        context['filter_form'] = getattr(self, 'filter_form', TripAdminFilterForm(self.request.GET))
-        
-        # Giữ param khi phân trang
-        params = self.request.GET.copy()
-        if 'page' in params: del params['page']
-        context['query_params'] = params.urlencode()
-        context['now'] = today
-        
-        return context
+    # FIX: Đã xóa 2 định nghĩa get_context_data bị duplicate ở đây.
+    # Chỉ giữ lại 1 phiên bản duy nhất bên dưới (dòng 1397).
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1573,7 +1624,14 @@ def approve_trip(request, pk):
         trip.ly_do_tu_choi = None # Xóa lý do cũ nếu có
         trip.save()
         
-        # (Optional) Gửi thông báo cho người tạo trip tại đây
+        # Gửi thông báo cho Host
+        create_notification(
+            nguoi_nhan=trip.nguoi_to_chuc,
+            loai='TRIP_APPROVED',
+            tieu_de='Chuyến đi đã được duyệt!',
+            noi_dung=f'Chuyến đi "{trip.ten_chuyen_di}" đã được Admin duyệt và bắt đầu tuyển thành viên.',
+            lien_ket=trip.get_absolute_url()
+        )
         
         messages.success(request, f"Đã duyệt chuyến đi: {trip.ten_chuyen_di}")
     else:
@@ -1599,6 +1657,15 @@ def reject_trip(request, pk):
         trip.ngay_duyet = timezone.now()
         trip.ly_do_tu_choi = reason
         trip.save()
+        
+        # Gửi thông báo cho Host kèm lý do
+        create_notification(
+            nguoi_nhan=trip.nguoi_to_chuc,
+            loai='TRIP_REJECTED',
+            tieu_de='Chuyến đi bị từ chối',
+            noi_dung=f'Chuyến đi "{trip.ten_chuyen_di}" đã bị từ chối. Lý do: {reason}',
+            lien_ket=trip.get_absolute_url()
+        )
         
         messages.success(request, f"Đã từ chối chuyến đi: {trip.ten_chuyen_di}")
     
@@ -1653,7 +1720,7 @@ class TripAdminCreateView(AdminRequiredMixin, CreateView):
                     self.object.cd_do_dai_km = cd.do_dai_km
                     self.object.cd_thoi_gian_uoc_tinh_gio = cd.thoi_gian_uoc_tinh_gio
                     self.object.cd_tong_do_cao_leo_m = cd.tong_do_cao_leo_m
-                    self.object.cd_du_lieu_ban_do_geojson = cd.du_lieu_ban_do_geojson
+                    self.object.cd_du_lieu_ban_do_geojson = cd.du_lieu_ban_do_geojson or {}
                 
                 # 3. Mặc định trạng thái duyệt nếu Admin tạo
                 if not self.object.trang_thai:
@@ -1730,7 +1797,7 @@ class TripAdminUpdateView(AdminRequiredMixin, UpdateView):
                     self.object.cd_do_dai_km = cd.do_dai_km
                     self.object.cd_thoi_gian_uoc_tinh_gio = cd.thoi_gian_uoc_tinh_gio
                     self.object.cd_tong_do_cao_leo_m = cd.tong_do_cao_leo_m
-                    self.object.cd_du_lieu_ban_do_geojson = cd.du_lieu_ban_do_geojson
+                    self.object.cd_du_lieu_ban_do_geojson = cd.du_lieu_ban_do_geojson or {}
 
                 # 3. Lưu chính thức
                 self.object.save()
