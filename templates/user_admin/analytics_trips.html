@@ -139,7 +139,7 @@
                                 <td>{{ trip.nguoi_to_chuc.username }}</td>
                                 <td>{{ trip.ngay_bat_dau|date:"d/m/Y H:i" }}</td>
                                 <td class="text-end pe-4">
-                                    <span class="badge bg-success rounded-pill">{{ trip.get_trang_thai_display }}</span>
+                                    <span class="badge bg-success rounded-pill">{{ trip.status_name }}</span>
                                 </td>
                             </tr>
                             {% empty %}

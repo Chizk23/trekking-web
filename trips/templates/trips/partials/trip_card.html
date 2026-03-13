@@ -30,21 +30,7 @@
 
             {# Badge: Status Trip (Xử lý theo TRANG_THAI_CHOICES) #}
             <span class="position-absolute top-0 end-0 m-2 badge rounded-pill shadow-sm backdrop-blur" style="z-index: 5;">
-                {% if trip.trang_thai == 'CHO_DUYET' %}
-                    <span class="bg-warning text-dark px-2 py-1 rounded-pill">Chờ duyệt</span>
-                {% elif trip.trang_thai == 'DANG_TUYEN' %}
-                    <span class="bg-success text-white px-2 py-1 rounded-pill">Đang tuyển</span>
-                {% elif trip.trang_thai == 'DA_DONG' %}
-                    <span class="bg-secondary text-white px-2 py-1 rounded-pill">Đã đóng</span>
-                {% elif trip.trang_thai == 'TAM_HOAN' %}
-                    <span class="bg-warning text-dark px-2 py-1 rounded-pill">Tạm hoãn</span>
-                {% elif trip.trang_thai == 'DA_HUY' %}
-                    <span class="bg-danger text-white px-2 py-1 rounded-pill">Đã hủy</span>
-                {% elif trip.trang_thai == 'BI_TU_CHOI' %}
-                    <span class="bg-danger text-white px-2 py-1 rounded-pill">Bị từ chối</span>
-                {% else %}
-                    <span class="bg-info text-white px-2 py-1 rounded-pill">{{ trip.get_trang_thai_display }}</span>
-                {% endif %}
+                <span class="badge-status status-success">{{ trip.status_name }}</span>
             </span>
 
             {# Badge: Giá tiền #}

@@ -9,7 +9,7 @@
   /* === 1. CSS GIAO DIỆN FORM (GIỮ NGUYÊN) === */
   .create-post-container { max-width: 900px; margin: 2rem auto; }
   .create-post-card { background: var(--surface-primary, #fff); border-radius: var(--radius-lg, 12px); box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1)); overflow: hidden; }
-  .create-post-header { background: linear-gradient(135deg, var(--primary-dark, #4D7111) 0%, var(--primary-medium, #C3E956) 100%); padding: 1.5rem 2rem; color: white; }
+  .create-post-header { background: linear-gradient(135deg, var(--primary-dark, #059669) 0%, var(--primary-medium, #10b981) 100%); padding: 1.5rem 2rem; color: white; }
   .create-post-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; }
   .create-post-body { padding: 2rem; }
   .form-group { margin-bottom: 1.5rem; }
@@ -20,7 +20,7 @@
   .tag-checkbox-container { background: var(--surface-secondary, #f8f9fa); border: 2px solid var(--border-light, #e0e0e0); border-radius: var(--radius-md, 8px); padding: 1.5rem; max-height: 300px; overflow-y: auto; }
   .tag-checkbox-container ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
   .tag-checkbox-container li { display: flex; align-items: center; }
-  .tag-checkbox-container input[type="checkbox"] { width: 18px; height: 18px; margin-right: 0.5rem; cursor: pointer; accent-color: var(--primary-medium, #C3E956); }
+  .tag-checkbox-container input[type="checkbox"] { width: 18px; height: 18px; margin-right: 0.5rem; cursor: pointer; accent-color: var(--primary-medium, #10b981); }
   
   /* Media Thumbnails (Preview trên trang) */
   .post-media-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 1rem; }
@@ -42,21 +42,21 @@
   .lightbox-close:hover { color: #ff4444; }
   
   /* Mũi tên điều hướng */
-  .lightbox-prev, .lightbox-next { cursor: pointer; position: absolute; top: 50%; transform: translateY(-50%); padding: 16px; color: white; font-size: 30px; z-index: 10001; background: rgba(77, 113, 17, 0.4); border-radius: 8px; user-select: none; transition: background 0.3s; }
+  .lightbox-prev, .lightbox-next { cursor: pointer; position: absolute; top: 50%; transform: translateY(-50%); padding: 16px; color: white; font-size: 30px; z-index: 10001; background: rgba(16, 185, 129, 0.4); border-radius: 8px; user-select: none; transition: background 0.3s; }
   .lightbox-next { right: 20px; } 
   .lightbox-prev { left: 20px; }
-  .lightbox-prev:hover, .lightbox-next:hover { background: rgba(77, 113, 17, 0.9); }
+  .lightbox-prev:hover, .lightbox-next:hover { background: rgba(16, 185, 129, 0.9); }
   
   .lightbox-counter { color: #fff; font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; z-index: 10002; }
   .hidden { display: none !important; }
 
   /* Info Box */
-  .info-alert { background: linear-gradient(135deg, rgba(195, 233, 86, 0.1) 0%, rgba(77, 113, 17, 0.05) 100%); border-left: 4px solid var(--primary-medium, #C3E956); padding: 1rem 1.25rem; border-radius: var(--radius-md, 8px); margin-top: 1.5rem; }
+  .info-alert { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%); border-left: 4px solid var(--primary-medium, #10b981); padding: 1rem 1.25rem; border-radius: var(--radius-md, 8px); margin-top: 1.5rem; }
   
   /* Buttons */
   .form-actions { display: flex; gap: 1rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid var(--border-light, #e0e0e0); }
   .btn { padding: 0.75rem 1.5rem; border-radius: var(--radius-md, 8px); font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-  .btn-primary { background: var(--primary-dark, #4D7111); color: white; }
+  .btn-primary { background: var(--primary-dark, #059669); color: white; }
   .btn-secondary { background: var(--surface-secondary, #f0f0f0); color: var(--text-primary, #1a1a1a); }
   .error-text { color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem; }
 </style>

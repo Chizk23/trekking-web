@@ -158,15 +158,9 @@ def analytics_view(request):
         total_fill = sum([(t.member_count / t.so_luong_toi_da) * 100 for t in closed_trips])
         avg_fill_rate = round(total_fill / closed_trips.count(), 1)
 
-    # Est. Revenue (GMV)
-    # Doanh thu = Chi phí * Số người tham gia
-    revenue_trips = ChuyenDi.objects.annotate(
-        paid_members=Count('thanh_vien', filter=Q(thanh_vien__trang_thai_tham_gia='DA_THAM_GIA'))
-    ).exclude(chi_phi_uoc_tinh__isnull=True)
-    
-    est_revenue = 0
-    for t in revenue_trips:
-        est_revenue += (t.chi_phi_uoc_tinh or 0) * t.paid_members
+    # Total Posts Calculation
+    # Tổng số bài viết trên cộng đồng
+    total_posts = CongDongBaiViet.objects.count()
 
     # 2. CHARTS DATA
     
@@ -234,7 +228,7 @@ def analytics_view(request):
 
     # E. Geo Distribution (Bar)
     geo_stats = TaiKhoanHoSo.objects.values('tinh_thanh__ten')\
-        .annotate(count=Count('user'))\
+        .annotate(count=Count('user_id'))\
         .order_by('-count')[:10]
     geo_labels = [item['tinh_thanh__ten'] or 'Chưa cập nhật' for item in geo_stats]
     geo_data = [item['count'] for item in geo_stats]
@@ -256,7 +250,7 @@ def analytics_view(request):
             'total_users': total_users,
             'active_trips': active_trips,
             'avg_fill_rate': avg_fill_rate,
-            'est_revenue': est_revenue,
+            'total_posts': total_posts,
         },
         'charts': {
             'growth': json.dumps({'labels': growth_labels, 'data': growth_data}),

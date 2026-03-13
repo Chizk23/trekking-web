@@ -13,8 +13,8 @@
         --text-light: #6B7280;
         --border: #E5E7EB;
         --radius: 0.75rem;
-        --shadow: 0 1px 3px rgba(0,0,0,0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -29,6 +29,7 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -36,8 +37,13 @@
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     @keyframes slideInLeft {
@@ -45,6 +51,7 @@
             opacity: 0;
             transform: translateX(-20px);
         }
+
         to {
             opacity: 1;
             transform: translateX(0);
@@ -52,13 +59,25 @@
     }
 
     @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
     }
 
     @keyframes shimmer {
-        0% { background-position: -1000px 0; }
-        100% { background-position: 1000px 0; }
+        0% {
+            background-position: -1000px 0;
+        }
+
+        100% {
+            background-position: 1000px 0;
+        }
     }
 
     @keyframes scaleIn {
@@ -66,6 +85,7 @@
             opacity: 0;
             transform: scale(0.95);
         }
+
         to {
             opacity: 1;
             transform: scale(1);
@@ -128,14 +148,25 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         transition: var(--transition);
     }
 
-    .stat-card:nth-child(1) { animation-delay: 0.1s; }
-    .stat-card:nth-child(2) { animation-delay: 0.2s; }
-    .stat-card:nth-child(3) { animation-delay: 0.3s; }
-    .stat-card:nth-child(4) { animation-delay: 0.4s; }
+    .stat-card:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .stat-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .stat-card:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .stat-card:nth-child(4) {
+        animation-delay: 0.4s;
+    }
 
     .stat-card:hover {
         transform: translateY(-8px);
@@ -165,10 +196,25 @@
     }
 
     /* Icon Colors */
-    .icon-total { background: #E0E7FF; color: #4338ca; }
-    .icon-pending { background: #FEF3C7; color: #B45309; }
-    .icon-approved { background: #D1FAE5; color: #047857; }
-    .icon-rejected { background: #FEE2E2; color: #B91C1C; }
+    .icon-total {
+        background: #E0E7FF;
+        color: #4338ca;
+    }
+
+    .icon-pending {
+        background: #FEF3C7;
+        color: #B45309;
+    }
+
+    .icon-approved {
+        background: #D1FAE5;
+        color: #047857;
+    }
+
+    .icon-rejected {
+        background: #FEE2E2;
+        color: #B91C1C;
+    }
 
     .stat-info h3 {
         font-size: 0.85rem;
@@ -208,7 +254,7 @@
     }
 
     .toolbar-card:hover {
-        box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
         border-color: var(--primary-light);
     }
 
@@ -239,7 +285,7 @@
     .tab-link.active {
         background: white;
         color: var(--primary);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         animation: scaleIn 0.2s ease-out;
     }
 
@@ -303,7 +349,7 @@
         left: 50%;
         width: 0;
         height: 0;
-        background: rgba(255,255,255,0.3);
+        background: rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         transform: translate(-50%, -50%);
         transition: width 0.4s, height 0.4s;
@@ -332,7 +378,7 @@
     }
 
     .table-container:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     table {
@@ -496,7 +542,7 @@
         left: 50%;
         width: 0;
         height: 0;
-        background: rgba(255,255,255,0.4);
+        background: rgba(255, 255, 255, 0.4);
         border-radius: 50%;
         transform: translate(-50%, -50%);
         transition: width 0.3s, height 0.3s;
@@ -681,7 +727,8 @@
             font-size: 0.85rem;
         }
 
-        th, td {
+        th,
+        td {
             padding: 0.75rem;
         }
 
@@ -723,28 +770,28 @@
     <!-- Stats Grid -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-icon icon-total">📊</div>
+            <div class="stat-icon icon-total"><i class="fas fa-chart-bar"></i></div>
             <div class="stat-info">
                 <h3>Tổng bài viết</h3>
                 <div class="value">{{ total_posts|default:"0" }}</div>
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon icon-pending">⏳</div>
+            <div class="stat-icon icon-pending"><i class="fas fa-hourglass-half"></i></div>
             <div class="stat-info">
                 <h3>Chờ duyệt</h3>
                 <div class="value">{{ pending_count|default:"0" }}</div>
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon icon-approved">✅</div>
+            <div class="stat-icon icon-approved"><i class="fas fa-check-circle"></i></div>
             <div class="stat-info">
                 <h3>Đã duyệt</h3>
                 <div class="value">{{ approved_count|default:"0" }}</div>
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon icon-rejected">🚫</div>
+            <div class="stat-icon icon-rejected"><i class="fas fa-ban"></i></div>
             <div class="stat-info">
                 <h3>Từ chối</h3>
                 <div class="value">{{ rejected_count|default:"0" }}</div>
@@ -756,9 +803,9 @@
     {% if messages %}
     <div class="alert-box">
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
         {% endfor %}
     </div>
     {% endif %}
@@ -767,13 +814,16 @@
     <div class="toolbar-card">
         <div class="filter-tabs">
             <a href="?" class="tab-link {% if not status_filter %}active{% endif %}">Tất cả</a>
-            <a href="?status=cho_duyet" class="tab-link {% if status_filter == 'cho_duyet' %}active{% endif %}">Chờ duyệt</a>
-            <a href="?status=da_duyet" class="tab-link {% if status_filter == 'da_duyet' %}active{% endif %}">Đã duyệt</a>
+            <a href="?status=cho_duyet" class="tab-link {% if status_filter == 'cho_duyet' %}active{% endif %}">Chờ
+                duyệt</a>
+            <a href="?status=da_duyet" class="tab-link {% if status_filter == 'da_duyet' %}active{% endif %}">Đã
+                duyệt</a>
             <a href="?status=tu_choi" class="tab-link {% if status_filter == 'tu_choi' %}active{% endif %}">Từ chối</a>
         </div>
         <form method="GET" class="search-box">
             {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
-            <input type="text" name="q" value="{{ search_query }}" class="search-input" placeholder="Tìm tiêu đề, tác giả...">
+            <input type="text" name="q" value="{{ search_query }}" class="search-input"
+                placeholder="Tìm tiêu đề, tác giả...">
             <button type="submit" class="btn-search">Tìm</button>
         </form>
     </div>
@@ -801,7 +851,8 @@
                     </td>
                     <td>
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <div style="width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; transition: var(--transition);">
+                            <div
+                                style="width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: white; transition: var(--transition);">
                                 {{ post.tac_gia.username|slice:":1"|upper }}
                             </div>
                             <span>{{ post.tac_gia.username }}</span>
@@ -813,33 +864,54 @@
                     </td>
                     <td style="text-align: center;">
                         {% if post.trang_thai == 'cho_duyet' %}
-                            <span class="badge bg-pending">Chờ duyệt</span>
+                        <span class="badge bg-pending">Chờ duyệt</span>
                         {% elif post.trang_thai == 'da_duyet' %}
-                            <span class="badge bg-approved">Đã duyệt</span>
+                        <span class="badge bg-approved">Đã duyệt</span>
                         {% elif post.trang_thai == 'tu_choi' %}
-                            <span class="badge bg-rejected">Từ chối</span>
+                        <span class="badge bg-rejected">Từ chối</span>
                         {% endif %}
                     </td>
                     <td>
                         <div class="action-group">
                             {% if post.trang_thai == 'cho_duyet' %}
-                                <form method="POST" action="{% url 'post_admin:post_update_status' post.id 'da_duyet' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-icon btn-approve" title="Duyệt bài" onclick="return confirm('Duyệt bài viết này?');">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                    </button>
-                                </form>
-                                <form method="POST" action="{% url 'post_admin:post_update_status' post.id 'tu_choi' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-icon btn-reject" title="Từ chối" onclick="return confirm('Từ chối bài viết này?');">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                    </button>
-                                </form>
+                            <form method="POST" action="{% url 'post_admin:post_update_status' post.id 'da_duyet' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-icon btn-approve" title="Duyệt bài"
+                                    onclick="return confirm('Duyệt bài viết này?');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'post_admin:post_update_status' post.id 'tu_choi' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-icon btn-reject" title="Từ chối"
+                                    onclick="return confirm('Từ chối bài viết này?');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </form>
                             {% endif %}
                             <form method="POST" action="{% url 'post_admin:post_delete' post.id %}">
                                 {% csrf_token %}
-                                <button type="submit" class="btn-icon btn-delete" title="Xóa vĩnh viễn" onclick="return confirm('CẢNH BÁO: Hành động này không thể hoàn tác. Bạn chắc chắn muốn xóa?');">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                <button type="submit" class="btn-icon btn-delete" title="Xóa vĩnh viễn"
+                                    onclick="return confirm('CẢNH BÁO: Hành động này không thể hoàn tác. Bạn chắc chắn muốn xóa?');">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path
+                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                        </path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
                                 </button>
                             </form>
                         </div>
@@ -848,7 +920,12 @@
                 {% empty %}
                 <tr>
                     <td colspan="5" class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
                         <p>Không tìm thấy dữ liệu phù hợp.</p>
                     </td>
                 </tr>
@@ -860,11 +937,14 @@
         {% if page_obj.has_other_pages %}
         <div class="pagination">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}&status={{ status_filter }}" class="page-btn">← Trước</a>
+            <a href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}&status={{ status_filter }}"
+                class="page-btn">← Trước</a>
             {% endif %}
-            <span style="font-size: 0.9rem; color: #6B7280; padding: 0.4rem 0;">Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+            <span style="font-size: 0.9rem; color: #6B7280; padding: 0.4rem 0;">Trang {{ page_obj.number }} / {{
+                page_obj.paginator.num_pages }}</span>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}&q={{ search_query }}&status={{ status_filter }}" class="page-btn">Sau →</a>
+            <a href="?page={{ page_obj.next_page_number }}&q={{ search_query }}&status={{ status_filter }}"
+                class="page-btn">Sau →</a>
             {% endif %}
         </div>
         {% endif %}

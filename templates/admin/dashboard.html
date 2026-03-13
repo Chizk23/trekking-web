@@ -470,11 +470,7 @@
                                 </div>
 
                                 <div class="text-end">
-                                    {% if trip.trang_thai == 'CHO_DUYET' %}
-                                    <span class="badge-status status-pending">Chờ duyệt</span>
-                                    {% else %}
-                                    <span class="badge-status status-success">{{ trip.get_trang_thai_display }}</span>
-                                    {% endif %}
+                                    <span class="badge-status status-success">{{ trip.status_name }}</span>
                                     <div class="mt-2">
                                         <a href="{% url 'trips_admin:update_trip' trip.id %}"
                                             class="btn-icon-action mx-auto" title="Xem chi tiết"><i

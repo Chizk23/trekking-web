@@ -56,7 +56,7 @@ def home_view(request):
     # 2. Upcoming Trips - 6 chuyến đi sắp khởi hành
     now = timezone.now()
     upcoming_trips = ChuyenDi.objects.filter(
-        trang_thai='DANG_TUYEN',
+        trang_thai='CHO_DUYET',
         ngay_bat_dau__gte=now,
         che_do_rieng_tu='CONG_KHAI'
     ).select_related(
@@ -161,7 +161,7 @@ def profile_view(request, username):
     # Ở đây tôi giữ theo code mới nhất bạn gửi là 'Đã duyệt'
     trips_joined = ChuyenDiThanhVien.objects.filter(
         user=profile_user, 
-        trang_thai_tham_gia='Đã duyệt'
+        trang_thai_tham_gia='DA_THAM_GIA'
     ).select_related(
         'chuyen_di', 
         'chuyen_di__cung_duong',

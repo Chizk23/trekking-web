@@ -63,7 +63,7 @@ class TripHubView(ListView):
         # (BỎ hết đoạn lọc user.is_authenticated ở đây đi)
         queryset = queryset.filter(
             ngay_bat_dau__gt=now,
-            trang_thai='DANG_TUYEN'  # <--- CHỈ LẤY NHỮNG CHUYẾN ĐÃ DUYỆT
+            trang_thai='DANG_TUYEN'  # <-- Hiển thị các chuyến đang tuyển
         ).exclude(trang_thai='DA_HUY')
 
         # =========================================================
